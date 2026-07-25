@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Statistical Structure of the Historical Orderings of the I Ching Hexagrams</title>
+<meta name="description" content="Statistical comparison of the three historical orderings of the I Ching hexagrams (King Wen, Mawangdui, Jing Fang) against the binary ordering and against one another. Paper, replication package and verification script.">
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --muted: #5a5a5a;
+    --rule: #dcdcd6;
+    --bg: #fbfaf7;
+    --card: #ffffff;
+    --accent: #7a2e22;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #e8e4dc;
+      --muted: #9a948a;
+      --rule: #33312c;
+      --bg: #14130f;
+      --card: #1b1a16;
+      --accent: #c2705c;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 3.5rem 1.25rem 5rem;
+    background: var(--bg);
+    color: var(--ink);
+    font: 16px/1.65 Georgia, "Times New Roman", serif;
+  }
+  main { max-width: 46rem; margin: 0 auto; }
+  .kicker {
+    font: 500 11px/1 ui-monospace, "SF Mono", Menlo, monospace;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1.4rem;
+  }
+  h1 {
+    font-size: 1.85rem;
+    line-height: 1.25;
+    font-weight: 400;
+    margin: 0 0 0.4rem;
+  }
+  h1 .sub {
+    display: block;
+    font-size: 1.15rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+  }
+  .author {
+    margin: 1.2rem 0 2.2rem;
+    font-size: 0.95rem;
+    color: var(--muted);
+    line-height: 1.75;
+  }
+  .author a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; }
+  .author a:hover { border-bottom-color: var(--accent); }
+  h2 {
+    font: 500 11px/1 ui-monospace, "SF Mono", Menlo, monospace;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 2.6rem 0 0.9rem;
+  }
+  .abstract {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 1.3rem 1.4rem;
+    font-size: 0.95rem;
+    text-align: justify;
+  }
+  .abstract p { margin: 0; }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin: 1.8rem 0 0;
+  }
+  .btn {
+    display: inline-block;
+    padding: 0.62rem 1.15rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font: 500 0.92rem/1.2 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    background: transparent;
+  }
+  .btn.primary { background: var(--accent); color: var(--bg); }
+  ul.links { list-style: none; padding: 0; margin: 0; }
+  ul.links li {
+    padding: 0.62rem 0;
+    border-bottom: 1px solid var(--rule);
+    font-size: 0.95rem;
+  }
+  ul.links li:last-child { border-bottom: 0; }
+  ul.links a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; }
+  ul.links a:hover { border-bottom-color: var(--accent); }
+  ul.links .note { color: var(--muted); }
+  pre {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 1rem 1.1rem;
+    overflow-x: auto;
+    font: 12.5px/1.6 ui-monospace, "SF Mono", Menlo, monospace;
+    color: var(--ink);
+  }
+  footer {
+    margin-top: 3.5rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--rule);
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  footer a { color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+
+  <div class="kicker">Preprint &middot; replication package</div>
+
+  <h1>
+    Statistical Structure of the Historical Orderings of the I Ching Hexagrams
+    <span class="sub">Pair Rule, Family Gradient, and the Limits of Demonstrability</span>
+  </h1>
+
+  <div class="author">
+    Alexis García Hurtado &middot; Independent Researcher, Gatineau, Québec, Canada
+    &middot; <a href="https://orcid.org/0009-0003-4636-8206">ORCID 0009-0003-4636-8206</a>
+  </div>
+
+  <div class="abstract">
+    <p>The King Wen sequence orders the 64 hexagrams of the I Ching in an arrangement that has resisted explanation for three millennia. We present a statistical comparison of the three historical orderings (King Wen, Mawangdui, Jing Fang) against the binary ordering and against one another. Our central findings are the following. (1) All three historical orderings sit at the random-expected Kendall distance from the binary order (1013, 1008 and 1008 inversions, where the expectation is n(n&minus;1)/4 = 1008): none is rank-correlated with binary counting, and two of the three achieve Kendall tau exactly zero. (2) Yet King Wen and Mawangdui are significantly correlated with each other (759 inversions, z = &minus;2.89, Monte Carlo p = 0.0034, Bonferroni-surviving), and we identify the mechanism: a shared gradient of upper-trigram families, explicit in Mawangdui's octets and implicit in King Wen. (3) Re-analyzing recent Monte Carlo results (Chan, 2026) under a pair-preserving null shows three of the four reported signatures to be corollaries of the pair rule; we also report a small numerical correction, triangulated against a Lean-verified theorem (Radisic, 2026). (4) For the open question of within-pair orientation, the strongest admissible criterion is the classical doctrine of correct centers (12/16, p = 0.038 uncorrected), and we show that no orientation rule of this strength can reach significance over 28 fixed pairs: a measurable limit of demonstrability. Every numerical claim in this paper is asserted by an automated test suite in a public repository.</p>
+  </div>
+
+  <div class="actions">
+    <a class="btn primary" href="paper.pdf">Download PDF</a>
+    <a class="btn" href="https://github.com/theoriginaliching/kingwen-orderings-replication">Replication package</a>
+  </div>
+
+  <h2>Resources</h2>
+  <ul class="links">
+    <li>
+      <a href="https://github.com/theoriginaliching/kingwen-orderings-replication">Replication repository</a>
+      <span class="note">&middot; paper source, compiled PDF, and a self-contained script that reproduces every figure (122 checks, standard library only)</span>
+    </li>
+    <li>
+      <a href="https://experiments.theoriginaliching.com">Interactive laboratory</a>
+      <span class="note">&middot; 44 experiments on the same material, each backed by its own assertions in a verification suite</span>
+    </li>
+    <li>
+      Archived version <span class="note">&middot; DOI pending</span>
+    </li>
+  </ul>
+
+  <h2>Verification</h2>
+  <pre>python3 verify_paper.py
+
+  122 checks passed, 0 failed, 122 total
+  REPLICATION COMPLETE: every figure in the paper reproduces.</pre>
+
+  <h2>Citation</h2>
+  <pre>@misc{kingwen-orderings,
+  title  = {Statistical Structure of the Historical Orderings of the I Ching
+            Hexagrams: Pair Rule, Family Gradient, and the Limits of
+            Demonstrability},
+  author = {Garc\'ia Hurtado, Alexis},
+  year   = {2026},
+  note   = {Replication package. DOI pending}
+}</pre>
+
+  <footer>
+    Code under the MIT License; paper text and figures under
+    <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+  </footer>
+
+</main>
+</body>
+</html>
