@@ -7,10 +7,15 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{booktabs}
+\usepackage{array}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
 \usepackage[hidelinks]{hyperref}
 \usepackage{url}
+
+% Typographic tolerance: lets TeX stretch interword space slightly on the few lines
+% where a long formula or URL would otherwise overflow the measure. No text is altered.
+\emergencystretch=1.5em
 
 \title{Statistical Structure of the Historical Orderings of the I Ching Hexagrams\\[0.35em]
   {\large Pair Rule, Family Gradient, and the Limits of Demonstrability}}
@@ -119,13 +124,17 @@ The King Wen sequence, however, is not a free permutation: it is constrained by 
 \centering
 \caption{Chan's four signatures re-evaluated under a pair-preserving null. For the yang-balanced groups, the pair-preserving null raises the expectation from 2.6 to 4.4.}
 \label{tab:chan}
-\begin{tabular}{lrrrl}
+\small
+\begin{tabular}{@{}lrrr>{\raggedright\arraybackslash}p{3.1cm}@{}}
 \toprule
-Chan's statistic & value & free-shuffle pct. & pair-preserving pct. & verdict \\
+Chan's statistic & value & free & pair-null & verdict \\
 \midrule
-mean transition distance          & 3.349          & 97.9 & 29.0             & corollary of the pair rule \\
+mean transition distance           & 3.349          & 97.9 & 29.0             & corollary of the pair rule \\
+\addlinespace
 lag-1 autocorrelation of distances & $-0.247$       & 4.0  & 6.4              & marginal, not significant \\
+\addlinespace
 yang-balanced groups of four       & 7              & 99.2 & 89.6             & mostly corollary \\
+\addlinespace
 within/between-pair asymmetry      & 3.75 vs.\ 2.94 & 99.9 & invariant (sd 0) & corollary by construction \\
 \bottomrule
 \end{tabular}
