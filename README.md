@@ -84,12 +84,16 @@ tectonic paper.tex        # or: pdflatex paper.tex
 
 `paper.pdf` in this repository is the compiled output of `paper.tex` and is included as a
 distribution artifact. The two are kept in sync; `paper.tex` here is byte-for-byte identical
-to the manuscript source in the development repository.
+to the manuscript source in the laboratory repository, which asserts that identity as part of
+its own verification suite.
 
 ## Related resources
 
-- **Extended interactive laboratory**: 44 experiments on the same material, each backed by
-  its own assertions in a verification suite that runs as a publication gate.
+- **Extended interactive laboratory**: https://experiments.theoriginaliching.com, and its
+  repository at https://github.com/theoriginaliching/iching-experiments. It explores the same
+  material in 44 experiments, each backed by its own assertions in a 55-section verification
+  suite that runs as a publication gate. Its web interface is in Spanish; this package and the
+  paper are in English.
 - **Archived version**: DOI pending.
 
 ## Licenses
