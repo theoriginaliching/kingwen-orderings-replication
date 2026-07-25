@@ -248,11 +248,12 @@ The comparative study of the orderings themselves has a philological literature:
 The primary artifact accompanying this paper is a self-contained replication package:
 
 \begin{center}
-\url{https://github.com/theoriginaliching/kingwen-orderings-replication}
+\url{https://github.com/theoriginaliching/kingwen-orderings-replication}\\[0.3em]
+\url{https://paper.theoriginaliching.com}
 \end{center}
 
 \noindent
-(archived version: DOI pending). It contains the manuscript source, the compiled PDF and a single script, \texttt{verify\_paper.py}, which reproduces every numerical claim made here from first principles, using only the Python standard library, with no network access and no data files. The only external datum is the received King Wen sequence, embedded as a literal table; every other ordering is generated from the construction rules given in Section~2, so the package verifies the constructions as well as the statistics. It prints one line per check, showing the reproduced value beside the value printed in this paper, and exits zero if and only if all of them pass:
+(the repository is the primary artifact; the second address is a human-readable gateway to the same package. Archived version: DOI pending). It contains the manuscript source, the compiled PDF and a single script, \texttt{verify\_paper.py}, which reproduces every numerical claim made here from first principles, using only the Python standard library, with no network access and no data files. The only external datum is the received King Wen sequence, embedded as a literal table; every other ordering is generated from the construction rules given in Section~2, so the package verifies the constructions as well as the statistics. It prints one line per check, showing the reproduced value beside the value printed in this paper, and exits zero if and only if all of them pass:
 
 \begin{center}
 \texttt{python3 verify\_paper.py} \qquad \texttt{tectonic paper.tex}

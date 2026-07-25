@@ -5,124 +5,118 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Statistical Structure of the Historical Orderings of the I Ching Hexagrams</title>
 <meta name="description" content="Statistical comparison of the three historical orderings of the I Ching hexagrams (King Wen, Mawangdui, Jing Fang) against the binary ordering and against one another. Paper, replication package and verification script.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Inter:wght@400;500&family=Noto+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
+  /* Identidad de tinta de The Original I Ching. Superficie unica, sin tema claro. */
   :root {
-    --ink: #1a1a1a;
-    --muted: #5a5a5a;
-    --rule: #dcdcd6;
-    --bg: #fbfaf7;
-    --card: #ffffff;
-    --accent: #7a2e22;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --ink: #e8e4dc;
-      --muted: #9a948a;
-      --rule: #33312c;
-      --bg: #14130f;
-      --card: #1b1a16;
-      --accent: #c2705c;
-    }
+    --bg: #0d0b0b;
+    --bg-deep: #080606;
+    --card: #0f0d0c;
+    --line: rgba(255,255,255,0.07);
+    --text: #efe8dc;
+    --text-strong: #f5efe3;
+    --soft: #b0a494;
+    --muted: #a5988a;
+    --dim: #6b5f52;
+    --gold: #c9a24b;
+    --gold-dim: #8a7a5c;
+    --red: #c53d2e;
+    color-scheme: dark;
   }
   * { box-sizing: border-box; }
   body {
     margin: 0;
-    padding: 3.5rem 1.25rem 5rem;
     background: var(--bg);
-    color: var(--ink);
-    font: 16px/1.65 Georgia, "Times New Roman", serif;
+    color: var(--text);
+    font: 16px/1.7 "Noto Serif", Georgia, serif;
+    -webkit-font-smoothing: antialiased;
   }
-  main { max-width: 46rem; margin: 0 auto; }
+  a { color: var(--gold); text-decoration: none; border-bottom: 1px solid transparent; }
+  a:hover { border-bottom-color: var(--gold); }
+  .bar {
+    border-bottom: 1px solid var(--line);
+    background: rgba(13,11,11,0.85);
+    backdrop-filter: blur(14px);
+    position: sticky; top: 0; z-index: 10;
+  }
+  .bar-in {
+    max-width: 46rem; margin: 0 auto; padding: 0.85rem 1.25rem;
+    display: flex; align-items: baseline; justify-content: space-between; gap: 1rem;
+  }
+  .brand { display: inline-flex; align-items: baseline; gap: 0.6rem; border: 0; }
+  .brand .mark { color: var(--red); font-size: 1.3rem; line-height: 1; }
+  .brand .name {
+    font-family: "Cinzel", Georgia, serif; font-size: 0.82rem;
+    letter-spacing: 0.06em; color: var(--soft);
+  }
+  .bar nav { font-family: "Inter", system-ui, sans-serif; font-size: 0.78rem; }
+  .bar nav a { color: var(--muted); }
+  main { max-width: 46rem; margin: 0 auto; padding: 3rem 1.25rem 4.5rem; }
   .kicker {
-    font: 500 11px/1 ui-monospace, "SF Mono", Menlo, monospace;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 1.4rem;
+    font-family: "Inter", system-ui, sans-serif; font-size: 10.5px;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim);
+    margin-bottom: 1.3rem;
   }
   h1 {
-    font-size: 1.85rem;
-    line-height: 1.25;
-    font-weight: 400;
-    margin: 0 0 0.4rem;
+    font-family: "Cinzel", Georgia, serif; font-weight: 500;
+    font-size: 1.9rem; line-height: 1.25; margin: 0 0 0.5rem; color: var(--text-strong);
   }
   h1 .sub {
-    display: block;
-    font-size: 1.15rem;
-    color: var(--muted);
-    margin-top: 0.5rem;
+    display: block; font-family: "Noto Serif", Georgia, serif; font-weight: 400;
+    font-size: 1.05rem; color: var(--soft); margin-top: 0.6rem;
   }
-  .author {
-    margin: 1.2rem 0 2.2rem;
-    font-size: 0.95rem;
-    color: var(--muted);
-    line-height: 1.75;
-  }
-  .author a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; }
-  .author a:hover { border-bottom-color: var(--accent); }
+  .author { margin: 1.3rem 0 2.4rem; font-size: 0.92rem; color: var(--muted); line-height: 1.8; }
   h2 {
-    font: 500 11px/1 ui-monospace, "SF Mono", Menlo, monospace;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin: 2.6rem 0 0.9rem;
+    font-family: "Inter", system-ui, sans-serif; font-size: 10.5px; font-weight: 500;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--dim);
+    margin: 2.8rem 0 0.9rem;
   }
   .abstract {
-    background: var(--card);
-    border: 1px solid var(--rule);
-    border-radius: 6px;
-    padding: 1.3rem 1.4rem;
-    font-size: 0.95rem;
-    text-align: justify;
+    background: var(--card); border: 1px solid var(--line); border-radius: 8px;
+    padding: 1.4rem 1.5rem; font-size: 0.94rem; text-align: justify;
   }
   .abstract p { margin: 0; }
-  .actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.7rem;
-    margin: 1.8rem 0 0;
-  }
+  .actions { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1.8rem; }
   .btn {
-    display: inline-block;
-    padding: 0.62rem 1.15rem;
-    border-radius: 5px;
-    text-decoration: none;
-    font: 500 0.92rem/1.2 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    border: 1px solid var(--accent);
-    color: var(--accent);
-    background: transparent;
+    display: inline-block; padding: 0.62rem 1.2rem; border-radius: 5px;
+    font: 500 0.88rem/1.2 "Inter", system-ui, sans-serif;
+    border: 1px solid var(--gold-dim); color: var(--gold); background: transparent;
   }
-  .btn.primary { background: var(--accent); color: var(--bg); }
+  .btn:hover { border-color: var(--gold); }
+  .btn.primary { background: var(--gold); border-color: var(--gold); color: #14100c; }
   ul.links { list-style: none; padding: 0; margin: 0; }
-  ul.links li {
-    padding: 0.62rem 0;
-    border-bottom: 1px solid var(--rule);
-    font-size: 0.95rem;
-  }
+  ul.links li { padding: 0.7rem 0; border-bottom: 1px solid var(--line); font-size: 0.93rem; }
   ul.links li:last-child { border-bottom: 0; }
-  ul.links a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; }
-  ul.links a:hover { border-bottom-color: var(--accent); }
   ul.links .note { color: var(--muted); }
+  .findings { font-size: 0.93rem; color: var(--soft); }
+  .findings .seal { color: var(--red); }
   pre {
-    background: var(--card);
-    border: 1px solid var(--rule);
-    border-radius: 6px;
-    padding: 1rem 1.1rem;
-    overflow-x: auto;
+    background: var(--card); border: 1px solid var(--line); border-radius: 8px;
+    padding: 1rem 1.1rem; overflow-x: auto; color: var(--text);
     font: 12.5px/1.6 ui-monospace, "SF Mono", Menlo, monospace;
-    color: var(--ink);
   }
   footer {
-    margin-top: 3.5rem;
-    padding-top: 1.4rem;
-    border-top: 1px solid var(--rule);
-    font-size: 0.85rem;
-    color: var(--muted);
+    border-top: 1px solid var(--line); background: var(--bg-deep);
+    font-family: "Inter", system-ui, sans-serif; font-size: 0.8rem; color: var(--dim);
   }
+  .footer-in { max-width: 46rem; margin: 0 auto; padding: 1.6rem 1.25rem; }
   footer a { color: var(--muted); }
 </style>
 </head>
 <body>
+
+<div class="bar">
+  <div class="bar-in">
+    <a class="brand" href="https://theoriginaliching.com">
+      <span class="mark">易</span>
+      <span class="name">THE ORIGINAL I CHING</span>
+    </a>
+    <nav><a href="https://experiments.theoriginaliching.com">Laboratory</a></nav>
+  </div>
+</div>
+
 <main>
 
   <div class="kicker">Preprint &middot; replication package</div>
@@ -140,6 +134,17 @@
   <div class="abstract">
     <p>The King Wen sequence orders the 64 hexagrams of the I Ching in an arrangement that has resisted explanation for three millennia. We present a statistical comparison of the three historical orderings (King Wen, Mawangdui, Jing Fang) against the binary ordering and against one another. Our central findings are the following. (1) All three historical orderings sit at the random-expected Kendall distance from the binary order (1013, 1008 and 1008 inversions, where the expectation is n(n&minus;1)/4 = 1008): none is rank-correlated with binary counting, and two of the three achieve Kendall tau exactly zero. (2) Yet King Wen and Mawangdui are significantly correlated with each other (759 inversions, z = &minus;2.89, Monte Carlo p = 0.0034, Bonferroni-surviving), and we identify the mechanism: a shared gradient of upper-trigram families, explicit in Mawangdui's octets and implicit in King Wen. (3) Re-analyzing recent Monte Carlo results (Chan, 2026) under a pair-preserving null shows three of the four reported signatures to be corollaries of the pair rule; we also report a small numerical correction, triangulated against a Lean-verified theorem (Radisic, 2026). (4) For the open question of within-pair orientation, the strongest admissible criterion is the classical doctrine of correct centers (12/16, p = 0.038 uncorrected), and we show that no orientation rule of this strength can reach significance over 28 fixed pairs: a measurable limit of demonstrability. Every numerical claim in this paper is asserted by an automated test suite in a public repository.</p>
   </div>
+
+  <h2>What the paper rests on</h2>
+  <p class="findings">
+    Four sealed findings of the accompanying laboratory support this paper: the tie with binary
+    counting <span class="seal">印</span>, the kinship of the two oldest orderings and its
+    mechanism <span class="seal">印</span>, the question of within-pair orientation and its limit
+    of demonstrability <span class="seal">印</span>, and the spectral confirmation of the pair
+    rule <span class="seal">印</span>. Each carries a dated originality note and is asserted by
+    the verification suite; they are listed at
+    <a href="https://experiments.theoriginaliching.com/hallazgos">experiments.theoriginaliching.com/hallazgos</a>.
+  </p>
 
   <div class="actions">
     <a class="btn primary" href="paper.pdf">Download PDF</a>
@@ -177,11 +182,14 @@
   note   = {Replication package. DOI pending}
 }</pre>
 
-  <footer>
-    Code under the MIT License; paper text and figures under
-    <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
-  </footer>
-
 </main>
+
+<footer>
+  <div class="footer-in">
+    Part of <a href="https://theoriginaliching.com">The Original I Ching</a>. Code under the
+    MIT License; paper text and figures under
+    <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+  </div>
+</footer>
 </body>
 </html>
