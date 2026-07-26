@@ -32,7 +32,7 @@ value printed in the paper, and exits `0` if and only if all checks pass:
 
 ```
 ==================================================================
-  174 checks passed, 0 failed, 174 total
+  176 checks passed, 0 failed, 176 total
 ==================================================================
   REPLICATION COMPLETE: every figure in the paper reproduces.
 ```
@@ -52,6 +52,7 @@ Every claim in the paper maps to a named check in `verify_paper.py`.
 | 2 | Each of the five orderings is a permutation of `0..63`; the 32 pairs partition positions `1..64` | `section_0` |
 | 2 | `8` hexagrams are reversal-invariant, occupying `4` pairs matched by complementation | `section_0` |
 | 3 | Random expectation `n(n-1)/4 = 1008`, sd `86.3`, maximum `2016` | `section_3` |
+| 8 | Olsvanger's coincidence: sum of `0..63` = `C(64,2)` = `2016`, both halving to `1008` | `section_3` |
 | 3.1 | Inversions vs binary: King Wen `1013`, Mawangdui `1008`, Jing Fang `1008` | `section_3` |
 | 3.1 | Kendall tau `-0.005`, `0.000`, `0.000`; all within `0.06` sd | `section_3` |
 | 3 | Adjacent Hamming cost: Gray `63`, Jing Fang `93`, binary `120`, Mawangdui `141`, King Wen `211` | `section_3` |
@@ -107,9 +108,9 @@ sed 's/"Qian", "Gen", "Kan"/"Qian", "Kan", "Gen"/' verify_paper.py > mutant.py &
 
 | Mutation | First check to fail | What happens |
 |---|---|---|
-| (a) one flipped bit | `0`, the King Wen ordering is a permutation of 0 to 63 | 12 of the first 41 checks fail, then the run aborts with `KeyError: 63` in Section 4 |
-| (b) duplicated hexagram | `0`, the King Wen ordering is a permutation of 0 to 63 | 12 of the first 41 checks fail, then the run aborts with `KeyError: 0` |
-| (c) Mawangdui family swapped | `3.1`, Mawangdui inversions vs binary | the run completes and reports `157 checks passed, 17 failed, 174 total` |
+| (a) one flipped bit | `0`, the King Wen ordering is a permutation of 0 to 63 | 12 of the first 43 checks fail, then the run aborts with `KeyError: 63` in Section 4 |
+| (b) duplicated hexagram | `0`, the King Wen ordering is a permutation of 0 to 63 | 12 of the first 43 checks fail, then the run aborts with `KeyError: 0` |
+| (c) Mawangdui family swapped | `3.1`, Mawangdui inversions vs binary | the run completes and reports `159 checks passed, 17 failed, 176 total` |
 
 Exit status is `1` in all three cases. Note the shape of (a) and (b): a corrupted King Wen
 table is no longer a permutation of the 64 values, Section 0 says so before any statistic is
