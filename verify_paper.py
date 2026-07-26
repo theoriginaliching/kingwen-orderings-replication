@@ -595,10 +595,21 @@ def section_5():
     check("5.4", "p-value for top line yang first",
           round(binomial_one_tailed(top_yang, 28), 3), 0.286)
 
+    # The smoothing criteria read the neighbors of a pair, so they need positions, while
+    # rotation_pairs() hands out pair indices. The bridge is the layout of the sequence
+    # itself: pair i occupies positions 2i and 2i+1, so KING_WEN[2i] is its first member and
+    # KING_WEN[2i+1] its second. That coupling used to be implicit in the arithmetic below;
+    # it is now checked, because if it ever broke every neighbor read would silently address
+    # the wrong hexagram and the criteria would still return plausible-looking counts.
+    check("5.4", "pair index i addresses positions 2i and 2i+1 of the sequence",
+          all(KING_WEN[2 * i] == a and KING_WEN[2 * i + 1] == b for a, b, i in pairs), True)
+
     def smoothing(outgoing):
         wins = ties = 0
         for a, b, i in rot:
             pos = 2 * i
+            assert KING_WEN[pos] == a and KING_WEN[pos + 1] == b, \
+                f"pair {i} is not at positions {pos} and {pos + 1}"
             if not outgoing:
                 if pos == 0:
                     continue
@@ -699,6 +710,18 @@ def section_5():
     check("5.6", "the battery comprises nine tested criteria", len(bateria), 9)
     check("5.6", "more-yang-first is excluded by theorem, undecidable on all 28 pairs",
           sum(1 for a, b, _ in rot if popcount(a) == popcount(b)), 28)
+    # The power floor: how strong a criterion would have to be to survive the correction
+    # at all. These are the two thresholds quoted in Section 5.6.
+    def battery_threshold(m):
+        """Fewest agreements over m decidable pairs whose exact one-tailed p survives the
+        nine-test Bonferroni correction."""
+        return next(k for k in range(m // 2, m + 1)
+                    if binomial_one_tailed(k, m) * 9 < 0.05)
+
+    check("5.6", "agreements needed over all 28 pairs to survive the battery correction",
+          battery_threshold(28), 22)
+    check("5.6", "agreements needed over 16 decidable pairs to survive it",
+          battery_threshold(16), 14)
     check("5.6", "Bonferroni over the nine criteria (0.038 x 9)",
           round(0.038 * 9, 2), 0.34, ok=close(0.038 * 9, 0.35, 0.02))
     check("5.6", "the sample is fixed forever at 28 rotation pairs", len(rot), 28)

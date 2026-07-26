@@ -32,7 +32,7 @@ value printed in the paper, and exits `0` if and only if all checks pass:
 
 ```
 ==================================================================
-  171 checks passed, 0 failed, 171 total
+  174 checks passed, 0 failed, 174 total
 ==================================================================
   REPLICATION COMPLETE: every figure in the paper reproduces.
 ```
@@ -73,7 +73,9 @@ Every claim in the paper maps to a named check in `verify_paper.py`.
 | 5.4 | Nuclear criterion `8/24` decidable (4 ties), `p = 0.076`; different basins `16/28` | `section_5` |
 | 5.5 | Mirror components: extremes `10/16` (`p = 0.227`), middles `9/16` (`p = 0.402`), centers `12/16` (`p = 0.038`) | `section_5` |
 | 5.5 | Centers and smaller-nuclear agree `16/16` on co-decidable pairs | `section_5` |
+| 5.4 | Pair index `i` addresses positions `2i` and `2i+1`, the invariant the smoothing criteria rest on | `section_5` |
 | 5.6 | Battery of nine criteria, Bonferroni `0.038 x 9 = 0.35`; sample fixed at `28` pairs | `section_5` |
+| 5.6 | Power floor: `22` of 28 agreements, or `14` of 16, would be needed to survive the correction | `section_5` |
 | 6.1 | Walsh energy by interaction order, dominant DFT harmonic and Haar width for all five orderings | `section_6` |
 | 6 | Jing Fang anti-linear: `0.0` percent first order, `74.5` percent fourth order | `section_6` |
 | 6 | King Wen number signal: `77.4` percent in even orders against `47.6` percent uniform | `section_6` |
@@ -107,7 +109,7 @@ sed 's/"Qian", "Gen", "Kan"/"Qian", "Kan", "Gen"/' verify_paper.py > mutant.py &
 |---|---|---|
 | (a) one flipped bit | `0`, the King Wen ordering is a permutation of 0 to 63 | 12 of the first 41 checks fail, then the run aborts with `KeyError: 63` in Section 4 |
 | (b) duplicated hexagram | `0`, the King Wen ordering is a permutation of 0 to 63 | 12 of the first 41 checks fail, then the run aborts with `KeyError: 0` |
-| (c) Mawangdui family swapped | `3.1`, Mawangdui inversions vs binary | the run completes and reports `154 checks passed, 17 failed, 171 total` |
+| (c) Mawangdui family swapped | `3.1`, Mawangdui inversions vs binary | the run completes and reports `157 checks passed, 17 failed, 174 total` |
 
 Exit status is `1` in all three cases. Note the shape of (a) and (b): a corrupted King Wen
 table is no longer a permutation of the 64 values, Section 0 says so before any statistic is
