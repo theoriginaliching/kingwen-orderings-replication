@@ -293,10 +293,10 @@ def section_3():
 
     # The coincidence behind Olsvanger's sum symmetries, noted in Related work: the sum of
     # the 64 hexagram values and the number of hexagram pairs are the same number, and both
-    # halve to 1,008. Nothing connects the two facts beyond the arithmetic of 64.
+    # halve to 1008. Nothing connects the two facts beyond the arithmetic of 64.
     check("3", "sum of the values 0 to 63 equals the number of pairs C(64,2)",
           (sum(range(N)), comb(N, 2)), (2016, 2016))
-    check("3", "both halve to 1,008, the random expectation of the inversion count",
+    check("3", "both halve to 1008, the random expectation of the inversion count",
           (MAX_INV // 2, int(EXPECTED_INV)), (1008, 1008))
 
     inv_kw = inversions_between(KING_WEN, BINARY)
