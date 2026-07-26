@@ -191,6 +191,11 @@ def binomial_one_tailed(k, m):
     return sum(comb(m, j) for j in tail) / 2 ** m
 
 
+def binomial_two_sided(k, m):
+    """Exact binomial p-value, two-sided by doubling the observed tail."""
+    return min(1.0, 2 * binomial_one_tailed(k, m))
+
+
 # --- Reporting ------------------------------------------------------------
 
 RESULTS = []
@@ -284,6 +289,9 @@ def section_4():
           round(p_mc, 4), 0.0034, ok=close(p_mc, 0.0034, 0.002), fmt=lambda x: f"{x:.4f}")
     check("4.1", "Bonferroni-corrected p over 3 comparisons stays below 0.05",
           round(p_mc * 3, 4), 0.0102, ok=p_mc * 3 < 0.05, fmt=lambda x: f"{x:.4f}")
+    # Robustness: the most demanding family is all ten pairs among the five orderings.
+    check("4.1", "Bonferroni over all 10 pairwise comparisons stays below 0.05",
+          round(0.0034 * 10, 3), 0.034, ok=0.0034 * 10 < 0.05, fmt=lambda x: f"{x:.3f}")
     mc_mean = sum(counts) / samples
     mc_sd = sqrt(sum((c - mc_mean) ** 2 for c in counts) / samples)
     check("4.1", "Monte Carlo confirms the closed-form expectation and sd",
@@ -607,7 +615,9 @@ def section_5():
         check("5.5", f"p-value on the {name}",
               round(binomial_one_tailed(wins, decidable), 3), want_p)
 
-    _, _, center_winner = component(2, 5)
+    wins_c, dec_c, center_winner = component(2, 5)
+    check("5.5", "two-sided p on the centers",
+          round(binomial_two_sided(wins_c, dec_c), 3), 0.077)
     agree = total = 0
     for idx, (a, b, _) in enumerate(rot):
         if idx not in center_winner:
@@ -624,8 +634,18 @@ def section_5():
           all(yang(a, 5) != yang(a, 2) for a, b, _ in rot if yang(a, 2) != yang(a, 5)), True)
 
     # --- 5.6 The dual reading ---
-    check("5.6", "Bonferroni over roughly thirteen criteria (0.038 x 13)",
-          round(0.038 * 13, 2), 0.49, ok=close(0.038 * 13, 0.5, 0.02))
+    # The battery is exactly nine criteria: five structural, one nuclear, three mirror
+    # components. A tenth candidate, more-yang-first, is excluded by theorem (28/28 ties)
+    # and therefore is not part of the correction.
+    bateria = ["greater binary value first", "bottom line yang first", "top line yang first",
+               "smooths the incoming transition", "smooths the outgoing transition",
+               "greater nuclear value first", "correct-first on (1,6)",
+               "correct-first on (3,4)", "correct-first on (2,5)"]
+    check("5.6", "the battery comprises nine tested criteria", len(bateria), 9)
+    check("5.6", "more-yang-first is excluded by theorem, undecidable on all 28 pairs",
+          sum(1 for a, b, _ in rot if popcount(a) == popcount(b)), 28)
+    check("5.6", "Bonferroni over the nine criteria (0.038 x 9)",
+          round(0.038 * 9, 2), 0.34, ok=close(0.038 * 9, 0.35, 0.02))
     check("5.6", "the sample is fixed forever at 28 rotation pairs", len(rot), 28)
 
 
