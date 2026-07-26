@@ -24,7 +24,7 @@ python3 verify_paper.py --quiet    # summary and failures only
 ```
 
 Requirements: Python 3.8 or later. **No third-party packages**, no network access, no data
-files. Runtime is under twenty seconds; the Monte Carlo sections dominate, and the ladder of
+files. Runtime is under thirty seconds; the Monte Carlo sections dominate, and the ladder of
 six conditional nulls in Appendix A is the largest of them.
 
 The script prints `PASS` or `FAIL` for each check, showing the reproduced value beside the
@@ -32,7 +32,7 @@ value printed in the paper, and exits `0` if and only if all checks pass:
 
 ```
 ==================================================================
-  151 checks passed, 0 failed, 151 total
+  171 checks passed, 0 failed, 171 total
 ==================================================================
   REPLICATION COMPLETE: every figure in the paper reproduces.
 ```
@@ -48,6 +48,9 @@ Every claim in the paper maps to a named check in `verify_paper.py`.
 
 | Paper | Claim | Verified in |
 |---|---|---|
+| 2 | Reversal and complementation are involutions and commute (the Klein group of the pair rule) | `section_0` |
+| 2 | Each of the five orderings is a permutation of `0..63`; the 32 pairs partition positions `1..64` | `section_0` |
+| 2 | `8` hexagrams are reversal-invariant, occupying `4` pairs matched by complementation | `section_0` |
 | 3 | Random expectation `n(n-1)/4 = 1008`, sd `86.3`, maximum `2016` | `section_3` |
 | 3.1 | Inversions vs binary: King Wen `1013`, Mawangdui `1008`, Jing Fang `1008` | `section_3` |
 | 3.1 | Kendall tau `-0.005`, `0.000`, `0.000`; all within `0.06` sd | `section_3` |
@@ -75,12 +78,43 @@ Every claim in the paper maps to a named check in `verify_paper.py`.
 | 6 | Jing Fang anti-linear: `0.0` percent first order, `74.5` percent fourth order | `section_6` |
 | 6 | King Wen number signal: `77.4` percent in even orders against `47.6` percent uniform | `section_6` |
 | 7 | Cycle type of the King Wen permutation `[52, 10, 2]` | `section_7` |
+| 4.1, 5.1 | Seed robustness: kinship `p < 0.01` and pair-null percentiles within `3` points, with seeds `7` and `99` | `section_seeds` |
 | A | Table A1: the 17 varying percentiles of the six-rung ladder (20,000 samples, seed `20260722`) | `section_appendix_a` |
 | A | Table A1: the constant cells do not vary under their null | `section_appendix_a` |
 | A | Rung P3: the four palindrome anchors `[0, 13, 14, 30]`; detection by value would catch `8` | `section_appendix_a` |
 | A | Invariance: `7` yang-balanced blocks in every control sample of rungs P4 and P5 | `section_appendix_a` |
 | A | Multiplicity of the ladder: `17` non-constant entries, correction `0.035 x 17 = 0.6` | `section_appendix_a` |
 | all | The frozen figures appear verbatim in `paper.tex`; no em dashes | `section_paper` |
+
+## Breaking the package
+
+A verification package is worth what it catches. The three mutations below were run once
+against this exact file; each is the kind of slip a careless transcription could introduce,
+and each is caught. They write a throwaway copy, so nothing in the repository changes:
+
+```bash
+# (a) one flipped bit: hexagram 63 becomes 62 in position 1
+sed 's/^    63, 0, 34,/    62, 0, 34,/' verify_paper.py > mutant.py && python3 mutant.py; rm mutant.py
+
+# (b) a duplicated hexagram: 63 appears twice and 0 disappears
+sed 's/^    63, 0, 34,/    63, 63, 34,/' verify_paper.py > mutant.py && python3 mutant.py; rm mutant.py
+
+# (c) a Mawangdui family out of order: Gen and Kan swapped
+sed 's/"Qian", "Gen", "Kan"/"Qian", "Kan", "Gen"/' verify_paper.py > mutant.py && python3 mutant.py; rm mutant.py
+```
+
+| Mutation | First check to fail | What happens |
+|---|---|---|
+| (a) one flipped bit | `0`, the King Wen ordering is a permutation of 0 to 63 | 12 of the first 41 checks fail, then the run aborts with `KeyError: 63` in Section 4 |
+| (b) duplicated hexagram | `0`, the King Wen ordering is a permutation of 0 to 63 | 12 of the first 41 checks fail, then the run aborts with `KeyError: 0` |
+| (c) Mawangdui family swapped | `3.1`, Mawangdui inversions vs binary | the run completes and reports `154 checks passed, 17 failed, 171 total` |
+
+Exit status is `1` in all three cases. Note the shape of (a) and (b): a corrupted King Wen
+table is no longer a permutation of the 64 values, Section 0 says so before any statistic is
+computed, and the run then aborts rather than printing numbers derived from impossible data.
+Mutation (c) is the subtler one, since a reordered Mawangdui family is still a valid
+permutation; it is caught by the inversion counts, and its 17 failures are exactly the claims
+that depend on the Mawangdui construction.
 
 ## Compiling the manuscript
 

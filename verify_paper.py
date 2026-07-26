@@ -13,7 +13,7 @@ The script exits 0 if and only if every check passes.
     python3 verify_paper.py            # run all checks
     python3 verify_paper.py --quiet    # only the summary and any failures
 
-Runtime: under ten seconds (the Monte Carlo sections dominate).
+Runtime: under thirty seconds (the Monte Carlo sections dominate).
 
 Conventions (Section 2 of the paper). Lines are numbered 1 (bottom) to 6 (top);
 yang = 1, yin = 0. A hexagram is the 6-bit integer whose most significant bit is line 1,
@@ -83,6 +83,18 @@ def nuclear(v):
     """Nuclear hexagram (hu gua): lines 2-3-4 below, 3-4-5 above."""
     b = format(v, "06b")
     return int(b[1:4] + b[2:5], 2)
+
+
+# --- The Monte Carlo protocol (Section 2 of the paper) ---------------------
+# Every random draw in this file comes from one of these seeds. They are named so that
+# a reader can see at a glance which protocol a number belongs to, and so that no seed
+# can be changed in one place and not in another.
+
+SEED_PAIR_NULL = 424242       # permutation nulls of Sections 4 and 5
+SEED_PERCENTILES = 20260722   # percentile protocols of Section 5
+SEED_LADDER = 20260722        # the ladder of conditional nulls, Appendix A
+SEED_LADDER_CONTROL = 454545  # the independent re-derivation, used for control samples
+ROBUSTNESS_SEEDS = (7, 99)    # not protocol seeds: only to show the draw does not matter
 
 
 # --- The five orderings (Section 2) ---------------------------------------
@@ -226,6 +238,49 @@ def head(title):
 
 
 # ---------------------------------------------------------------------------
+# Section 0: structural invariants
+# ---------------------------------------------------------------------------
+
+def section_0():
+    """Invariants that hold before any statistic is computed. If one of these fails, every
+    figure below is meaningless: the encoding or an ordering has been corrupted."""
+    head("Section 0: structural invariants of the encoding and the orderings")
+
+    # Reversal (fan) is the 180-degree rotation of the figure; on this encoding it is the
+    # reversal of the six lines, so rotation and reversal are the same map and are checked
+    # once. With complementation they generate the Klein group of the pair rule: the third
+    # non-identity element is their composition, and it is an involution too.
+    check("0", "reversal is an involution on all 64 hexagrams",
+          all(rotate(rotate(v)) == v for v in range(N)), True)
+    check("0", "complementation is an involution on all 64 hexagrams",
+          all(complement(complement(v)) == v for v in range(N)), True)
+    check("0", "reversal and complementation commute; their composition is an involution",
+          all(rotate(complement(v)) == complement(rotate(v))
+              and rotate(complement(rotate(complement(v)))) == v for v in range(N)), True)
+
+    orderings = [("King Wen", KING_WEN), ("Mawangdui", MAWANGDUI), ("Jing Fang", JING_FANG),
+                 ("binary", BINARY), ("Gray", GRAY)]
+    for name, seq in orderings:
+        check("0", f"the {name} ordering is a permutation of 0 to 63 (no repeats, none missing)",
+              (len(seq), sorted(seq) == list(range(N))), (N, True))
+
+    # Eight hexagrams are invariant under reversal; in the received sequence they occupy
+    # four pairs, which are therefore matched by complementation instead.
+    palindromes = [v for v in range(N) if rotate(v) == v]
+    check("0", "hexagrams invariant under reversal", len(palindromes), 8)
+    check("0", "King Wen pairs made of two palindromes", sum(
+        1 for i in range(32) if KING_WEN[2 * i] in palindromes and KING_WEN[2 * i + 1] in palindromes), 4)
+
+    positions = sorted(pos for i in range(32) for pos in (2 * i + 1, 2 * i + 2))
+    check("0", "the 32 pairs partition positions 1 to 64",
+          (len(positions), len(set(positions)), positions == list(range(1, N + 1))),
+          (N, N, True))
+    check("0", "every pair is matched by reversal or by complementation",
+          all(rotate(KING_WEN[2 * i]) == KING_WEN[2 * i + 1]
+              or complement(KING_WEN[2 * i]) == KING_WEN[2 * i + 1] for i in range(32)), True)
+
+
+# ---------------------------------------------------------------------------
 # Section 3: distance to the binary ordering
 # ---------------------------------------------------------------------------
 
@@ -277,7 +332,7 @@ def section_4():
     check("4.1", "Mawangdui to Jing Fang z-score", round(z(mwd_jf), 2), -1.58)
 
     # Monte Carlo null of uniform relative order: 20,000 samples, fixed seed.
-    rng = random.Random(424242)
+    rng = random.Random(SEED_PAIR_NULL)
     samples = 20000
     counts = []
     for _ in range(samples):
@@ -364,7 +419,7 @@ def section_4():
 
     octets = [MAWANGDUI[8 * b:8 * b + 8] for b in range(8)]
 
-    rng = random.Random(424242)
+    rng = random.Random(SEED_PAIR_NULL)
     within_null = []
     for _ in range(samples):
         shuffled = []
@@ -382,7 +437,7 @@ def section_4():
           round((kw_mwd - mean_w) / sd_w, 2), -1.51,
           ok=close((kw_mwd - mean_w) / sd_w, -1.51, 0.06))
 
-    rng = random.Random(424242)
+    rng = random.Random(SEED_PAIR_NULL)
     order_null = []
     for _ in range(samples):
         perm = list(range(8))
@@ -464,7 +519,7 @@ def section_5():
             seq += [a, b]
         return seq
 
-    def percentiles(sampler, seed=20260722):
+    def percentiles(sampler, seed=SEED_PERCENTILES):
         rng = random.Random(seed)
         draws = {name: [] for name in stats}
         for _ in range(samples):
@@ -498,9 +553,9 @@ def section_5():
           spread, 0.0)
 
     # Expectation of balanced groups under both nulls (2.6 free, 4.4 pair-preserving).
-    rng = random.Random(20260722)
+    rng = random.Random(SEED_PERCENTILES)
     free_groups = [balanced_groups(free_sample(rng)) for _ in range(samples)]
-    rng = random.Random(20260722)
+    rng = random.Random(SEED_PERCENTILES)
     pair_groups = [balanced_groups(pair_sample(rng)) for _ in range(samples)]
     check("5.1", "expected balanced groups under the free null",
           round(sum(free_groups) / samples, 1), 2.6,
@@ -766,6 +821,87 @@ def section_7():
 
 
 # ---------------------------------------------------------------------------
+# Seed robustness
+# ---------------------------------------------------------------------------
+
+# The frozen pair-null percentiles of Section 5.1, as reported. Repeating the protocol
+# with other seeds must land near them, not on them: a different draw is a different
+# sample, so these are bands and not point values.
+PAIR_NULL_BAND = {
+    "mean transition distance": 29.4,
+    "lag-1 autocorrelation": 6.2,
+    "yang-balanced groups of four": 89.8,
+}
+BAND_WIDTH = 3.0
+
+
+def section_seeds():
+    """The published figures use the protocol seeds of Section 2. This section repeats the
+    two Monte Carlo protocols with unrelated seeds and asserts that the conclusions hold:
+    the kinship stays significant and the pair-null percentiles stay in their band. The
+    conclusions of the paper therefore do not depend on the draw."""
+    head("Seed robustness: the conclusions do not depend on the draw")
+
+    samples = 20000
+    kw_mwd = inversions_between(KING_WEN, MAWANGDUI)
+    kw_pairs = [(KING_WEN[2 * i], KING_WEN[2 * i + 1]) for i in range(32)]
+
+    def mean_transition(seq):
+        return sum(hamming(seq[i], seq[i + 1]) for i in range(63)) / 63
+
+    def alternation(seq):
+        d = [hamming(seq[i], seq[i + 1]) for i in range(63)]
+        m = sum(d) / len(d)
+        return (sum((d[i] - m) * (d[i + 1] - m) for i in range(len(d) - 1))
+                / sum((x - m) ** 2 for x in d))
+
+    def balanced_groups(seq):
+        return sum(1 for g in range(16) if sum(popcount(seq[4 * g + j]) for j in range(4)) == 12)
+
+    stats = {
+        "mean transition distance": mean_transition,
+        "lag-1 autocorrelation": alternation,
+        "yang-balanced groups of four": balanced_groups,
+    }
+    observed = {name: fn(KING_WEN) for name, fn in stats.items()}
+
+    def pair_sample(rng):
+        blocks = kw_pairs[:]
+        rng.shuffle(blocks)
+        seq = []
+        for a, b in blocks:
+            if rng.random() < 0.5:
+                a, b = b, a
+            seq += [a, b]
+        return seq
+
+    for seed in ROBUSTNESS_SEEDS:
+        rng = random.Random(seed)
+        counts = []
+        for _ in range(samples):
+            perm = list(range(N))
+            rng.shuffle(perm)
+            counts.append(inversions(perm))
+        p_mc = sum(1 for c in counts
+                   if abs(c - EXPECTED_INV) >= abs(kw_mwd - EXPECTED_INV)) / samples
+        check("seeds", f"kinship p stays below 0.01 with seed {seed}",
+              round(p_mc, 4), "< 0.01", ok=p_mc < 0.01, fmt=str)
+
+        rng = random.Random(seed)
+        draws = {name: [] for name in stats}
+        for _ in range(samples):
+            seq = pair_sample(rng)
+            for name, fn in stats.items():
+                draws[name].append(fn(seq))
+        for name in stats:
+            pct = 100 * sum(1 for x in draws[name] if x < observed[name] - 1e-9) / samples
+            check("seeds", f"pair-null percentile of {name} within {BAND_WIDTH:.0f} points "
+                           f"of {PAIR_NULL_BAND[name]} with seed {seed}",
+                  round(pct, 1), PAIR_NULL_BAND[name],
+                  ok=close(pct, PAIR_NULL_BAND[name], BAND_WIDTH))
+
+
+# ---------------------------------------------------------------------------
 # Appendix A: robustness under a hierarchy of conditional nulls
 # ---------------------------------------------------------------------------
 
@@ -780,10 +916,7 @@ LADDER = {
     "P5": {"transition": 17.6, "alternation": 3.5,  "balanced": None, "within": None},
 }
 
-LADDER_SEED = 20260722
 LADDER_SAMPLES = 20000
-# Cross-check seed of the independent re-derivation, used here for the control samples.
-LADDER_CONTROL_SEED = 454545
 
 
 def section_appendix_a():
@@ -875,7 +1008,7 @@ def section_appendix_a():
 
     varying = []
     for rung, row in LADDER.items():
-        rng = random.Random(LADDER_SEED)
+        rng = random.Random(SEED_LADDER)
         draws = {name: [] for name in stats}
         for _ in range(LADDER_SAMPLES):
             seq = sample(rung, rng)
@@ -908,7 +1041,7 @@ def section_appendix_a():
     check("A", "blocks of four with yang sum 12 in the received sequence",
           sum(1 for b in blocks if b == 12), 7)
     for rung in ("P4", "P5"):
-        rng = random.Random(LADDER_CONTROL_SEED)
+        rng = random.Random(SEED_LADDER_CONTROL)
         values = sorted({balanced_groups(sample(rung, rng)) for _ in range(200)})
         check("A", f"rung {rung}: yang-balanced groups equal 7 in every control sample",
               values, [7])
@@ -946,11 +1079,13 @@ def main():
     print("Self-contained verification. Every figure printed in the paper is recomputed")
     print("here from the embedded King Wen sequence and the documented construction rules.")
 
+    section_0()
     section_3()
     section_4()
     section_5()
     section_6()
     section_7()
+    section_seeds()
     section_appendix_a()
     section_paper()
 
