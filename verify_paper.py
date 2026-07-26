@@ -1141,6 +1141,22 @@ def section_front_matter():
         check("front", "og:title on the landing carries title and subtitle",
               card.group(1) if card else None, f"{title}: {subtitle}")
 
+    # The archived version. The DOI is reserved at Zenodo and becomes registered when the
+    # deposit is published, so until then https://doi.org resolves with an error. What is
+    # checked here is the string, in every surface: nothing in this file touches the network.
+    doi = "10.5281/zenodo.21609654"
+    check("front", "paper.tex carries the archive DOI", doi in tex, True)
+    for name in ("README.md", "index.html"):
+        surface = read_text(os.path.join(here, name))
+        if surface is None:
+            continue
+        check("front", f"{name} carries the archive DOI", doi in surface, True)
+        check("front", f"{name} no longer announces a pending DOI",
+              "DOI pending" not in surface, True)
+        field = re.search(r"doi\s*=\s*\{(.+?)\}", surface)
+        check("front", f"BibTeX doi field in {name}",
+              field.group(1) if field else None, doi)
+
 
 # ---------------------------------------------------------------------------
 # Paper source identity

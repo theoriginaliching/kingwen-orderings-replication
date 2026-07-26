@@ -32,7 +32,7 @@ value printed in the paper, and exits `0` if and only if all checks pass:
 
 ```
 ==================================================================
-  185 checks passed, 0 failed, 185 total
+  192 checks passed, 0 failed, 192 total
 ==================================================================
   REPLICATION COMPLETE: every figure in the paper reproduces.
 ```
@@ -88,6 +88,7 @@ Every claim in the paper maps to a named check in `verify_paper.py`.
 | A | Invariance: `7` yang-balanced blocks in every control sample of rungs P4 and P5 | `section_appendix_a` |
 | A | Multiplicity of the ladder: `17` non-constant entries, correction `0.035 x 17 = 0.6` | `section_appendix_a` |
 | all | Title, subtitle and BibTeX repeat `paper.tex` character for character on every surface | `section_front_matter` |
+| 8 | The archive DOI `10.5281/zenodo.21609654` appears in the manuscript, both READMEs and the BibTeX | `section_front_matter` |
 | all | The frozen figures appear verbatim in `paper.tex`; no em dashes | `section_paper` |
 
 ## Breaking the package
@@ -111,7 +112,7 @@ sed 's/"Qian", "Gen", "Kan"/"Qian", "Kan", "Gen"/' verify_paper.py > mutant.py &
 |---|---|---|
 | (a) one flipped bit | `0`, the King Wen ordering is a permutation of 0 to 63 | 12 of the first 43 checks fail, then the run aborts with `KeyError: 63` in Section 4 |
 | (b) duplicated hexagram | `0`, the King Wen ordering is a permutation of 0 to 63 | 12 of the first 43 checks fail, then the run aborts with `KeyError: 0` |
-| (c) Mawangdui family swapped | `3.1`, Mawangdui inversions vs binary | the run completes and reports `168 checks passed, 17 failed, 185 total` |
+| (c) Mawangdui family swapped | `3.1`, Mawangdui inversions vs binary | the run completes and reports `175 checks passed, 17 failed, 192 total` |
 
 Exit status is `1` in all three cases. Note the shape of (a) and (b): a corrupted King Wen
 table is no longer a permutation of the 64 values, Section 0 says so before any statistic is
@@ -138,7 +139,7 @@ its own verification suite.
   material in 45 experiments, each backed by its own assertions in a 61-section verification
   suite that runs as a publication gate. Its web interface is in Spanish; an English version is
   in progress. This package and the paper are in English.
-- **Archived version**: DOI pending.
+- **Archived version**: [10.5281/zenodo.21609654](https://doi.org/10.5281/zenodo.21609654).
 
 ## Licenses
 
@@ -152,6 +153,7 @@ its own verification suite.
   title  = {Statistical Structure of the Historical Orderings of the I Ching Hexagrams: Pair Rule, Family Gradient, and the Limits of Demonstrability},
   author = {García Hurtado, Alexis},
   year   = {2026},
-  note   = {Replication package. DOI pending}
+  doi    = {10.5281/zenodo.21609654},
+  note   = {Replication package}
 }
 ```
