@@ -1181,6 +1181,24 @@ def section_paper():
     check("tex", "paper.tex contains no em dash", tex.count(chr(0x2014)), 0)
 
 
+def section_site():
+    head("Site: sitemap.xml and robots.txt for paper.theoriginaliching.com")
+
+    import os
+    here = os.path.dirname(os.path.abspath(__file__))
+    canonical = "https://paper.theoriginaliching.com/"
+
+    sitemap = read_text(os.path.join(here, "sitemap.xml"))
+    robots = read_text(os.path.join(here, "robots.txt"))
+
+    check("site", "sitemap.xml is present next to this script", sitemap is not None, True)
+    check("site", "robots.txt is present next to this script", robots is not None, True)
+    check("site", "sitemap.xml lists the canonical site URL",
+          sitemap is not None and canonical in sitemap, True)
+    check("site", "robots.txt declares the sitemap",
+          robots is not None and "sitemap.xml" in robots.lower(), True)
+
+
 # ---------------------------------------------------------------------------
 
 def main():
@@ -1200,6 +1218,7 @@ def main():
     section_appendix_a()
     section_front_matter()
     section_paper()
+    section_site()
 
     passed = sum(1 for r in RESULTS if r)
     failed = len(RESULTS) - passed

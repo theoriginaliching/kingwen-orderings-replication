@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Allow: /paper.pdf
+
+Sitemap: https://paper.theoriginaliching.com/sitemap.xml
