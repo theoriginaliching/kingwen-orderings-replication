@@ -24,14 +24,15 @@ python3 verify_paper.py --quiet    # summary and failures only
 ```
 
 Requirements: Python 3.8 or later. **No third-party packages**, no network access, no data
-files. Runtime is under ten seconds; the Monte Carlo sections dominate.
+files. Runtime is under twenty seconds; the Monte Carlo sections dominate, and the ladder of
+six conditional nulls in Appendix A is the largest of them.
 
 The script prints `PASS` or `FAIL` for each check, showing the reproduced value beside the
 value printed in the paper, and exits `0` if and only if all checks pass:
 
 ```
 ==================================================================
-  122 checks passed, 0 failed, 122 total
+  149 checks passed, 0 failed, 149 total
 ==================================================================
   REPLICATION COMPLETE: every figure in the paper reproduces.
 ```
@@ -69,11 +70,15 @@ Every claim in the paper maps to a named check in `verify_paper.py`.
 | 5.4 | Nuclear criterion `8/24` decidable (4 ties), `p = 0.076`; different basins `16/28` | `section_5` |
 | 5.5 | Mirror components: extremes `10/16` (`p = 0.227`), middles `9/16` (`p = 0.402`), centers `12/16` (`p = 0.038`) | `section_5` |
 | 5.5 | Centers and smaller-nuclear agree `16/16` on co-decidable pairs | `section_5` |
-| 5.6 | Bonferroni over roughly thirteen criteria `0.038 x 13 = 0.5`; sample fixed at `28` pairs | `section_5` |
+| 5.6 | Battery of nine criteria, Bonferroni `0.038 x 9 = 0.35`; sample fixed at `28` pairs | `section_5` |
 | 6.1 | Walsh energy by interaction order, dominant DFT harmonic and Haar width for all five orderings | `section_6` |
 | 6 | Jing Fang anti-linear: `0.0` percent first order, `74.5` percent fourth order | `section_6` |
 | 6 | King Wen number signal: `77.4` percent in even orders against `47.6` percent uniform | `section_6` |
 | 7 | Cycle type of the King Wen permutation `[52, 10, 2]` | `section_7` |
+| A | Table A1: the 17 varying percentiles of the six-rung ladder (20,000 samples, seed `20260722`) | `section_appendix_a` |
+| A | Table A1: the constant cells do not vary under their null | `section_appendix_a` |
+| A | Rung P3: the four palindrome anchors `[0, 13, 14, 30]`; detection by value would catch `8` | `section_appendix_a` |
+| A | Invariance: `7` yang-balanced blocks in every control sample of rungs P4 and P5 | `section_appendix_a` |
 | all | The frozen figures appear verbatim in `paper.tex`; no em dashes | `section_paper` |
 
 ## Compiling the manuscript

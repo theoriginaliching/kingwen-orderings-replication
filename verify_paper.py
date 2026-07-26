@@ -766,6 +766,148 @@ def section_7():
 
 
 # ---------------------------------------------------------------------------
+# Appendix A: robustness under a hierarchy of conditional nulls
+# ---------------------------------------------------------------------------
+
+# Table A1, frozen. None marks a cell where the statistic does not vary under that
+# null: its percentile is arithmetic, not evidence, and is checked as invariance.
+LADDER = {
+    "P0": {"transition": 97.5, "alternation": 3.8,  "balanced": 99.2, "within": 99.9},
+    "P1": {"transition": 29.4, "alternation": 6.2,  "balanced": 89.8, "within": None},
+    "P2": {"transition": 31.9, "alternation": 6.5,  "balanced": 87.7, "within": None},
+    "P3": {"transition": 33.2, "alternation": 10.8, "balanced": 90.4, "within": None},
+    "P4": {"transition": 29.9, "alternation": 3.3,  "balanced": None, "within": None},
+    "P5": {"transition": 17.6, "alternation": 3.5,  "balanced": None, "within": None},
+}
+
+LADDER_SEED = 20260722
+LADDER_SAMPLES = 20000
+# Cross-check seed of the independent re-derivation, used here for the control samples.
+LADDER_CONTROL_SEED = 454545
+
+
+def section_appendix_a():
+    head("Appendix A: the ladder of conditional nulls (Table A1)")
+
+    kw_pairs = [(KING_WEN[2 * i], KING_WEN[2 * i + 1]) for i in range(32)]
+
+    def mean_transition(seq):
+        return sum(hamming(seq[i], seq[i + 1]) for i in range(63)) / 63
+
+    def alternation(seq):
+        d = [hamming(seq[i], seq[i + 1]) for i in range(63)]
+        m = sum(d) / len(d)
+        num = sum((d[i] - m) * (d[i + 1] - m) for i in range(len(d) - 1))
+        return num / sum((x - m) ** 2 for x in d)
+
+    def balanced_groups(seq):
+        return sum(1 for g in range(16) if sum(popcount(seq[4 * g + j]) for j in range(4)) == 12)
+
+    def within_pair_mean(seq):
+        return sum(hamming(seq[2 * k], seq[2 * k + 1]) for k in range(32)) / 32
+
+    stats = {
+        "transition": mean_transition,
+        "alternation": alternation,
+        "balanced": balanced_groups,
+        "within": within_pair_mean,
+    }
+    observed = {name: fn(KING_WEN) for name, fn in stats.items()}
+
+    # The anchors of rung P3 are the pairs whose two members are palindromic (invariant
+    # under rotation) and are therefore matched by complementation. Detecting complement
+    # pairs by value would catch eight, because in four rotation pairs reversal and
+    # complementation coincide; nailing eight pairs moves the P3 row.
+    anchors = [i for i, (a, b) in enumerate(kw_pairs) if rotate(a) == a and rotate(b) == b]
+    check("A", "rung P3: the four palindrome pairs, fixed in position and orientation",
+          anchors, [0, 13, 14, 30])
+    check("A", "detecting complement pairs by value (a XOR b = 63) would catch eight",
+          sum(1 for a, b in kw_pairs if a ^ b == 63), 8)
+
+    def assemble(prs, flips):
+        seq = []
+        for (a, b), flip in zip(prs, flips):
+            seq += [b, a] if flip else [a, b]
+        return seq
+
+    def sample(rung, rng):
+        """One draw from the null of the given rung. The order in which the generator is
+        consumed is part of the definition: it is what makes the table reproducible."""
+        if rung == "P0":
+            seq = list(range(N))
+            rng.shuffle(seq)
+            return seq
+        if rung == "P1":
+            prs = kw_pairs[:]
+            rng.shuffle(prs)
+            return assemble(prs, [rng.random() < 0.5 for _ in prs])
+        if rung == "P2":
+            upper, lower = kw_pairs[:15], kw_pairs[15:]
+            rng.shuffle(upper)
+            rng.shuffle(lower)
+            prs = upper + lower
+            return assemble(prs, [rng.random() < 0.5 for _ in prs])
+        if rung == "P3":
+            free = [p for i, p in enumerate(kw_pairs) if i not in anchors]
+            rng.shuffle(free)
+            prs, flips, it = [], [], iter(free)
+            for i in range(32):
+                if i in anchors:
+                    prs.append(kw_pairs[i])
+                    flips.append(False)
+                else:
+                    prs.append(next(it))
+                    flips.append(rng.random() < 0.5)
+            return assemble(prs, flips)
+        if rung == "P4":
+            blocks = [kw_pairs[2 * b:2 * b + 2] for b in range(16)]
+            rng.shuffle(blocks)
+            prs = []
+            for block in blocks:
+                block = block[:]
+                if rng.random() < 0.5:
+                    block.reverse()
+                prs += block
+            return assemble(prs, [rng.random() < 0.5 for _ in prs])
+        if rung == "P5":
+            return assemble(kw_pairs, [rng.random() < 0.5 for _ in kw_pairs])
+        raise ValueError(rung)
+
+    varying = []
+    for rung, row in LADDER.items():
+        rng = random.Random(LADDER_SEED)
+        draws = {name: [] for name in stats}
+        for _ in range(LADDER_SAMPLES):
+            seq = sample(rung, rng)
+            for name, fn in stats.items():
+                draws[name].append(fn(seq))
+        for name in stats:
+            values = draws[name]
+            constant = max(values) - min(values) < 1e-9
+            pct = 100 * sum(1 for x in values if x < observed[name] - 1e-9) / LADDER_SAMPLES
+            if row[name] is None:
+                if not constant:
+                    varying.append(f"{rung}/{name}")
+                continue
+            # Tolerance 0.051 rather than 0.05: Python rounds half to even, so a raw
+            # 31.95 prints as 31.9 in the paper and must still match its own source.
+            check("A", f"Table A1 percentile, {rung} / {name}",
+                  round(pct, 1), row[name], ok=close(pct, row[name], 0.051))
+    check("A", "the constant cells of Table A1 do not vary under their null", varying, [])
+
+    # The micro-theorem: preserving the block partition preserves each block's yang sum,
+    # so the yang-balanced signature is a constant from rung P4 upward.
+    blocks = [sum(popcount(KING_WEN[4 * g + j]) for j in range(4)) for g in range(16)]
+    check("A", "blocks of four with yang sum 12 in the received sequence",
+          sum(1 for b in blocks if b == 12), 7)
+    for rung in ("P4", "P5"):
+        rng = random.Random(LADDER_CONTROL_SEED)
+        values = sorted({balanced_groups(sample(rung, rng)) for _ in range(200)})
+        check("A", f"rung {rung}: yang-balanced groups equal 7 in every control sample",
+              values, [7])
+
+
+# ---------------------------------------------------------------------------
 # Paper source identity
 # ---------------------------------------------------------------------------
 
@@ -780,7 +922,9 @@ def section_paper():
     tex = open(path, encoding="utf-8").read()
     frozen = ["1013", "1008", "759", "-2.89", "0.0034", "3.75", "120", "12/16", "0.038",
               "74.5", "95/224", "664/1792", "776", "18.0", "26.6", "31.9", "43.0",
-              "0.619", "0.0575", "192", "2016", "86.3"]
+              "0.619", "0.0575", "192", "2016", "86.3",
+              # Appendix A, Table A1.
+              "17.6", "3.5", "33.2", "29.9", "87.7", "90.4", "constant = 7"]
     missing = [f for f in frozen if f not in tex]
     check("tex", f"paper.tex contains the {len(frozen)} key frozen figures", missing, [])
     check("tex", "paper.tex contains no em dash", tex.count(chr(0x2014)), 0)
@@ -800,6 +944,7 @@ def main():
     section_5()
     section_6()
     section_7()
+    section_appendix_a()
     section_paper()
 
     passed = sum(1 for r in RESULTS if r)
