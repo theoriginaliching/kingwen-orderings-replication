@@ -895,6 +895,13 @@ def section_appendix_a():
                   round(pct, 1), row[name], ok=close(pct, row[name], 0.051))
     check("A", "the constant cells of Table A1 do not vary under their null", varying, [])
 
+    # The multiplicity of the ladder: the residue at rung P5 is one cell among the
+    # non-constant entries of the table, and the appendix reports both readings.
+    cells = sum(1 for row in LADDER.values() for value in row.values() if value is not None)
+    check("A", "non-constant entries of Table A1", cells, 17)
+    check("A", "correction of the residue over the table (0.035 x 17 = 0.6)",
+          round(0.035 * cells, 3), 0.6, ok=close(0.035 * cells, 0.6, 0.006))
+
     # The micro-theorem: preserving the block partition preserves each block's yang sum,
     # so the yang-balanced signature is a constant from rung P4 upward.
     blocks = [sum(popcount(KING_WEN[4 * g + j]) for j in range(4)) for g in range(16)]

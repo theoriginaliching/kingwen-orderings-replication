@@ -32,7 +32,7 @@ value printed in the paper, and exits `0` if and only if all checks pass:
 
 ```
 ==================================================================
-  149 checks passed, 0 failed, 149 total
+  151 checks passed, 0 failed, 151 total
 ==================================================================
   REPLICATION COMPLETE: every figure in the paper reproduces.
 ```
@@ -79,6 +79,7 @@ Every claim in the paper maps to a named check in `verify_paper.py`.
 | A | Table A1: the constant cells do not vary under their null | `section_appendix_a` |
 | A | Rung P3: the four palindrome anchors `[0, 13, 14, 30]`; detection by value would catch `8` | `section_appendix_a` |
 | A | Invariance: `7` yang-balanced blocks in every control sample of rungs P4 and P5 | `section_appendix_a` |
+| A | Multiplicity of the ladder: `17` non-constant entries, correction `0.035 x 17 = 0.6` | `section_appendix_a` |
 | all | The frozen figures appear verbatim in `paper.tex`; no em dashes | `section_paper` |
 
 ## Compiling the manuscript
@@ -96,7 +97,7 @@ its own verification suite.
 
 - **Extended interactive laboratory**: https://experiments.theoriginaliching.com, and its
   repository at https://github.com/theoriginaliching/iching-experiments. It explores the same
-  material in 44 experiments, each backed by its own assertions in a 61-section verification
+  material in 45 experiments, each backed by its own assertions in a 61-section verification
   suite that runs as a publication gate. Its web interface is in Spanish; an English version is
   in progress. This package and the paper are in English.
 - **Archived version**: DOI pending.
