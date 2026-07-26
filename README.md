@@ -107,7 +107,7 @@ its own verification suite.
 @misc{kingwen-orderings,
   title  = {Statistical Structure of the Historical Orderings of the I Ching Hexagrams:
             Pair Rule, Family Gradient, and the Limits of Demonstrability},
-  author = {Garc\'ia Hurtado, Alexis},
+  author = {García Hurtado, Alexis},
   year   = {2026},
   note   = {Replication package. DOI pending}
 }
