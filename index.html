@@ -42,15 +42,17 @@
     position: sticky; top: 0; z-index: 10;
   }
   .bar-in {
-    max-width: 46rem; margin: 0 auto; padding: 0.85rem 1.25rem;
-    display: flex; align-items: baseline; justify-content: space-between; gap: 1rem;
+    max-width: 46rem; margin: 0 auto; padding: 0.8rem 1.25rem;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
   }
-  .brand { display: inline-flex; align-items: baseline; gap: 0.6rem; border: 0; }
-  .brand .mark { color: var(--red); font-size: 1.3rem; line-height: 1; }
+  .brand { display: inline-flex; align-items: center; gap: 0.6rem; border: 0; }
+  .brand img { width: 30px; height: 30px; border-radius: 50%; display: block; }
   .brand .name {
-    font-family: "Cinzel", Georgia, serif; font-size: 0.82rem;
-    letter-spacing: 0.06em; color: var(--soft);
+    font-family: "Cinzel", Georgia, serif; font-size: 0.78rem;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--soft);
+    white-space: nowrap;
   }
+  .brand:hover .name { color: var(--text-strong); }
   .bar nav { font-family: "Inter", system-ui, sans-serif; font-size: 0.78rem; }
   .bar nav a { color: var(--muted); }
   main { max-width: 46rem; margin: 0 auto; padding: 3rem 1.25rem 4.5rem; }
@@ -110,8 +112,8 @@
 <div class="bar">
   <div class="bar-in">
     <a class="brand" href="https://theoriginaliching.com">
-      <span class="mark">易</span>
-      <span class="name">THE ORIGINAL I CHING</span>
+      <img src="logo-128.webp" alt="" width="128" height="128">
+      <span class="name">The Original I Ching</span>
     </a>
     <nav><a href="https://experiments.theoriginaliching.com">Laboratory</a></nav>
   </div>
