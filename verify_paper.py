@@ -226,6 +226,14 @@ def check(section, claim, reproduced, paper, ok=None, fmt=str):
     return ok
 
 
+def read_text(path):
+    """File contents, or None when the file is not next to this script."""
+    import os
+    if not os.path.exists(path):
+        return None
+    return open(path, encoding="utf-8").read()
+
+
 def close(a, b, tol):
     return abs(a - b) <= tol
 
@@ -1079,6 +1087,62 @@ def section_appendix_a():
 
 
 # ---------------------------------------------------------------------------
+# Front matter: the paper names itself the same way everywhere
+# ---------------------------------------------------------------------------
+
+def section_front_matter():
+    """The title, the subtitle and the author live in paper.tex and are repeated by hand on
+    every surface that presents the paper. This section reads the canonical forms out of the
+    manuscript and asserts that the package repeats them exactly, so a retyped title cannot
+    drift from the one the PDF carries."""
+    head("Front matter: title, subtitle and citation, against paper.tex")
+
+    import os
+    import re
+    here = os.path.dirname(os.path.abspath(__file__))
+    tex = read_text(os.path.join(here, "paper.tex"))
+    if tex is None:
+        check("front", "paper.tex is present next to this script", False, True)
+        return
+
+    m = re.search(r"\\title\{(.+?)\\\\\[0\.35em\]\s*\{\\large (.+?)\}\}", tex, re.S)
+    if m is None:
+        check("front", "paper.tex declares a title and a subtitle", False, True)
+        return
+    title = " ".join(m.group(1).split())
+    subtitle = " ".join(m.group(2).split())
+    check("front", "canonical title, read from paper.tex",
+          title, "Statistical Structure of the Historical Orderings of the I Ching Hexagrams")
+    check("front", "canonical subtitle, read from paper.tex",
+          subtitle, "Pair Rule, Family Gradient, and the Limits of Demonstrability")
+
+    for name in ("README.md", "index.html"):
+        surface = read_text(os.path.join(here, name))
+        if surface is None:
+            check("front", f"{name} is present next to this script", False, True)
+            continue
+        check("front", f"{name} carries the canonical title", title in surface, True)
+        check("front", f"{name} carries the canonical subtitle", subtitle in surface, True)
+
+    # The BibTeX entry is what a reader copies into their own bibliography, so its title
+    # field has to match the manuscript character for character, subtitle included.
+    for name in ("README.md", "index.html"):
+        surface = read_text(os.path.join(here, name))
+        if surface is None:
+            continue
+        found = re.search(r"title\s*=\s*\{(.+?)\},\n", surface)
+        check("front", f"BibTeX title in {name} matches paper.tex character for character",
+              found.group(1) if found else None, f"{title}: {subtitle}")
+
+    # The social card is the form a shared link shows, and it is typed by hand like the rest.
+    page = read_text(os.path.join(here, "index.html"))
+    if page is not None:
+        card = re.search(r'<meta property="og:title" content="([^"]+)">', page)
+        check("front", "og:title on the landing carries title and subtitle",
+              card.group(1) if card else None, f"{title}: {subtitle}")
+
+
+# ---------------------------------------------------------------------------
 # Paper source identity
 # ---------------------------------------------------------------------------
 
@@ -1118,6 +1182,7 @@ def main():
     section_7()
     section_seeds()
     section_appendix_a()
+    section_front_matter()
     section_paper()
 
     passed = sum(1 for r in RESULTS if r)

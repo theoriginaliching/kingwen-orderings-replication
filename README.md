@@ -32,7 +32,7 @@ value printed in the paper, and exits `0` if and only if all checks pass:
 
 ```
 ==================================================================
-  176 checks passed, 0 failed, 176 total
+  185 checks passed, 0 failed, 185 total
 ==================================================================
   REPLICATION COMPLETE: every figure in the paper reproduces.
 ```
@@ -87,6 +87,7 @@ Every claim in the paper maps to a named check in `verify_paper.py`.
 | A | Rung P3: the four palindrome anchors `[0, 13, 14, 30]`; detection by value would catch `8` | `section_appendix_a` |
 | A | Invariance: `7` yang-balanced blocks in every control sample of rungs P4 and P5 | `section_appendix_a` |
 | A | Multiplicity of the ladder: `17` non-constant entries, correction `0.035 x 17 = 0.6` | `section_appendix_a` |
+| all | Title, subtitle and BibTeX repeat `paper.tex` character for character on every surface | `section_front_matter` |
 | all | The frozen figures appear verbatim in `paper.tex`; no em dashes | `section_paper` |
 
 ## Breaking the package
@@ -110,7 +111,7 @@ sed 's/"Qian", "Gen", "Kan"/"Qian", "Kan", "Gen"/' verify_paper.py > mutant.py &
 |---|---|---|
 | (a) one flipped bit | `0`, the King Wen ordering is a permutation of 0 to 63 | 12 of the first 43 checks fail, then the run aborts with `KeyError: 63` in Section 4 |
 | (b) duplicated hexagram | `0`, the King Wen ordering is a permutation of 0 to 63 | 12 of the first 43 checks fail, then the run aborts with `KeyError: 0` |
-| (c) Mawangdui family swapped | `3.1`, Mawangdui inversions vs binary | the run completes and reports `159 checks passed, 17 failed, 176 total` |
+| (c) Mawangdui family swapped | `3.1`, Mawangdui inversions vs binary | the run completes and reports `168 checks passed, 17 failed, 185 total` |
 
 Exit status is `1` in all three cases. Note the shape of (a) and (b): a corrupted King Wen
 table is no longer a permutation of the 64 values, Section 0 says so before any statistic is
@@ -148,8 +149,7 @@ its own verification suite.
 
 ```bibtex
 @misc{kingwen-orderings,
-  title  = {Statistical Structure of the Historical Orderings of the I Ching Hexagrams:
-            Pair Rule, Family Gradient, and the Limits of Demonstrability},
+  title  = {Statistical Structure of the Historical Orderings of the I Ching Hexagrams: Pair Rule, Family Gradient, and the Limits of Demonstrability},
   author = {García Hurtado, Alexis},
   year   = {2026},
   note   = {Replication package. DOI pending}

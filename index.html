@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Statistical Structure of the Historical Orderings of the I Ching Hexagrams</title>
 <meta name="description" content="Statistical comparison of the three historical orderings of the I Ching hexagrams (King Wen, Mawangdui, Jing Fang) against the binary ordering and against one another. Paper, replication package and verification script.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Statistical Structure of the Historical Orderings of the I Ching Hexagrams: Pair Rule, Family Gradient, and the Limits of Demonstrability">
+<meta property="og:description" content="Statistical comparison of the three historical orderings of the I Ching hexagrams (King Wen, Mawangdui, Jing Fang) against the binary ordering and against one another. Paper, replication package and verification script.">
+<meta property="og:url" content="https://paper.theoriginaliching.com/">
+<meta property="og:image" content="https://paper.theoriginaliching.com/logo-128.webp">
+<meta name="twitter:card" content="summary">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Inter:wght@400;500&family=Noto+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
@@ -98,6 +104,21 @@
     padding: 1rem 1.1rem; overflow-x: auto; color: var(--text);
     font: 12.5px/1.6 ui-monospace, "SF Mono", Menlo, monospace;
   }
+  .copywrap { position: relative; }
+  .copywrap pre { margin: 0; padding-right: 4.8rem; }
+  /* El BibTeX vive en una sola linea para que se copie exacto; se parte solo al mostrarlo,
+     que es cosa del render y no del texto que va al portapapeles. */
+  #bibtex { white-space: pre-wrap; }
+  .copy {
+    position: absolute; top: 0.55rem; right: 0.55rem; cursor: pointer;
+    padding: 0.3rem 0.62rem; border-radius: 4px;
+    font: 500 10.5px/1.2 "Inter", system-ui, sans-serif;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    border: 1px solid var(--line); background: rgba(13,11,11,0.72); color: var(--dim);
+  }
+  .copy:hover { border-color: var(--gold-dim); color: var(--gold); }
+  .copy:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .copy.done { border-color: var(--gold-dim); color: var(--gold); }
   footer {
     border-top: 1px solid var(--line); background: var(--bg-deep);
     font-family: "Inter", system-ui, sans-serif; font-size: 0.8rem; color: var(--dim);
@@ -155,7 +176,7 @@
   <ul class="links">
     <li>
       <a href="https://github.com/theoriginaliching/kingwen-orderings-replication">Replication repository</a>
-      <span class="note">&middot; paper source, compiled PDF, and a self-contained script that reproduces every figure (176 checks, standard library only)</span>
+      <span class="note">&middot; paper source, compiled PDF, and a self-contained script that reproduces every figure (185 checks, standard library only)</span>
     </li>
     <li>
       <a href="https://experiments.theoriginaliching.com">Interactive laboratory</a>
@@ -167,20 +188,26 @@
   </ul>
 
   <h2>Verification</h2>
-  <pre>python3 verify_paper.py
+  <div class="copywrap">
+    <button class="copy" type="button" aria-live="polite"
+            aria-label="Copy the verification command" data-copy-text="python3 verify_paper.py">Copy</button>
+    <pre>python3 verify_paper.py
 
-  176 checks passed, 0 failed, 176 total
+  185 checks passed, 0 failed, 185 total
   REPLICATION COMPLETE: every figure in the paper reproduces.</pre>
+  </div>
 
   <h2>Citation</h2>
-  <pre>@misc{kingwen-orderings,
-  title  = {Statistical Structure of the Historical Orderings of the I Ching
-            Hexagrams: Pair Rule, Family Gradient, and the Limits of
-            Demonstrability},
+  <div class="copywrap">
+    <button class="copy" type="button" aria-live="polite"
+            aria-label="Copy the BibTeX entry" data-copy-target="bibtex">Copy</button>
+    <pre id="bibtex">@misc{kingwen-orderings,
+  title  = {Statistical Structure of the Historical Orderings of the I Ching Hexagrams: Pair Rule, Family Gradient, and the Limits of Demonstrability},
   author = {García Hurtado, Alexis},
   year   = {2026},
   note   = {Replication package. DOI pending}
 }</pre>
+  </div>
 
 </main>
 
@@ -191,5 +218,51 @@
     <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
   </div>
 </footer>
+<script>
+// Botones de copia: sin dependencias, con vuelta a execCommand donde no haya
+// clipboard API (o donde el navegador la niegue por permisos).
+(function () {
+  function fallback(text) {
+    var area = document.createElement("textarea");
+    area.value = text;
+    area.setAttribute("readonly", "");
+    area.style.position = "fixed";
+    area.style.top = "-1000px";
+    area.style.opacity = "0";
+    document.body.appendChild(area);
+    area.select();
+    try { document.execCommand("copy"); } catch (e) {}
+    document.body.removeChild(area);
+  }
+  function flash(button) {
+    button.textContent = "Copied";
+    button.classList.add("done");
+    window.setTimeout(function () {
+      button.textContent = "Copy";
+      button.classList.remove("done");
+    }, 1500);
+  }
+  var buttons = document.querySelectorAll("button.copy");
+  for (var i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener("click", function () {
+      var button = this;
+      var text = button.getAttribute("data-copy-text");
+      if (text === null) {
+        var target = document.getElementById(button.getAttribute("data-copy-target"));
+        text = target ? target.textContent : "";
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(
+          function () { flash(button); },
+          function () { fallback(text); flash(button); }
+        );
+      } else {
+        fallback(text);
+        flash(button);
+      }
+    });
+  }
+})();
+</script>
 </body>
 </html>
