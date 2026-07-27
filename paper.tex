@@ -21,10 +21,27 @@
 % caption encima, y el hueco por defecto de LaTeX para ese lado es 0pt.
 \setlength{\belowcaptionskip}{6pt}
 
-\title{Statistical Structure of the Historical Orderings of the I Ching Hexagrams\\[0.35em]
-  {\large Pair Rule, Family Gradient, and the Limits of Demonstrability}}
+% Las cadenas canonicas del paper viven UNA sola vez, aqui: de estas salen tanto la
+% portada como los metadatos del documento PDF, de modo que no pueden divergir. El
+% verificador del paquete las lee de aqui y comprueba que el PDF compilado las lleva.
+\newcommand{\papertitle}{Statistical Structure of the Historical Orderings of the I Ching Hexagrams}
+\newcommand{\papersubtitle}{Pair Rule, Family Gradient, and the Limits of Demonstrability}
+\newcommand{\paperauthor}{Alexis García Hurtado}
 
-\author{Alexis García Hurtado\thanks{Independent Researcher, Gatineau, Québec, Canada. Email: research@theoriginaliching.com. ORCID: 0009-0003-4636-8206.}}
+% Metadatos del documento. unicode=true para que el apellido con acento se guarde como
+% texto Unicode y no como un byte de una codificacion heredada.
+\hypersetup{
+  unicode=true,
+  pdftitle={\papertitle: \papersubtitle},
+  pdfauthor={\paperauthor},
+  pdfsubject={Statistical analysis of the King Wen, Mawangdui and Jing Fang orderings of the I Ching hexagrams},
+  pdfkeywords={I Ching; King Wen sequence; hexagrams; combinatorics; Monte Carlo; conditional null models; history of mathematics},
+}
+
+\title{\papertitle\\[0.35em]
+  {\large \papersubtitle}}
+
+\author{\paperauthor\thanks{Independent Researcher, Gatineau, Québec, Canada. Email: research@theoriginaliching.com. ORCID: 0009-0003-4636-8206.}}
 \date{July 25, 2026}
 
 \begin{document}

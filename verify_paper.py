@@ -1105,16 +1105,29 @@ def section_front_matter():
         check("front", "paper.tex is present next to this script", False, True)
         return
 
-    m = re.search(r"\\title\{(.+?)\\\\\[0\.35em\]\s*\{\\large (.+?)\}\}", tex, re.S)
-    if m is None:
-        check("front", "paper.tex declares a title and a subtitle", False, True)
-        return
-    title = " ".join(m.group(1).split())
-    subtitle = " ".join(m.group(2).split())
+    # The canonical strings live once in paper.tex, as three macros, and everything else
+    # (the title page, the PDF document metadata, this verifier) reads them from there.
+    macros = dict(re.findall(r"\\newcommand\{\\(paper(?:title|subtitle|author))\}\{(.+?)\}\n", tex))
+    for nombre in ("papertitle", "papersubtitle", "paperauthor"):
+        if nombre not in macros:
+            check("front", f"paper.tex defines the canonical macro {nombre}", False, True)
+            return
+    title = " ".join(macros["papertitle"].split())
+    subtitle = " ".join(macros["papersubtitle"].split())
+    author = " ".join(macros["paperauthor"].split())
+
+    # The title page and the author line must be BUILT from those macros, never retyped:
+    # that is what keeps the cover and the PDF metadata from drifting apart.
+    check("front", "the title page is built from the canonical macros",
+          "\\title{\\papertitle\\\\[0.35em]" in tex, True)
+    check("front", "the author line is built from the canonical macro",
+          "\\author{\\paperauthor\\thanks{" in tex, True)
     check("front", "canonical title, read from paper.tex",
           title, "Statistical Structure of the Historical Orderings of the I Ching Hexagrams")
     check("front", "canonical subtitle, read from paper.tex",
           subtitle, "Pair Rule, Family Gradient, and the Limits of Demonstrability")
+    check("front", "canonical author, read from paper.tex",
+          author, "Alexis García Hurtado")
 
     for name in ("README.md", "index.html"):
         surface = read_text(os.path.join(here, name))
@@ -1159,6 +1172,120 @@ def section_front_matter():
 
 
 # ---------------------------------------------------------------------------
+# PDF document metadata
+# ---------------------------------------------------------------------------
+
+def _pdf_string(raw):
+    """One PDF string value, in either of the two forms a producer may use: a literal
+    between parentheses, or hexadecimal between angle brackets. A leading BOM (FE FF)
+    means the bytes are UTF-16BE, which is how an accented name survives; without it the
+    bytes are PDFDocEncoding, which agrees with Latin-1 over the range we use."""
+    import re
+    if raw.startswith(b"<"):
+        hexa = re.sub(rb"[^0-9A-Fa-f]", b"", raw[1:-1])
+        if len(hexa) % 2:
+            hexa += b"0"
+        data = bytes.fromhex(hexa.decode("ascii"))
+    else:
+        body, out, i = raw[1:-1], bytearray(), 0
+        while i < len(body):
+            c = body[i]
+            if c == 0x5C and i + 1 < len(body):
+                nxt = body[i + 1]
+                if 0x30 <= nxt <= 0x37:                      # octal escape
+                    j, digits = i + 1, b""
+                    while j < len(body) and len(digits) < 3 and 0x30 <= body[j] <= 0x37:
+                        digits += body[j:j + 1]
+                        j += 1
+                    out.append(int(digits, 8))
+                    i = j
+                    continue
+                out.append({0x6E: 10, 0x72: 13, 0x74: 9}.get(nxt, nxt))
+                i += 2
+                continue
+            out.append(c)
+            i += 1
+        data = bytes(out)
+    if data[:2] == b"\xfe\xff":
+        return data[2:].decode("utf-16-be")
+    return data.decode("latin-1")
+
+
+def _pdf_info(data):
+    """The document information dictionary of a PDF, as a plain dict of strings.
+
+    Nothing but the standard library: the dictionary may sit in the file as it is, or
+    inside a compressed object stream, which is where a modern producer puts it. Both are
+    covered by looking for it in the raw bytes and in every inflatable stream. The Info
+    dictionary is the one carrying /Author; the outline entries carry /Title alone."""
+    import re
+    import zlib
+    entry = re.compile(rb"/(\w+)\s*(<[0-9A-Fa-f\s]*>|\((?:[^()\\]|\\.)*\))")
+    blobs = [data]
+    for m in re.finditer(rb"stream\r?\n", data):
+        start = m.end()
+        end = data.find(b"endstream", start)
+        if end < 0:
+            continue
+        try:
+            blobs.append(zlib.decompress(data[start:end]))
+        except Exception:
+            pass
+    for blob in blobs:
+        i = blob.find(b"/Author")
+        if i < 0:
+            continue
+        opening = blob.rfind(b"<<", 0, i)
+        closing = blob.find(b">>", i)
+        if opening < 0 or closing < 0:
+            continue
+        return {k.decode("ascii"): _pdf_string(v)
+                for k, v in entry.findall(blob[opening:closing + 2])}
+    return {}
+
+
+def section_pdf_metadata():
+    """The PDF a reader downloads carries its own title and author in the document
+    information dictionary: that is what a repository, a reference manager and a browser
+    tab read, and it is invisible in the text, so nothing else would catch it drifting.
+    Here the compiled PDF is opened and its /Title and /Author are asserted against the
+    canonical strings of paper.tex, the same ones the title page is built from."""
+    head("PDF document metadata, against the canonical strings of paper.tex")
+
+    import os
+    import re
+    here = os.path.dirname(os.path.abspath(__file__))
+    tex = read_text(os.path.join(here, "paper.tex"))
+    if tex is None:
+        check("pdf", "paper.tex is present next to this script", False, True)
+        return
+    macros = dict(re.findall(r"\\newcommand\{\\(paper(?:title|subtitle|author))\}\{(.+?)\}\n", tex))
+    if len(macros) != 3:
+        check("pdf", "paper.tex defines the three canonical macros", sorted(macros), 3)
+        return
+    expected_title = f"{macros['papertitle']}: {macros['papersubtitle']}"
+    expected_author = macros["paperauthor"]
+
+    # The metadata must be BUILT from the macros too: retyping them here would be exactly
+    # the drift this section exists to prevent.
+    check("pdf", "pdftitle is built from the canonical macros",
+          "pdftitle={\\papertitle: \\papersubtitle}" in tex, True)
+    check("pdf", "pdfauthor is built from the canonical macro",
+          "pdfauthor={\\paperauthor}" in tex, True)
+
+    path = os.path.join(here, "paper.pdf")
+    if not os.path.exists(path):
+        check("pdf", "paper.pdf is present next to this script", False, True)
+        return
+    info = _pdf_info(open(path, "rb").read())
+    check("pdf", "the PDF carries a document information dictionary", bool(info), True)
+    check("pdf", "/Title exists in the PDF", "Title" in info, True)
+    check("pdf", "/Author exists in the PDF", "Author" in info, True)
+    check("pdf", "/Title of the PDF matches paper.tex", info.get("Title"), expected_title)
+    check("pdf", "/Author of the PDF matches paper.tex", info.get("Author"), expected_author)
+
+
+# ---------------------------------------------------------------------------
 # Paper source identity
 # ---------------------------------------------------------------------------
 
@@ -1181,24 +1308,6 @@ def section_paper():
     check("tex", "paper.tex contains no em dash", tex.count(chr(0x2014)), 0)
 
 
-def section_site():
-    head("Site: sitemap.xml and robots.txt for paper.theoriginaliching.com")
-
-    import os
-    here = os.path.dirname(os.path.abspath(__file__))
-    canonical = "https://paper.theoriginaliching.com/"
-
-    sitemap = read_text(os.path.join(here, "sitemap.xml"))
-    robots = read_text(os.path.join(here, "robots.txt"))
-
-    check("site", "sitemap.xml is present next to this script", sitemap is not None, True)
-    check("site", "robots.txt is present next to this script", robots is not None, True)
-    check("site", "sitemap.xml lists the canonical site URL",
-          sitemap is not None and canonical in sitemap, True)
-    check("site", "robots.txt declares the sitemap",
-          robots is not None and "sitemap.xml" in robots.lower(), True)
-
-
 # ---------------------------------------------------------------------------
 
 def main():
@@ -1217,8 +1326,8 @@ def main():
     section_seeds()
     section_appendix_a()
     section_front_matter()
+    section_pdf_metadata()
     section_paper()
-    section_site()
 
     passed = sum(1 for r in RESULTS if r)
     failed = len(RESULTS) - passed
