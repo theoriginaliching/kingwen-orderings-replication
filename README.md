@@ -88,7 +88,7 @@ Every claim in the paper maps to a named check in `verify_paper.py`.
 | A | Invariance: `7` yang-balanced blocks in every control sample of rungs P4 and P5 | `section_appendix_a` |
 | A | Multiplicity of the ladder: `17` non-constant entries, correction `0.035 x 17 = 0.6` | `section_appendix_a` |
 | all | Title, subtitle and BibTeX repeat `paper.tex` character for character on every surface | `section_front_matter` |
-| 8 | The archive DOI `10.5281/zenodo.21609654` appears in the manuscript, both READMEs and the BibTeX | `section_front_matter` |
+| 8 | The manuscript carries the version DOI `10.5281/zenodo.21609654`; the landing, the READMEs and the BibTeX carry the concept DOI `10.5281/zenodo.21609653` | `section_front_matter` |
 | all | The frozen figures appear verbatim in `paper.tex`; no em dashes | `section_paper` |
 
 ## Breaking the package
@@ -139,7 +139,7 @@ its own verification suite.
   material in 45 experiments, each backed by its own assertions in a 63-section verification
   suite that runs as a publication gate. Its web interface is in Spanish; an English version is
   in progress. This package and the paper are in English.
-- **Archived version**: [10.5281/zenodo.21609654](https://doi.org/10.5281/zenodo.21609654).
+- **Archived version**: [10.5281/zenodo.21609653](https://doi.org/10.5281/zenodo.21609653) (all versions).
 
 ## Licenses
 
@@ -153,7 +153,7 @@ its own verification suite.
   title  = {Statistical Structure of the Historical Orderings of the I Ching Hexagrams: Pair Rule, Family Gradient, and the Limits of Demonstrability},
   author = {García Hurtado, Alexis},
   year   = {2026},
-  doi    = {10.5281/zenodo.21609654},
+  doi    = {10.5281/zenodo.21609653},
   note   = {Replication package}
 }
 ```

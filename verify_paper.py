@@ -1154,21 +1154,33 @@ def section_front_matter():
         check("front", "og:title on the landing carries title and subtitle",
               card.group(1) if card else None, f"{title}: {subtitle}")
 
-    # The archived version. The DOI is reserved at Zenodo and becomes registered when the
-    # deposit is published, so until then https://doi.org resolves with an error. What is
-    # checked here is the string, in every surface: nothing in this file touches the network.
-    doi = "10.5281/zenodo.21609654"
-    check("front", "paper.tex carries the archive DOI", doi in tex, True)
+    # Zenodo issues two identifiers, and they are checked apart because they mean
+    # different things.
+    #
+    #   - the VERSION DOI names one deposit: the one this manuscript was archived with.
+    #     The PDF is a frozen artefact, so it is correct that it keeps printing its own
+    #     version even after later ones appear.
+    #   - the CONCEPT DOI names no version: it always resolves to the latest. It is the
+    #     one the living surfaces carry (this landing, the READMEs, the BibTeX entry a
+    #     reader copies into their bibliography), so that following it lands on the newest.
+    #
+    # They are not required to agree: they differ on purpose. What is checked is the
+    # string, in each surface; nothing in this file touches the network.
+    doi_version = "10.5281/zenodo.21609654"
+    doi_concept = "10.5281/zenodo.21609653"
+    check("front", "paper.tex carries the version DOI it was archived with",
+          doi_version in tex, True)
     for name in ("README.md", "index.html"):
         surface = read_text(os.path.join(here, name))
         if surface is None:
             continue
-        check("front", f"{name} carries the archive DOI", doi in surface, True)
+        check("front", f"{name} carries the concept DOI (all versions)",
+              doi_concept in surface, True)
         check("front", f"{name} no longer announces a pending DOI",
               "DOI pending" not in surface, True)
         field = re.search(r"doi\s*=\s*\{(.+?)\}", surface)
-        check("front", f"BibTeX doi field in {name}",
-              field.group(1) if field else None, doi)
+        check("front", f"BibTeX doi field in {name} is the concept DOI",
+              field.group(1) if field else None, doi_concept)
 
 
 # ---------------------------------------------------------------------------
