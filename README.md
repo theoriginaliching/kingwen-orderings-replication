@@ -134,11 +134,11 @@ its own verification suite.
 
 ## Related resources
 
-- **Extended interactive laboratory**: https://experiments.theoriginaliching.com, and its
+- **Extended interactive laboratory**: https://experiments.theoriginaliching.com/en, and its
   repository at https://github.com/theoriginaliching/iching-experiments. It explores the same
   material in 45 experiments, each backed by its own assertions in a 63-section verification
-  suite that runs as a publication gate. Its web interface is in Spanish; an English version is
-  in progress. This package and the paper are in English.
+  suite that runs as a publication gate. Its web interface is in English, Spanish and French;
+  every experiment is available in the three. This package and the paper are in English.
 - **Archived version**: [10.5281/zenodo.21609653](https://doi.org/10.5281/zenodo.21609653) (all versions).
 
 ## Licenses
