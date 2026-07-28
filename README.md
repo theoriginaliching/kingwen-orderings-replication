@@ -37,6 +37,13 @@ value printed in the paper, and exits `0` if and only if all checks pass:
   REPLICATION COMPLETE: every figure in the paper reproduces.
 ```
 
+**Robustness**: the key conclusions are re-verified under independent seeds. The published
+figures use the protocol seeds of Section 2; `section_seeds` repeats the two Monte Carlo
+protocols with unrelated seeds (`7` and `99`) and asserts that the kinship stays significant
+and the pair-null percentiles stay in their band. In the run above it prints under the
+heading `Seed robustness: the conclusions do not depend on the draw`, and it is listed in the
+section-to-verification map below.
+
 The only external datum is the received King Wen sequence, embedded as a literal table.
 Every other ordering (Mawangdui, Jing Fang, binary, Gray) is generated algorithmically from
 the construction rules documented in Section 2 of the paper, so the package verifies the
