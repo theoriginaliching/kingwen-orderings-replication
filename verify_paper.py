@@ -1401,6 +1401,7 @@ SURFACE_LOCATIONS = (
     ("README.md", "the BibTeX author field", r"author\s*=\s*\{(.+?)\}", 0, "bibtex_author"),
     ("index.html", "the <title> element", r"<title>(.*?)</title>", re.S, "title"),
     ("index.html", "the og:title meta tag", r'og:title"\s+content="(.*?)"', 0, "title_subtitle"),
+    ("index.html", "the display heading", r'<h1>\s*(.*?)\s*<span class="sub">', re.S, "title"),
     ("index.html", "the display subtitle", r'<span class="sub">(.*?)</span>', re.S, "subtitle"),
     ("index.html", "the byline", r"^\s*(.+?) &middot; Independent Researcher", re.M, "author"),
     ("index.html", "the BibTeX author field", r"author\s*=\s*\{(.+?)\}", 0, "bibtex_author"),
