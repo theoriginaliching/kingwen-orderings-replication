@@ -26,6 +26,7 @@ import itertools
 import math
 import cmath
 import random
+import re
 import sys
 from math import comb, sqrt
 
@@ -1301,8 +1302,67 @@ def section_pdf_metadata():
 # Paper source identity
 # ---------------------------------------------------------------------------
 
+#: Every frozen figure of the paper, with the exact places it occupies in
+#: paper.tex: a tuple of (line number, how many times on that line).
+#:
+#: WHY POSITIONS AND NOT PRESENCE. This section used to ask only whether each
+#: frozen string appeared somewhere in the manuscript. A defect injection study
+#: measured what that costs, and the result was a clean cut: of the frozen
+#: figures that occur exactly once in paper.tex, every single edit was caught;
+#: of those that occur more than once, not one was, because editing one copy
+#: left the others satisfying the check. Sixteen of these twenty-nine occur more
+#: than once, so more than half the manuscript's key numbers could be altered
+#: without this script noticing.
+#:
+#: WHY LINE NUMBERS ARE SAFE HERE, AND ONLY HERE. paper.tex is an archived
+#: artefact: it is what the version DOI points at, and it must not change. Its
+#: line numbering is therefore as frozen as its content, and pinning positions
+#: is stricter than counting occurrences because it also catches a figure that
+#: MOVED. The living surfaces -- README.md and index.html -- are not pinned this
+#: way; they are checked by structure in section_surfaces(), because pinning a
+#: document that is meant to be edited would break on the first paragraph added.
+FROZEN_FIGURES = (
+    ("1013", ((51, 1), (64, 1), (89, 1), (91, 1), (106, 1))),
+    ("1008", ((51, 3), (64, 3), (82, 1), (89, 3), (105, 1), (107, 1), (133, 1), (294, 3))),
+    ("759", ((51, 1), (66, 1), (119, 1), (129, 1), (133, 1))),
+    ("-2.89", ((51, 1), (66, 1), (119, 1))),
+    ("0.0034", ((51, 1), (119, 2))),
+    ("3.75", ((68, 2), (162, 1), (173, 2))),
+    ("120", ((68, 1), (93, 1), (103, 1), (173, 3), (177, 1))),
+    ("12/16", ((51, 1), (70, 1), (201, 1), (211, 1), (230, 1))),
+    ("0.038", ((51, 1), (70, 1), (193, 1), (201, 1), (211, 2), (230, 1))),
+    ("74.5", ((72, 1), (257, 1), (278, 1), (284, 1), (288, 1))),
+    ("95/224", ((129, 1),)),
+    ("664/1792", ((129, 1),)),
+    ("776", ((133, 2),)),
+    ("18.0", ((131, 1),)),
+    ("26.6", ((131, 1),)),
+    ("31.9", ((131, 1), (393, 1))),
+    ("43.0", ((131, 1),)),
+    ("0.619", ((131, 1),)),
+    ("0.0575", ((131, 1),)),
+    ("192", ((177, 1),)),
+    ("2016", ((89, 1), (294, 2))),
+    ("86.3", ((82, 1), (89, 1))),
+    ("17.6", ((396, 1),)),
+    ("3.5", ((68, 1), (173, 2), (396, 1), (401, 2))),
+    ("33.2", ((394, 1),)),
+    ("29.9", ((395, 1),)),
+    ("87.7", ((393, 1),)),
+    ("90.4", ((394, 1),)),
+    ("constant = 7", ((395, 1), (396, 1))),
+)
+
+
+def _positions(text, needle):
+    """Where a string sits: ((line number, occurrences on that line), ...)."""
+    return tuple((number, line.count(needle))
+                 for number, line in enumerate(text.splitlines(), 1)
+                 if needle in line)
+
+
 def section_paper():
-    head("Paper source: the numbers appear verbatim in paper.tex")
+    head("Paper source: every frozen figure is where the paper puts it")
 
     import os
     path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "paper.tex")
@@ -1310,14 +1370,119 @@ def section_paper():
         check("tex", "paper.tex is present next to this script", False, True)
         return
     tex = open(path, encoding="utf-8").read()
-    frozen = ["1013", "1008", "759", "-2.89", "0.0034", "3.75", "120", "12/16", "0.038",
-              "74.5", "95/224", "664/1792", "776", "18.0", "26.6", "31.9", "43.0",
-              "0.619", "0.0575", "192", "2016", "86.3",
-              # Appendix A, Table A1.
-              "17.6", "3.5", "33.2", "29.9", "87.7", "90.4", "constant = 7"]
-    missing = [f for f in frozen if f not in tex]
-    check("tex", f"paper.tex contains the {len(frozen)} key frozen figures", missing, [])
+    for value, expected in FROZEN_FIGURES:
+        check("tex", f"paper.tex carries {value} at exactly the declared positions",
+              _positions(tex, value), expected)
     check("tex", "paper.tex contains no em dash", tex.count(chr(0x2014)), 0)
+
+
+# ---------------------------------------------------------------------------
+# Living surfaces: front matter read from the places it lives in
+# ---------------------------------------------------------------------------
+#
+# The same study that found the frozen figures were checked by presence found
+# the same hole here. Of the front matter drifts it injected one surface at a
+# time, eleven escaped: the title altered in the README heading, in the HTML
+# <title>, in the og:title meta tag and in the display heading; the subtitle
+# altered on both surfaces; the author altered in the landing byline; and every
+# DOI edit on both. They escaped because nothing read those places. The front
+# matter section compared the canonical macros of paper.tex and the BibTeX title
+# line, and took the rest of both documents on trust.
+#
+# These surfaces are checked by STRUCTURE, not by position. README.md and
+# index.html are meant to be edited, so pinning their line numbers the way
+# paper.tex is pinned would break on the first paragraph added. What is pinned
+# is which heading, which meta tag, which field each string lives in.
+
+#: (surface, what to call it, pattern with one group, regex flags, which string).
+SURFACE_LOCATIONS = (
+    ("README.md", "the bold title line", r"^\*\*(.+?)\*\*$", re.M, "title"),
+    ("README.md", "the italic subtitle line", r"^\*([^*].*?)\*$", re.M, "subtitle"),
+    ("README.md", "the BibTeX author field", r"author\s*=\s*\{(.+?)\}", 0, "bibtex_author"),
+    ("index.html", "the <title> element", r"<title>(.*?)</title>", re.S, "title"),
+    ("index.html", "the og:title meta tag", r'og:title"\s+content="(.*?)"', 0, "title_subtitle"),
+    ("index.html", "the display subtitle", r'<span class="sub">(.*?)</span>', re.S, "subtitle"),
+    ("index.html", "the byline", r"^\s*(.+?) &middot; Independent Researcher", re.M, "author"),
+    ("index.html", "the BibTeX author field", r"author\s*=\s*\{(.+?)\}", 0, "bibtex_author"),
+)
+
+#: How many times each identifier must occur on each surface. A count of zero is
+#: as much a claim as any other: the landing must NOT carry the version DOI,
+#: because following it would land a reader on a superseded deposit.
+IDENTIFIER_COUNTS = (
+    ("paper.tex", "10.5281/zenodo.21609654", 1, "the version DOI it was archived with"),
+    ("README.md", "10.5281/zenodo.21609653", 4, "the concept DOI"),
+    ("README.md", "10.5281/zenodo.21609654", 1, "the version DOI, named once in the claim map"),
+    ("index.html", "10.5281/zenodo.21609653", 3, "the concept DOI"),
+    ("index.html", "10.5281/zenodo.21609654", 0, "no version DOI at all"),
+)
+
+
+def section_surfaces():
+    head("Living surfaces: the front matter is right where it lives")
+
+    import os
+    here = os.path.dirname(os.path.abspath(__file__))
+    tex = read_text(os.path.join(here, "paper.tex"))
+    if tex is None:
+        check("surface", "paper.tex is present next to this script", False, True)
+        return
+    macros = dict(re.findall(r"\\newcommand\{\\(paper(?:title|subtitle|author))\}\{(.+?)\}\n", tex))
+    title = " ".join(macros.get("papertitle", "").split())
+    subtitle = " ".join(macros.get("papersubtitle", "").split())
+    author = " ".join(macros.get("paperauthor", "").split())
+    family = author.split(" ", 1)[-1]
+    expected = {
+        "title": title,
+        "subtitle": subtitle,
+        "author": author,
+        "title_subtitle": f"{title}: {subtitle}",
+        # BibTeX names go family-first; the canonical string is the same name.
+        "bibtex_author": f"{family}, {author.split(' ', 1)[0]}",
+    }
+
+    for surface, where, pattern, flags, key in SURFACE_LOCATIONS:
+        text = read_text(os.path.join(here, surface))
+        if text is None:
+            check("surface", f"{surface} is present next to this script", False, True)
+            continue
+        found = re.search(pattern, text, flags)
+        check("surface", f"{where} of {surface} carries the canonical {key}",
+              " ".join(found.group(1).split()) if found else None, expected[key])
+
+    for surface, identifier, count, describe in IDENTIFIER_COUNTS:
+        text = read_text(os.path.join(here, surface))
+        if text is None:
+            check("surface", f"{surface} is present next to this script", False, True)
+            continue
+        check("surface", f"{surface} carries {describe}, exactly {count} time(s)",
+              text.count(identifier), count)
+
+
+#: Where each surface publishes how many checks this script runs. The count went
+#: stale once before, from 192 to 202, and nothing here noticed; a published
+#: number with no assertion behind it is exactly what this package exists to
+#: refuse.
+PUBLISHED_COUNT_PATTERNS = (
+    r"\d+ checks passed, \d+ failed, (\d+) total",
+    r"\((\d+) checks, standard library only\)",
+)
+
+
+def check_published_counts(total):
+    head("Published counts: every surface agrees on how many checks there are")
+
+    import os
+    here = os.path.dirname(os.path.abspath(__file__))
+    for surface in ("README.md", "index.html"):
+        text = read_text(os.path.join(here, surface))
+        if text is None:
+            check("count", f"{surface} is present next to this script", False, True)
+            continue
+        published = sorted({int(m) for pattern in PUBLISHED_COUNT_PATTERNS
+                            for m in re.findall(pattern, text)})
+        check("count", f"every check count published in {surface} is the real one",
+              published, [total])
 
 
 # ---------------------------------------------------------------------------
@@ -1340,6 +1505,11 @@ def main():
     section_front_matter()
     section_pdf_metadata()
     section_paper()
+    section_surfaces()
+
+    # The published count has to come last, because it counts itself: the two
+    # assertions it is about to add are part of the number it checks.
+    check_published_counts(len(RESULTS) + 2)
 
     passed = sum(1 for r in RESULTS if r)
     failed = len(RESULTS) - passed
