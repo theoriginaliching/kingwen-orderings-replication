@@ -176,7 +176,74 @@ not a larger part of it.
 from predicates derived from the printed definitions. Eleven strict containments, four
 incomparable pairs, zero equalities. Each refutation is accompanied by an exhibited
 witness, that is a concrete permutation lying in one rung and not in the other, checked
-in both directions. `PENDING POINTER: verification record and commit.`
+in both directions.
+
+The derivation below is not transported from anywhere. An earlier record of the same
+result exists in a repository with no public remote, which cannot be cited here, and
+copying its prose would be copying a paraphrase; so the predicates were written again
+from the printed definitions of P0 to P5 in the deposit, and the witnesses were
+produced again. An independent re-derivation is stronger evidence than a transport.
+
+*Notation.* In King Wen numbering the received sequence is literally 1, 2, ..., 64, so
+a member of any rung is a permutation of the 64 hexagram numbers. It is written as its
+32 slots, each slot holding one pair in its printed orientation. A witness is given as
+the received order with one named change; every slot not named holds what it holds in
+the received order, which fixes the permutation completely.
+
+*Predicates, each from its printed definition.* (P0) any permutation of the 64.
+(P1) every slot holds a received pair, in either orientation. (P2) P1, and the pairs
+occupying the first fifteen slots are exactly the fifteen pairs of the first canon.
+(P3) P1, and each of the four palindrome pairs (1,2), (27,28), (29,30), (61,62) sits in
+its own slot in its received orientation. (P4) P1, and the two pairs of each received
+block of four consecutive positions are still together in one block. (P5) P1, and the
+pair order is the received one, orientations free.
+
+The reading of P4 used here is the corrected one of E-1, which the printed micro
+theorem forces. Under the literal reading of the printed sentence, in which a pair may
+leave its block, P4 would coincide with P1: the order would then carry one equality and
+ten strict containments, not eleven and zero, and the theorem of the same appendix
+would be false. The defect of E-1 and the shape of this order are the same fact seen
+twice.
+
+*The four incomparable pairs, with witnesses checked in both directions.*
+
+| pair | witness | in | not in |
+|---|---|---|---|
+| P2, P4 | received order with pairs (3,4) and (7,8) transposed: slots 1-4 read (1,2) (7,8) (5,6) (3,4) | P2 | P4 |
+| P2, P4 | received order with pairs (29,30) and (31,32) transposed: slots 14-17 read (27,28) (31,32) (29,30) (33,34) | P4 | P2 |
+| P2, P3 | received order with pairs (1,2) and (3,4) transposed: slots 1-4 read (3,4) (1,2) (5,6) (7,8) | P2 | P3 |
+| P2, P3 | received order with pairs (3,4) and (31,32) transposed: slots 1-3 read (1,2) (31,32) (5,6) | P3 | P2 |
+| P3, P4 | received order with pairs (3,4) and (7,8) transposed: slots 1-4 read (1,2) (7,8) (5,6) (3,4) | P3 | P4 |
+| P3, P4 | received order with the first two blocks transposed: slots 1-5 read (5,6) (7,8) (1,2) (3,4) (9,10) | P4 | P3 |
+| P3, P5 | received order with pairs (3,4) and (5,6) transposed: slots 1-4 read (1,2) (5,6) (3,4) (7,8) | P3 | P5 |
+| P3, P5 | received order with pair (1,2) written 2, 1: slots 1-3 read (2,1) (3,4) (5,6) | P5 | P3 |
+
+Each row was evaluated against both predicates, and each of the eight came out a member
+of the first rung and not of the second. Two rows per pair are given rather than one,
+because incomparability is two refutations and not one: neither rung contains the other.
+
+The witness that separates P4 from P2 is the transversality made concrete. Pairs
+(29,30) and (31,32) are the two halves of the eighth block; exchanging them keeps every
+block intact, so the sequence is a member of P4, and it moves a pair of the second canon
+into a slot of the first, so it is not a member of P2.
+
+The witness that separates P5 from P3 turns on orientation alone: P3 fixes the four
+palindrome pairs in position *and* orientation, while P5 randomises all 32 orientations,
+so the received order with (1,2) written 2, 1 lies in P5 and outside P3.
+
+*Method, and a check on the check.* Each rung factors as a set of pair orders times a
+set of orientation vectors, so containment is decided exactly: on the order part by
+subgroup generators, on the orientation part by which coordinates are forced. That
+decision was cross-checked against a full enumeration of the same construction shrunk to
+eight pairs, four blocks of two, canon split three and five, which keeps the one feature
+that matters, a canon boundary falling strictly inside a block. The cross-check earned
+its keep: it refuted a first generating set for P4, too small to generate the group,
+which had made P4 look contained in P2. The corrected computation and the exhaustive
+enumeration then agree: eleven strict, four incomparable, zero equalities.
+
+**Verification record.** This entry. Re-derived on 2026-07-31 on branch `errata` of this
+package; the commit that carries the derivation is named in the following entry line, so
+that the record points at a public object rather than at a private one.
 
 The canon division and the block partition are transversal: fifteen and seventeen pairs
 put the boundary between slots fourteen and fifteen, which lie inside the eighth block
