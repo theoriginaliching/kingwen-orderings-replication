@@ -58,11 +58,24 @@ Every entry carries all six. An entry missing one is incomplete and says so.
 
 ## E-1. The description of the fourth rung of Appendix A
 
-**Printed text.**
-`PENDING TRANSCRIPTION from the deposited PDF, Appendix A, description of P4.`
-The phrase at issue is the one describing pairs as permuted within and across the
-sixteen blocks. To be transcribed character for character from the artifact, not from
-any summary of it.
+**Printed text.** Appendix A, page 14, first paragraph, fifth item of the list of
+rungs:
+
+> (P4) pairs permuted within and across the sixteen blocks of four consecutive
+> positions, preserving the block partition
+
+The item continues `; and (P5) ...` in the printed list; the span above is the
+description of P4 in full.
+
+Transcribed character for character from the **version 2 deposit**
+(10.5281/zenodo.21628654), file `garcia-hurtado-2026-king-wen-orderings-preprint.pdf`,
+15 pages, 119326 bytes, sha256
+`01c83c3d6d01878050a702b91901b55760218e4c6adcac4d57a9461a64904cfd`. The same sentence,
+character for character, stands in the PDF carried inside the version 1 deposit
+(10.5281/zenodo.21609654), 118955 bytes, sha256
+`77ec0f6953657638ec04157b87de987cb737c8dd5bdef1eb6db2876ba18bb53f`: the two deposits
+differ in the document metadata of the PDF, not in this text. The deposit is named
+because the reader may hold either one, not because the wording differs.
 
 **What it should say.** The blocks of four consecutive positions are permuted among
 themselves, and a pair never leaves its block. Block membership is preserved by the
@@ -97,10 +110,22 @@ the sampler does. A reader who follows the theorem is not misled.
 
 ## E-2. The ladder described as one of increasing structure
 
-**Printed text.**
-`PENDING TRANSCRIPTION from the deposited PDF, Appendix A, opening description of the
-ladder.` The phrase at issue describes the six nulls as of increasing structure, each
-conceding more of the architecture.
+**Printed text.** Appendix A, page 14, opening paragraph, second sentence:
+
+> We re-evaluate the four signatures of Table 2 under a ladder of six nulls of
+> increasing structure, each conceding more of the sequence’s architecture and asking
+> what remains
+
+The apostrophe in `sequence’s` is U+2019 in the artifact and is reproduced as such
+here. Line breaks of the printed column are not reproduced; no other character is
+altered.
+
+Transcribed character for character from the **version 2 deposit**
+(10.5281/zenodo.21628654), sha256
+`01c83c3d6d01878050a702b91901b55760218e4c6adcac4d57a9461a64904cfd`. The same sentence
+stands character for character in the PDF inside the version 1 deposit
+(10.5281/zenodo.21609654), sha256
+`77ec0f6953657638ec04157b87de987cb737c8dd5bdef1eb6db2876ba18bb53f`.
 
 **What it should say.** The six nulls are ordered by containment, and that order is
 partial rather than total. A later rung concedes a different part of the architecture,
