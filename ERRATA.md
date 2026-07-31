@@ -98,9 +98,18 @@ sampler; what is randomised is the arrangement of the blocks.
    Each block is built once, as two received consecutive pairs, and it is the *list of
    blocks* that is shuffled. The only freedom inside a block is `block.reverse()`
    (line 1041), which exchanges the two pairs of the same block. No pair is ever moved
-   between blocks. These line numbers hold identically in the version 1 deposit, the
-   version 2 deposit and the head of this branch; the file has not been renumbered in
-   that region.
+   between blocks.
+
+   *Which file those line numbers index.* A line range is worthless without the file it
+   counts. The range above indexes `verify_paper.py` **as deposited in version 2**
+   (10.5281/zenodo.21628654), 58910 bytes, sha256
+   `9f835bd1f7e4af5b09de103b48f8fd2b875737553446f47a564a2c0e9f0042a7`, tagged
+   `zenodo-v2` in this repository. That is the copy that sustains this entry, because it
+   is the copy the reader of the deposit holds. Two courtesies, measured rather than
+   assumed: the same lines carry the same code in `verify_paper.py` as deposited in
+   version 1 (52980 bytes, sha256 `bb857fff…ade8`, tag `zenodo-v1`) and at the head of
+   this branch (60916 bytes, sha256 `8a7085c5…b957`). The three files differ in size and
+   in hash; they do not differ in that region, which is why one range serves all three.
 2. The micro theorem printed in the same appendix states that quartets preserve the
    yang sum and that seven blocks sum to twelve. Under the literal reading of the
    printed description, a pair could leave its block, block sums would not be preserved,
@@ -115,7 +124,12 @@ sampler; what is randomised is the arrangement of the blocks.
    > so this signature is a corollary of block membership
 
    Its counterpart in the replication package is `verify_paper.py`, lines 1077-1086,
-   comment "The micro-theorem".
+   comment "The micro-theorem". That range indexes the same file as the range above:
+   `verify_paper.py` as deposited in version 2, sha256
+   `9f835bd1f7e4af5b09de103b48f8fd2b875737553446f47a564a2c0e9f0042a7`, tag `zenodo-v2`;
+   it holds unchanged in the version 1 deposit and at the head of this branch. The
+   printed location, page 14 of the deposited PDF, is the one that sustains the entry;
+   the code range is corroboration.
 3. The theorem and the code agree with each other. The dissenting witness is the prose.
 
 **Date found.** 2026-07-31, during the formal verification carried out for the
@@ -254,11 +268,19 @@ that matters, a canon boundary falling strictly inside a block. The cross-check 
 its keep, in the way recorded above. The corrected computation and the exhaustive
 enumeration then agree: eleven strict, four incomparable, zero equalities.
 
-**Verification record.** This entry. Re-derived on 2026-07-31 on branch `errata` of this
-package, commit `90d4455b140ad9e69fe7ff19c58aa08562a434e6`, which is the commit that
-first carried the derivation and the eight witnesses. The record points at a public
-object rather than at a private one. The hash arrives in the commit after the one it
-names, which is the only order in which a commit can name itself.
+**Verification record.** `errata_e2_derivation.py`, in the root of this package on branch
+`errata`. It carries the six predicates, the decision procedure, the eight witnesses and
+the exhaustive enumeration on the shrunk model, and it runs on the standard library
+alone. Until it was committed the code existed only outside the repository, and the slot
+pointed at this entry; it now points at the file, which is what a pointer is for. The
+prose of the entry first arrived in commit
+`90d4455b140ad9e69fe7ff19c58aa08562a434e6`, on 2026-07-31.
+
+The evidentiary weight, however, does not rest on that file or on any commit. It rests on
+the eight witnesses exhibited above, which a reader checks by hand against the printed
+definitions, with no code and no clone. The commit lives on a branch that is not merged
+and may never be; a reader who has only the deposited paper can still verify every row of
+the table. Code that can disappear must not be the thing an erratum stands on.
 
 The canon division and the block partition are transversal: fifteen and seventeen pairs
 put the boundary between slots fourteen and fifteen, which lie inside the eighth block
@@ -312,16 +334,29 @@ next to it so that the delay is not mistaken for an oversight.
 6. the count of entries in the file matches the count the check reports, so that an
    entry cannot be dropped silently.
 
-**Design constraint, and it is not incidental.** The text of this proposal contains
-literal instances of the very tokens the check would search for: items 2 and 3 above
-print `PENDING POINTER` and `PENDING TRANSCRIPTION` as examples of what must not appear
-unmarked. Any implementation must therefore exclude this section, or more precisely
-exclude example spans, from its own scan. An implementation that scans the whole file
-will report a defect in the description of the check rather than in any entry, and will
-fail against its own specification. The project has a precedent for this exact shape of
-error: a gate whose grep read the string `fail 0` in a summary line as evidence of
-success. A checker that cannot tell an example of a token from an occurrence of it is
-not checking the thing it names.
+**Design constraint, stated as the principle it is.** *A document that describes tokens
+contains them, so every check over such a document must distinguish use from mention.*
+This is not a quirk of the proposal above; it is a property of any file that talks about
+its own vocabulary, and it is the standing constraint on every check that will ever be
+written against this one. An implementation that scans the file flat will report defects
+in the descriptions rather than in the entries, and will fail against its own
+specification.
+
+This file already contains two mentions that are not uses, and they are examples rather
+than an inventory:
+
+1. The tokens `PENDING POINTER` and `PENDING TRANSCRIPTION`, printed in items 2 and 3
+   above as examples of what an entry must not carry unmarked. There is no unfilled gap
+   in this file; a flat scan for those strings would say otherwise.
+2. The character U+2019, printed in the E-2 entry in the sentence that names it as the
+   apostrophe of the transcribed artifact. A flat scan of the prohibited or notable
+   character classes counts that mention as an occurrence, and reports a property of the
+   prose that the prose does not have.
+
+The project has a precedent for this exact shape of error: a gate whose grep read the
+string `fail 0` in a summary line as evidence of success. It was not reading a result; it
+was reading a sentence about a result. A checker that cannot tell a mention of a token
+from a use of it is not checking the thing it names, and its passes mean nothing.
 
 **Why it is not added now.** Adding a check moves the number of checks, and that number
 is cited by name outside this file: in `README.md`, in `index.html`, and in the records
