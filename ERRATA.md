@@ -46,6 +46,36 @@ Every entry carries all six. An entry missing one is incomplete and says so. The
 a floor and not a ceiling: an entry may carry further labelled fields, such as a cross
 reference to another record, or an exhibited witness inside its evidence.
 
+The six govern a defect entry. An entry under *Examined and not an erratum* records
+something that was checked and found sound; it carries what was checked, the measurement,
+the date and the verdict, and has no "what it should say" because nothing should say
+anything else.
+
+## Which layer the quoted text comes from
+
+This note governs every verbatim in this file, so that it is stated once rather than
+argued in each entry.
+
+Quotations are taken from the **rendered layer of the deposited PDF**, not from the
+LaTeX source that produced it. The reason is the purpose of the document: an erratum
+corrects what the reader has in front of them, and what the reader has is the compiled
+artifact. A reader who compares a quotation here against `paper.tex` will therefore find
+differences that are not defects but the ordinary work of the typesetter. Two such
+differences are present in the spans quoted below, both measured against the deposited
+`paper.tex`:
+
+1. **Cross references.** The source writes the reference to Table 2 as the macro
+   `Table~\ref{tab:chan}`; the PDF renders it as `Table 2`. The quotation in E-2 carries
+   the rendered form.
+2. **Apostrophes.** The source writes an ASCII apostrophe, `sequence's` and `block's`;
+   the PDF composes the typographic form, U+2019. The quotations here carry U+2019,
+   because that is the character in the artifact.
+
+Beyond these, the spans quoted in this file agree with the source character for
+character. Where a printed span contains a ligature codepoint or a word broken by
+hyphenation across a line, an entry quoting it says so; none of the spans quoted so far
+contains either.
+
 1. **Printed text**, verbatim, with a pointer to section, page or table.
 2. **What it should say.**
 3. **Evidence** that the printed text is wrong, with its own pointer.
@@ -67,7 +97,8 @@ rungs:
 > positions, preserving the block partition
 
 The item continues `; and (P5) ...` in the printed list; the span above is the
-description of P4 in full.
+description of P4 in full. Line breaks of the printed column are not reproduced; no
+other character is altered.
 
 Transcribed character for character from the **version 2 deposit**
 (10.5281/zenodo.21628654), file `garcia-hurtado-2026-king-wen-orderings-preprint.pdf`,
@@ -122,6 +153,8 @@ sampler; what is randomised is the arrangement of the blocks.
    > and become a constant: preserving the block partition preserves each block’s yang
    > sum (in the received sequence the sixteen sums include exactly seven equal to 12),
    > so this signature is a corollary of block membership
+
+   Line breaks of the printed column are not reproduced; no other character is altered.
 
    Its counterpart in the replication package is `verify_paper.py`, lines 1077-1086,
    comment "The micro-theorem". That range indexes the same file as the range above:
@@ -300,9 +333,136 @@ at the next" therefore survives unchanged.
 
 # Examined and not an erratum
 
-`None recorded yet.`
+Everything below was measured on 2026-07-31 inside the two deposited archives themselves,
+extracted from their zip files, not in a working copy.
 
-Entries will appear here when something is checked and found correct. They are kept for
+## X-1. The file table of the package README does not claim to be an inventory
+
+**What was checked.** Whether the table of files in `README.md` is a complete list of
+what the deposit ships.
+
+**Measurement.** The table declares six files, identically in both deposits:
+`verify_paper.py`, `paper.tex`, `paper.pdf`, `index.html`, `LICENSE`, `LICENSE-text`. The
+version 1 archive carries nine files and the version 2 archive eleven. Undeclared in
+both: `README.md`, `logo-128.webp`, `vercel.json`; undeclared in version 2 additionally:
+`robots.txt`, `sitemap.xml`.
+
+**Why this is not an erratum.** Nothing declares completeness. The lines that introduce
+the table read, character for character in both deposits:
+
+> This repository is the replication package for the paper. It contains the manuscript
+> source, the compiled PDF, and a single self-contained script that reproduces **every
+> numerical claim** made in the paper from first principles.
+
+and the table's own header is `| File | What it is |`. A description of what a package
+contains is not a manifest of everything in it, and a header naming a column "File" does
+not promise to enumerate all of them. A claim that was never made cannot be false.
+
+**Observation kept with it.** The repository does two jobs and the README describes one.
+It is the replication package, and it is also the source of the deployed landing site;
+the undeclared files are, with one exception, the second job's: `vercel.json`,
+`robots.txt`, `sitemap.xml` and `logo-128.webp` serve the site, and `README.md` is the
+file doing the describing. The shortfall is not drift in the table. It is a second office
+the table was never written for. This matters for the version 1 archive too, which is
+short by three: it was not clean here and later spoiled.
+
+**Date examined.** 2026-07-31. **Status.** EXAMINED, NOT AN ERRATUM.
+
+---
+
+## X-2. The section-to-verification map holds what it declares
+
+**What was checked.** The map in `README.md`, introduced by:
+
+> Every claim in the paper maps to a named check in `verify_paper.py`.
+
+**Measurement.** Ten section functions are named by the map. In the version 1 deposit ten
+section functions exist, and every one is referenced. In the version 2 deposit eleven
+exist, the same ten are referenced, and no row anywhere points at a target that does not
+exist. The declaration therefore holds in both: every claim of the paper that the map
+lists resolves to a section that is really there.
+
+**The distinction, which is the point of the entry.** What lapsed in version 2 is a
+different property: the map being, incidentally, a complete inventory of the suite's
+sections. In version 1 it was one, by the coincidence of ten rows and ten sections.
+Nobody ever declared it. The section without a row, `section_pdf_metadata`, asserts
+properties of the compiled artifact, the document information dictionary of the PDF
+against the canonical strings of `paper.tex`, which are not claims of the paper and so
+fall outside what the map declares itself to cover.
+
+**Cost, measured rather than characterised.** A reader who used the map as an index of
+the suite would miss 7 of 202 checks in the version 2 deposit. That is the whole of the
+exposure, and it is recorded because the difference between a map that was audited and a
+map nobody looked at is exactly what this section exists to preserve.
+
+**Date examined.** 2026-07-31. **Status.** EXAMINED, NOT AN ERRATUM.
+
+---
+
+## X-3. The single DOI constant in the version 2 archive states nothing false
+
+**What was checked.** How the deposited suite names the archive identifier. In the
+version 2 archive, `verify_paper.py` line 1160 reads:
+
+> `doi = "10.5281/zenodo.21609654"`
+
+one constant serving three assertions, with no separation between a version identifier
+and a concept identifier.
+
+**Measurement.** The claim the package actually makes about that string is that the
+archive DOI appears in the manuscript, in both READMEs and in the BibTeX. Measured in
+that tree, it does: `paper.tex`, `README.md`, `index.html` and `verify_paper.py` all
+carry `10.5281/zenodo.21609654` and no other Zenodo identifier. The statement is true of
+the tree that makes it.
+
+**Why this is not an erratum.** The identifier printed is the version DOI of the first
+deposit, carried by a package deposited as the second. That is a state prior to a policy,
+not a false assertion: the split, in which the manuscript keeps its version DOI while the
+living surfaces carry the concept DOI, arrives in commit
+`9b4720999e63c5a0ba944ad261b5d6e2aac47031`, whose committer timestamp is
+2026-07-27T16:52:01Z. The version 2 record was created at 2026-07-27T16:16:56Z. The
+policy is 35 minutes younger than the deposit it would have changed. A deposit cannot be
+faulted for not implementing a distinction that did not yet exist.
+
+**Date examined.** 2026-07-31. **Status.** EXAMINED, NOT AN ERRATUM.
+
+---
+
+## X-4. What the measurement confirmed and did not correct
+
+Kept because a record that lists only what it caught cannot be told apart from a record
+that looked for little.
+
+1. **The version 1 deposit is consistent in everything measurable.** Its four declared
+   check counts (`README.md` lines 35 and 115, `index.html` lines 179 and 197) all read
+   192 and the tree measures 192; runtime 18.4 s against a declared "under thirty
+   seconds"; exit status 0 clean and 1 under each mutation, as declared; standard library
+   only, as declared, with no network module imported; the seeds and sample count of
+   Appendix A, 20000 samples and seed 20260722, matching the constants
+   `LADDER_SAMPLES` and `SEED_LADDER`; the robustness seeds `(7, 99)` matching
+   `ROBUSTNESS_SEEDS`.
+2. **The map has no dangling target in either deposit.** Ten referenced, ten resolved in
+   version 1; ten referenced, ten resolved in version 2. No row points at a section that
+   does not exist, in either archive.
+3. **The laboratory figure printed in the paper is exact at both deposit instants.** The
+   suite of the laboratory repository executed 61 sections at the commit current when the
+   version 1 record was created and 63 at the commit current when the version 2 record was
+   created; the paper printed 61 and 63 respectively. It is 63 today. The identity is not
+   a coincidence being reported after the fact: the laboratory's own suite asserts that
+   the number printed in the paper equals the number of sections it executes, and fails
+   the publication gate otherwise.
+4. **The breaking demonstration reproduces exactly in version 1.** Running the three
+   mutations documented in its README against its own tree: mutation (a) fails 12 of the
+   first 43 checks and aborts with `KeyError: 63`; mutation (b) fails 12 of the first 43
+   and aborts with `KeyError: 0`; mutation (c) completes and reports `175 checks passed,
+   17 failed, 192 total`; exit status 1 in all three. Every figure in that table is the
+   figure the package produces.
+
+**Date examined.** 2026-07-31. **Status.** EXAMINED, NOT AN ERRATUM.
+
+---
+
+Entries appear here when something is checked and found correct. They are kept for
 the same reason the entries above are kept: a list that records only its hits does not
 let a later reader tell what was looked at from what was never looked at.
 
