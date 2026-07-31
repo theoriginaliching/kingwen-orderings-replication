@@ -7,12 +7,16 @@ This repository is the replication package for the paper. It contains the manusc
 source, the compiled PDF, and a single self-contained script that reproduces **every
 numerical claim** made in the paper from first principles.
 
+Defects found in the deposited paper are recorded in [ERRATA.md](ERRATA.md), from the
+moment they are found rather than from the moment they are deposited.
+
 | File | What it is |
 |---|---|
 | `verify_paper.py` | Self-contained verification of every figure in the paper (standard library only) |
 | `paper.tex` | Manuscript source (LaTeX) |
 | `paper.pdf` | Compiled manuscript |
 | `index.html` | Landing page for the package |
+| `ERRATA.md` | Defects found in the deposited paper, recorded when found, not when fixed |
 | `LICENSE` | MIT license, covering the code |
 | `LICENSE-text` | CC BY 4.0, covering the paper text and figures |
 

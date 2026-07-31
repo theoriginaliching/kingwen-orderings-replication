@@ -242,8 +242,10 @@ which had made P4 look contained in P2. The corrected computation and the exhaus
 enumeration then agree: eleven strict, four incomparable, zero equalities.
 
 **Verification record.** This entry. Re-derived on 2026-07-31 on branch `errata` of this
-package; the commit that carries the derivation is named in the following entry line, so
-that the record points at a public object rather than at a private one.
+package, commit `90d4455b140ad9e69fe7ff19c58aa08562a434e6`, which is the commit that
+first carried the derivation and the eight witnesses. The record points at a public
+object rather than at a private one. The hash arrives in the commit after the one it
+names, which is the only order in which a commit can name itself.
 
 The canon division and the block partition are transversal: fifteen and seventeen pairs
 put the boundary between slots fourteen and fifteen, which lie inside the eighth block
@@ -275,3 +277,38 @@ let a later reader tell what was looked at from what was never looked at.
 
 `None yet.` The first deposit carrying corrections will list the entries it applies and
 the version DOI it creates.
+
+---
+
+# A check on this file, proposed and deliberately not added yet
+
+`verify_paper.py` could enforce this file mechanically. The proposal is written down
+here so that it is not re-invented, and the reason for holding it back is written down
+next to it so that the delay is not mistaken for an oversight.
+
+**Proposed check.** For every entry under `# Open entries`:
+
+1. all six required fields are present, by their printed labels;
+2. no pointer is empty, that is, no field of an entry still reads `PENDING POINTER`
+   without the entry saying in its own text that it is incomplete;
+3. no verbatim is empty without a mark, that is, a `**Printed text.**` field either
+   quotes the artifact or carries an explicit `PENDING TRANSCRIPTION` marker, never a
+   silent blank;
+4. every `sha256` written in the file is 64 hexadecimal characters;
+5. every entry carries a status drawn from the vocabulary above;
+6. the count of entries in the file matches the count the check reports, so that an
+   entry cannot be dropped silently.
+
+**Why it is not added now.** Adding a check moves the number of checks, and that number
+is cited by name outside this file: in `README.md`, in `index.html`, and in the records
+of the project that quote them. Moving it in the same act that introduces the errata
+file would make the two changes indistinguishable afterwards, and the first thing this
+file exists to prevent is exactly that kind of drift.
+
+**The number, measured rather than assumed.** Run on 2026-07-31: 202 checks, 0 failed,
+at the head of this branch, and 202 likewise on the deposited tree of version 2. The
+deposited tree of version 1 gives 192, which is the figure the suite had at that
+deposit. At least one other figure, 246, circulates in the records of the project; it
+does not belong to this package at any of the three points measured here, and the
+discrepancy is recorded rather than quietly reconciled, since a number that two records
+give differently is itself a finding.
