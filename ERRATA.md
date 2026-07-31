@@ -182,7 +182,21 @@ The derivation below is not transported from anywhere. An earlier record of the 
 result exists in a repository with no public remote, which cannot be cited here, and
 copying its prose would be copying a paraphrase; so the predicates were written again
 from the printed definitions of P0 to P5 in the deposit, and the witnesses were
-produced again. An independent re-derivation is stronger evidence than a transport.
+produced again.
+
+*What this is, named exactly.* It is not an independent derivation, and calling it one
+would overstate it. The result was already written in this file before the computation
+was run: eleven strict containments, four incomparable pairs, zero equalities, all three
+figures printed in the skeleton of this entry. The work was done again from the printed
+definitions, but with the answer in view, so the correct name is a reproduction with a
+known target. It is worth less than a blind derivation, in which the numbers could not
+be steered toward the expected ones. It is worth more than a transport, for one reason
+that can be checked: a reproduction can fail, and this one did fail. The first
+generating set written for P4 was too small to generate the group, the decision
+procedure returned P4 as contained in P2, and the exhaustive enumeration refuted it. A
+transcription cannot produce that error, because it never computes anything, and cannot
+catch it either. That failure, and not the final agreement with the printed claim, is
+what distinguishes a derivation actually run from a description of one.
 
 *Notation.* In King Wen numbering the received sequence is literally 1, 2, ..., 64, so
 a member of any rung is a permutation of the 64 hexagram numbers. It is written as its
@@ -237,8 +251,7 @@ subgroup generators, on the orientation part by which coordinates are forced. Th
 decision was cross-checked against a full enumeration of the same construction shrunk to
 eight pairs, four blocks of two, canon split three and five, which keeps the one feature
 that matters, a canon boundary falling strictly inside a block. The cross-check earned
-its keep: it refuted a first generating set for P4, too small to generate the group,
-which had made P4 look contained in P2. The corrected computation and the exhaustive
+its keep, in the way recorded above. The corrected computation and the exhaustive
 enumeration then agree: eleven strict, four incomparable, zero equalities.
 
 **Verification record.** This entry. Re-derived on 2026-07-31 on branch `errata` of this
@@ -298,6 +311,17 @@ next to it so that the delay is not mistaken for an oversight.
 5. every entry carries a status drawn from the vocabulary above;
 6. the count of entries in the file matches the count the check reports, so that an
    entry cannot be dropped silently.
+
+**Design constraint, and it is not incidental.** The text of this proposal contains
+literal instances of the very tokens the check would search for: items 2 and 3 above
+print `PENDING POINTER` and `PENDING TRANSCRIPTION` as examples of what must not appear
+unmarked. Any implementation must therefore exclude this section, or more precisely
+exclude example spans, from its own scan. An implementation that scans the whole file
+will report a defect in the description of the check rather than in any entry, and will
+fail against its own specification. The project has a precedent for this exact shape of
+error: a gate whose grep read the string `fail 0` in a summary line as evidence of
+success. A checker that cannot tell an example of a token from an occurrence of it is
+not checking the thing it names.
 
 **Why it is not added now.** Adding a check moves the number of checks, and that number
 is cited by name outside this file: in `README.md`, in `index.html`, and in the records
