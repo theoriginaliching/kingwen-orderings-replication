@@ -231,7 +231,7 @@ from the zip files of the two deposits and not from a working copy:
 |---|---|---|---|
 | version 2 deposit, 10.5281/zenodo.21628654 | 202 | 0 | 202 |
 | version 1 deposit, 10.5281/zenodo.21609654 | 192 | 0 | 192 |
-| head of branch `errata` of this package | 202 | 0 | 202 |
+| head of branch `errata` of this package | 211 | 0 | 211 |
 
 No check fails and no figure moves. The two deposits differ in the size of the suite,
 not in any reproduced figure: the suite grew between them.
@@ -554,7 +554,7 @@ extracted from their zip files, not in a working copy.
 
 ## X-1. The file table of the package README does not claim to be an inventory
 
-**What was checked.** Whether the table of files in `README.md` is a complete list of
+**What was examined.** Whether the table of files in `README.md` is a complete list of
 what the deposit ships.
 
 **Measurement.** The table declares six files, identically in both deposits:
@@ -592,12 +592,15 @@ against the archive by a stranger, and a file that fits no role is a question ra
 a detail nobody notices. The earlier table was not false and this is not an erratum
 against it; the new one is merely checkable, which the old one was not.
 
-**Nothing watches it.** The inventory is checkable and unchecked: no part of
-`verify_paper.py` enumerates the directory, so nothing today would notice a file added to
-the archive and left out of the table, or a table row naming a file that is gone. That is
-recorded here rather than left implicit, because an inventory believed to be verified and
-in fact unverified is worse than one known to be manual. Whether the check should exist
-is the open question left in the specification below.
+**It was unwatched, and now it is watched.** When this entry was first written the
+inventory was checkable and unchecked: nothing in `verify_paper.py` enumerated the
+directory, so nothing would have noticed a file added to the archive and left out of the
+table, or a row naming a file that is gone. That is no longer true. `section_errata`
+checks it in both directions and names the file that broke it, and the property was proved
+by mutation rather than assumed: a file added to a throwaway copy of the package is
+reported by name. The earlier state is left written here rather than edited away, because
+an inventory believed to be verified and in fact unverified is the more dangerous of the
+two, and the record should show which one it was and when it changed.
 
 **Date examined.** 2026-07-31. **Status.** EXAMINED, NOT AN ERRATUM.
 
@@ -605,12 +608,13 @@ is the open question left in the specification below.
 
 ## X-2. The section-to-verification map holds what it declares
 
-**What was checked.** The map in `README.md`, introduced by:
+**What was examined.** The map in `README.md`, introduced by:
 
 > Every claim in the paper maps to a named check in `verify_paper.py`.
 
-**Measurement.** Ten section functions are named by the map. In the version 1 deposit ten
-section functions exist, and every one is referenced. In the version 2 deposit eleven
+**Measurement.** Taken in the two deposited archives, which are what this entry is about.
+Ten section functions are named by the map there. In the version 1 deposit ten section
+functions exist, and every one is referenced. In the version 2 deposit eleven
 exist, the same ten are referenced, and no row anywhere points at a target that does not
 exist. The declaration therefore holds in both: every claim of the paper that the map
 lists resolves to a section that is really there.
@@ -623,6 +627,11 @@ properties of the compiled artifact, the document information dictionary of the 
 against the canonical strings of `paper.tex`, which are not claims of the paper and so
 fall outside what the map declares itself to cover.
 
+**On this branch the map has moved on.** It now carries a row for `section_errata`, added
+with the check itself, so eleven of the twelve section functions at the head of this
+branch are named and `section_pdf_metadata` is still the one that is not. That changes
+nothing above: the deposits are what they are, and this entry measures them.
+
 **Cost, measured rather than characterised.** A reader who used the map as an index of
 the suite would miss 7 of 202 checks in the version 2 deposit. That is the whole of the
 exposure, and it is recorded because the difference between a map that was audited and a
@@ -634,7 +643,7 @@ map nobody looked at is exactly what this section exists to preserve.
 
 ## X-3. The single DOI constant in the version 2 archive states nothing false
 
-**What was checked.** How the deposited suite names the archive identifier. In the
+**What was examined.** How the deposited suite names the archive identifier. In the
 version 2 archive, `verify_paper.py` line 1160 reads:
 
 > `doi = "10.5281/zenodo.21609654"`
@@ -688,8 +697,11 @@ faulted for not implementing a distinction that did not yet exist.
 
 ## X-4. What the measurement confirmed and did not correct
 
-Kept because a record that lists only what it caught cannot be told apart from a record
-that looked for little.
+**What was examined.** Everything swept in the two deposited archives that came out
+sound. Kept because a record that lists only what it caught cannot be told apart from a
+record that looked for little.
+
+**Measurement.** Six results, each taken inside the archives themselves.
 
 1. **The version 1 deposit is consistent in everything measurable.** Its four declared
    check counts (`README.md` lines 35 and 115, `index.html` lines 179 and 197) all read
@@ -749,16 +761,17 @@ the version DOI it creates.
 
 ---
 
-# A check on this file, proposed and deliberately not added yet
+# The check on this file, specified and now implemented
 
-`verify_paper.py` could enforce this file mechanically. The proposal is written down
-here so that it is not re-invented, and the reason for holding it back is written down
-next to it so that the delay is not mistaken for an oversight.
+`verify_paper.py` enforces this file mechanically, in `section_errata`, since the commit
+that carries this paragraph. The specification below is kept as written, in the present
+tense it was written in, because a specification that is quietly rewritten to match its
+implementation stops being able to disagree with it.
 
 **Shape, decided before the code.** One check per property, not one per entry. Each check
 iterates over the entries inside itself and reports a single verdict; when it fails, its
 message names the entry that broke it. The consequence is the point of the choice: the
-contribution to the suite is **fixed at eight checks** and does not grow when an entry is
+contribution to the suite is **fixed at nine checks** and does not grow when an entry is
 added. A file that costs a check per entry teaches the author to write fewer entries,
 which is the opposite of what this file is for.
 
@@ -767,7 +780,7 @@ the six required fields govern **E-** and **P-** entries only, and **C-** and **
 entries carry four. A single rule applied to all four categories would either fail on the
 examined entries or be too weak to catch anything.
 
-**The eight checks.**
+**The nine checks.**
 
 1. every **E-** and **P-** entry carries the six required fields, by their printed labels;
 2. every **C-** and **X-** entry carries its four;
@@ -781,9 +794,11 @@ examined entries or be too weak to catch anything.
    pending marker, never a silent blank;
 7. every hash written as a sha256 is 64 hexadecimal characters, unabbreviated;
 8. every entry appears exactly once in the section its category belongs to, so that an
-   entry cannot be dropped, duplicated, or filed where nobody will look for it.
+   entry cannot be dropped, duplicated, or filed where nobody will look for it;
+9. the file table in `README.md` is a complete inventory of the package, checked in both
+   directions, nothing present and unlisted and nothing listed and absent.
 
-Each of the eight walks the whole file once and names the offender: not "an entry is
+Each of the nine walks the whole file once and names the offender: not "an entry is
 missing a field" but "P-1 is missing Figures affected". A check that says only that
 something is wrong sends the reader to do the work the check was written to do.
 
@@ -799,18 +814,73 @@ mutation is what tells them apart. The same shape, on a copy that nothing in the
 repository sees, as the three mutations documented in the package README. A check whose
 failure mode has never been run is a check whose failure mode is unknown.
 
-**One open question, deliberately left open.** Should the checker also verify that the
-file table in `README.md` is a complete inventory of the package, now that the table
-declares itself to be one? It is the natural companion of the entry X-1 above, and it has
-a cost the other eight do not: `verify_paper.py` has never enumerated its own directory.
-It opens five files by name and nothing else, and a rule of this kind would make it read
-the directory listing for the first time. That is a different relationship between the
-suite and the package, and it deserves a decision rather than a drift into it.
+**Both mutations were run, and here is what came out.** Two properties are claimed, so two
+mutations, each on a throwaway copy of the whole package:
 
-**Cost, measured, in both shapes.** Eight checks without the inventory rule, taking the
-suite from 202 to 210. Nine with it, taking the suite to 211. Either way the contribution
-is fixed and does not grow when an entry is added to this file, which is the property the
+```
+  [FAIL] errata defect entries carry the six required fields
+         reproduced: ['P-1 lacks Figures affected.']   paper: []
+  210 checks passed, 1 failed, 211 total          exit status 1
+```
+
+```
+  [FAIL] errata the README file table lists all 14 files, and no others
+         reproduced: ['present and unlisted: stray-notes.txt']   paper: []
+  210 checks passed, 1 failed, 211 total          exit status 1
+```
+
+The first deleted the `Figures affected` field from P-1; the second added a file the table
+does not know about. Each fails, and each names what broke it, which is the second half of
+the requirement and the half that would have gone untested.
+
+**The question that was open, and how it was decided.** Should the checker verify that the
+file table in `README.md` is a complete inventory, now that the table declares itself to
+be one? It carried a cost the other eight did not: until this commit `verify_paper.py`
+opened five files by name and never looked at its own directory, and this rule makes it
+read the directory listing for the first time in its life. The decision was to include it,
+and the reason is that an inventory nobody checks is a claim with no gate behind it, which
+is the shape of defect this whole file exists to record. The relationship between the suite
+and the package is now different, and it is different on purpose rather than by drift.
+
+The enumeration needs a rule, and the rule is written in the package README as well as
+here, because a criterion that lives only in code cannot be read by the person the list is
+for. Not part of the package: entries whose name begins with a dot, and Python bytecode
+caches. Everything else is, and the walk descends into subdirectories, because
+`errata-evidence/` is one. It is an exclusion rule and not an inclusion rule deliberately:
+an exclusion rule that meets something new lets it through, and the check then fails
+loudly and names the file, while an inclusion rule would ignore it in silence. At a gate
+one chooses the rule that shouts. Measured against both deposited archives, the rule is a
+no-op there: it excludes nothing from either, nine files in the version 1 archive and
+eleven in version 2, all of them part of the package by this criterion.
+
+**Cost, measured.** Nine checks, taking the suite from 202 to 211. The contribution is
+fixed and does not grow when an entry is added to this file, which is the property the
 shape was chosen for.
+
+## The count moved, and what that invalidates
+
+On 2026-07-31, on branch `errata`, the suite went from **202 checks to 211**: the nine of
+`section_errata`, no others. The count is declared in surfaces that a reader reads, and
+this is exactly the shape of P-1, so it is declared here rather than left to be discovered.
+
+Every live declaration of the count was swept in the same commit that moved it, and each
+was set to the figure the run prints rather than to a figure worked out on paper:
+`README.md`, the sample output of a clean run; `README.md`, the expected result of the
+documented mutation (c); `index.html`, twice, in the summary line and in the description
+of the package. The mutation triple was **re-measured and not recalculated**, which turned
+out to matter: at the head of this branch mutation (c) reports `193 checks passed, 18
+failed, 211 total`, one failure more than the seventeen Mawangdui claims. The eighteenth
+is `section_errata` reporting `mutant.py`, the scratch file the documented recipe writes
+into the package. The gate notices the apparatus of its own demonstration. Nothing was
+wrong with either the recipe or the check, and no amount of arithmetic would have
+predicted the eighteenth failure from the seventeen.
+
+**What the older figures still mean.** Every reference to 202 in this file that speaks of
+a deposit, of `main`, or of the version 2 archive remains correct and is left standing:
+those objects have not changed and will not change here. The deposited archives measure
+192 and 202 as they always did. The figure 211 is true of this branch and of nothing else
+yet, and it becomes the package's figure only if this branch is ever merged or deposited,
+which is a decision that has not been taken.
 
 **Design constraint, stated as the principle it is.** *A document that describes tokens
 contains them, so every check over such a document must distinguish use from mention.*
@@ -844,10 +914,11 @@ file exists to prevent is exactly that kind of drift. Entry P-1 above is that dr
 its own package, caught between a suite that grew and surfaces that had not: the count
 must move once, deliberately, with the surfaces moving in the same act.
 
-**The number, measured rather than assumed.** Run on 2026-07-31: 202 checks, 0 failed,
-at the head of this branch, and 202 likewise on the deposited tree of version 2. The
-deposited tree of version 1 gives 192, which is the figure the suite had at that
-deposit. At least one other figure, 246, circulates in the records of the project; it
+**The number, measured rather than assumed.** Run on 2026-07-31 at the head of this
+branch: 211 checks, 0 failed, which is the 202 of the previous run plus the nine of
+`section_errata`. The deposited tree of version 2 gives 202 and the deposited tree of
+version 1 gives 192, and those two figures are unchanged and remain correct: nothing in
+this branch alters a deposit. At least one other figure, 246, circulates in the records of the project; it
 does not belong to this package at any of the three points measured here, and the
 discrepancy is recorded rather than quietly reconciled, since a number that two records
 give differently is itself a finding.

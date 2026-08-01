@@ -1321,6 +1321,200 @@ def section_paper():
 
 
 # ---------------------------------------------------------------------------
+# The errata log keeps its own declared shape
+# ---------------------------------------------------------------------------
+#
+# Nine checks, one per property. Each walks the whole log inside itself and
+# reports the entries or files that broke the property, so a failure names the
+# culprit instead of announcing that something somewhere is wrong. The
+# contribution to the suite is fixed at nine: it does not grow when an entry is
+# added, because a log that costs a check per entry teaches its author to write
+# fewer entries.
+#
+# The content scans read entry bodies and not the whole file. That is not an
+# optimisation. ERRATA.md describes the tokens these checks look for, so a flat
+# scan would read the description of a check as an instance of the thing it
+# forbids, and would fail against its own specification.
+
+ERRATA_SECTION = {
+    "E": "Open entries",
+    "P": "Open entries",
+    "C": "Clarifications for the next version",
+    "X": "Examined and not an erratum",
+}
+ERRATA_STATUS = {
+    "E": {"OPEN", "APPLIED"},
+    "P": {"OPEN", "APPLIED"},
+    "C": {"NOTED, FOR THE NEXT VERSION"},
+    "X": {"EXAMINED, NOT AN ERRATUM"},
+}
+ERRATA_DEFECT_FIELDS = ("Printed text.", "What it should say.", "Evidence.",
+                        "Date found.", "Figures affected.", "Status.")
+ERRATA_RECORD_FIELDS = ("What was examined.", "Measurement.", "Date examined.",
+                        "Status.")
+ERRATA_MARKERS = ("PENDING POINTER", "PENDING TRANSCRIPTION")
+
+
+def errata_entries(text):
+    """Every entry of the log: identifier, category, the part it sits under, body."""
+    import re
+    lines = text.split("\n")
+    entries, part = [], None
+    for i, line in enumerate(lines):
+        if line.startswith("# "):
+            part = line[2:].strip()
+        m = re.match(r"## ([EPCX])-(\d+)\.", line)
+        if m:
+            j = i + 1
+            while j < len(lines) and not re.match(r"^#{1,2} ", lines[j]):
+                j += 1
+            entries.append({"id": f"{m.group(1)}-{m.group(2)}", "cat": m.group(1),
+                            "part": part, "body": "\n".join(lines[i:j])})
+    return entries
+
+
+def errata_field(body, label):
+    """The text of one labelled field, up to the next label."""
+    import re
+    mark = f"**{label}**"
+    if mark not in body:
+        return None
+    rest = body[body.index(mark) + len(mark):]
+    nxt = re.search(r"\*\*[A-Z][^*]*\.\*\*", rest)
+    return rest[:nxt.start()] if nxt else rest
+
+
+def package_files(here):
+    """Every file of the package, by the declared rule.
+
+    The rule is an exclusion and not an inclusion, deliberately: an exclusion
+    rule that meets something new lets it through and the inventory check then
+    fails loudly, while an inclusion rule would quietly ignore it. At a gate one
+    picks the rule that shouts. Excluded: entries whose name begins with a dot,
+    and Python bytecode caches. Everything else belongs to the package, and the
+    walk descends into subdirectories, because errata-evidence/ is one.
+    """
+    import os
+    out = []
+    for root, dirs, names in os.walk(here):
+        dirs[:] = [d for d in dirs if not d.startswith(".") and d != "__pycache__"]
+        for name in names:
+            if name.startswith(".") or name.endswith(".pyc"):
+                continue
+            rel = os.path.relpath(os.path.join(root, name), here).replace("\\", "/")
+            out.append(rel)
+    return sorted(out)
+
+
+def readme_inventory(readme):
+    """The names the README file table declares, as written in its first column."""
+    import re
+    listed = []
+    for line in readme.split("\n"):
+        m = re.match(r"\|\s*`([^`]+)`\s*\|", line)
+        if m:
+            listed.append(m.group(1))
+    return listed
+
+
+def section_errata():
+    head("The errata log, against the shape it declares for itself")
+
+    import os
+    import re
+    here = os.path.dirname(os.path.abspath(__file__))
+    log = read_text(os.path.join(here, "ERRATA.md"))
+    readme = read_text(os.path.join(here, "README.md"))
+    if log is None or readme is None:
+        # Nine failures rather than nine checks that quietly do not happen: the
+        # contribution to the count is fixed whether the files are there or not.
+        for claim in ("the log is present next to this script",
+                      "defect entries carry the six required fields",
+                      "record entries carry their four fields",
+                      "entry identifiers use a declared prefix and are unique",
+                      "every status is one its category admits",
+                      "no entry leaves a pending marker standing",
+                      "every printed-text field quotes or is marked pending",
+                      "every sha256 is written unabbreviated",
+                      "the README file table is a complete inventory"):
+            check("errata", claim, False, True)
+        return
+
+    entries = errata_entries(log)
+
+    bad = [f"{e['id']} lacks {f}" for e in entries if e["cat"] in "EP"
+           for f in ERRATA_DEFECT_FIELDS if f"**{f}**" not in e["body"]]
+    check("errata", "defect entries carry the six required fields", bad, [])
+
+    bad = [f"{e['id']} lacks {f}" for e in entries if e["cat"] in "CX"
+           for f in ERRATA_RECORD_FIELDS if f"**{f}**" not in e["body"]]
+    check("errata", "record entries carry their four fields", bad, [])
+
+    seen, bad = {}, []
+    for e in entries:
+        if e["id"] in seen:
+            bad.append(f"{e['id']} appears twice")
+        seen[e["id"]] = True
+        want = "Applied" if "**Status.** APPLIED" in e["body"] else ERRATA_SECTION[e["cat"]]
+        if e["part"] != want:
+            bad.append(f"{e['id']} sits under {e['part']!r}, not {want!r}")
+    check("errata", "every entry is filed once, under its category's part", bad, [])
+
+    bad = []
+    for e in entries:
+        field = errata_field(e["body"], "Status.") or ""
+        # The status is what stands before the first full stop; an entry may go on
+        # to say what it is waiting for, and P-1 does.
+        status = field.strip().split(".")[0].strip()
+        if status not in ERRATA_STATUS[e["cat"]]:
+            bad.append(f"{e['id']} carries status {status!r}")
+    check("errata", "every status is one its category admits", bad, [])
+
+    ids = [e["id"] for e in entries]
+    bad = [i for i in ids if not re.fullmatch(r"[EPCX]-\d+", i)]
+    check("errata", f"the {len(ids)} entry identifiers use a declared prefix", bad, [])
+
+    bad = [f"{e['id']} still carries {m}" for e in entries for m in ERRATA_MARKERS
+           if m in e["body"] and "incomplete" not in e["body"]]
+    check("errata", "no entry leaves a pending marker standing", bad, [])
+
+    bad = []
+    for e in entries:
+        if e["cat"] not in "EP":
+            continue
+        field = errata_field(e["body"], "Printed text.")
+        quoted = field is not None and any(l.lstrip().startswith(">")
+                                           for l in field.split("\n"))
+        marked = field is not None and any(m in field for m in ERRATA_MARKERS)
+        if not (quoted or marked):
+            bad.append(f"{e['id']} has no quoted printed text and no pending mark")
+    check("errata", "every printed-text field quotes or is marked pending", bad, [])
+
+    bad = []
+    for e in entries:
+        for token in re.findall(r"`([^`]+)`", e["body"]):
+            if re.fullmatch(r"[0-9a-f]{6,}(?:\.\.\.|…)[0-9a-f]{3,}", token):
+                bad.append(f"{e['id']} abbreviates {token}")
+        for m in re.finditer(r"sha256\s*\n?\s*`([^`]+)`", e["body"]):
+            if not re.fullmatch(r"[0-9a-f]{64}", m.group(1)):
+                bad.append(f"{e['id']} writes a sha256 of {len(m.group(1))} characters")
+    check("errata", "every sha256 is written unabbreviated", bad, [])
+
+    present = package_files(here)
+    listed = readme_inventory(readme)
+    dirs = [n.rstrip("/") for n in listed if n.endswith("/")]
+    files = [n for n in listed if not n.endswith("/")]
+    unlisted = [f"present and unlisted: {p}" for p in present
+                if p not in files and not any(p.startswith(d + "/") for d in dirs)]
+    absent = ([f"listed and absent: {n}" for n in files
+               if not os.path.isfile(os.path.join(here, n))]
+              + [f"listed and absent: {d}/" for d in dirs
+                 if not os.path.isdir(os.path.join(here, d))])
+    check("errata", f"the README file table lists all {len(present)} files, and no others",
+          unlisted + absent, [])
+
+
+# ---------------------------------------------------------------------------
 
 def main():
     print("Replication of: Statistical Structure of the Historical Orderings")
@@ -1340,6 +1534,7 @@ def main():
     section_front_matter()
     section_pdf_metadata()
     section_paper()
+    section_errata()
 
     passed = sum(1 for r in RESULTS if r)
     failed = len(RESULTS) - passed

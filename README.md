@@ -48,9 +48,15 @@ that the archive and the site are the same object.
 The point of declaring the roles is not tidiness. A list without a criterion cannot be
 wrong, and so cannot be checked; a list with one can be compared against the archive by
 anyone, and a file that does not fit a declared role is a question worth asking rather
-than a detail to be noticed years later. Nothing yet verifies this inventory
-mechanically; see the note in [ERRATA.md](ERRATA.md) on the check that is specified and
-not implemented.
+than a detail to be noticed years later.
+
+**The rule, so that the list can be checked and not merely read.** Not part of the package:
+entries whose name begins with a dot, and Python bytecode caches. Everything else is, and
+the enumeration descends into subdirectories, because `errata-evidence/` is one. The rule is
+an exclusion and not an inclusion on purpose: an exclusion rule meeting something new lets
+it through, and the inventory check then fails loudly and names the file; an inclusion rule
+would pass in silence. At a gate one picks the rule that shouts. `section_errata` enforces
+this in both directions, nothing present and unlisted, nothing listed and absent.
 
 ## Running the verification
 
@@ -68,7 +74,7 @@ value printed in the paper, and exits `0` if and only if all checks pass:
 
 ```
 ==================================================================
-  202 checks passed, 0 failed, 202 total
+  211 checks passed, 0 failed, 211 total
 ==================================================================
   REPLICATION COMPLETE: every figure in the paper reproduces.
 ```
@@ -133,6 +139,7 @@ Every claim in the paper maps to a named check in `verify_paper.py`.
 | all | Title, subtitle and BibTeX repeat `paper.tex` character for character on every surface | `section_front_matter` |
 | 8 | The manuscript carries the version DOI `10.5281/zenodo.21609654`; the landing, the READMEs and the BibTeX carry the concept DOI `10.5281/zenodo.21609653` | `section_front_matter` |
 | all | The frozen figures appear verbatim in `paper.tex`; no em dashes | `section_paper` |
+| n/a | `ERRATA.md` keeps the shape it declares, and this file table is a complete inventory of the package | `section_errata` |
 
 ## Breaking the package
 
@@ -155,14 +162,18 @@ sed 's/"Qian", "Gen", "Kan"/"Qian", "Kan", "Gen"/' verify_paper.py > mutant.py &
 |---|---|---|
 | (a) one flipped bit | `0`, the King Wen ordering is a permutation of 0 to 63 | 12 of the first 43 checks fail, then the run aborts with `KeyError: 63` in Section 4 |
 | (b) duplicated hexagram | `0`, the King Wen ordering is a permutation of 0 to 63 | 12 of the first 43 checks fail, then the run aborts with `KeyError: 0` |
-| (c) Mawangdui family swapped | `3.1`, Mawangdui inversions vs binary | the run completes and reports `185 checks passed, 17 failed, 202 total` |
+| (c) Mawangdui family swapped | `3.1`, Mawangdui inversions vs binary | the run completes and reports `193 checks passed, 18 failed, 211 total` |
 
 Exit status is `1` in all three cases. Note the shape of (a) and (b): a corrupted King Wen
 table is no longer a permutation of the 64 values, Section 0 says so before any statistic is
 computed, and the run then aborts rather than printing numbers derived from impossible data.
 Mutation (c) is the subtler one, since a reordered Mawangdui family is still a valid
-permutation; it is caught by the inversion counts, and its 17 failures are exactly the claims
-that depend on the Mawangdui construction.
+permutation; it is caught by the inversion counts, and 17 of its 18 failures are exactly the
+claims that depend on the Mawangdui construction. The eighteenth is the inventory check of
+`section_errata` reporting `mutant.py` itself: the recipe writes a scratch file into the
+package, and the gate that watches the file list notices it. That is the check working, not
+an artefact to be explained away, and it is why the triple above is measured after each
+change rather than carried forward.
 
 ## Compiling the manuscript
 
