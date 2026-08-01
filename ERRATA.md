@@ -51,6 +51,14 @@ something that was checked and found sound; it carries what was checked, the mea
 the date and the verdict, and has no "what it should say" because nothing should say
 anything else.
 
+1. **Printed text**, verbatim, with a pointer to section, page or table.
+2. **What it should say.**
+3. **Evidence** that the printed text is wrong, with its own pointer.
+4. **Date found.**
+5. **Figures affected**, with the measurement that establishes the answer. An
+   unmeasured "none" is not an answer.
+6. **Status.**
+
 ## Which layer the quoted text comes from
 
 This note governs every verbatim in this file, so that it is stated once rather than
@@ -75,14 +83,6 @@ Beyond these, the spans quoted in this file agree with the source character for
 character. Where a printed span contains a ligature codepoint or a word broken by
 hyphenation across a line, an entry quoting it says so; none of the spans quoted so far
 contains either.
-
-1. **Printed text**, verbatim, with a pointer to section, page or table.
-2. **What it should say.**
-3. **Evidence** that the printed text is wrong, with its own pointer.
-4. **Date found.**
-5. **Figures affected**, with the measurement that establishes the answer. An
-   unmeasured "none" is not an answer.
-6. **Status.**
 
 ---
 
@@ -138,9 +138,14 @@ sampler; what is randomised is the arrangement of the blocks.
    `zenodo-v2` in this repository. That is the copy that sustains this entry, because it
    is the copy the reader of the deposit holds. Two courtesies, measured rather than
    assumed: the same lines carry the same code in `verify_paper.py` as deposited in
-   version 1 (52980 bytes, sha256 `bb857fff…ade8`, tag `zenodo-v1`) and at the head of
-   this branch (60916 bytes, sha256 `8a7085c5…b957`). The three files differ in size and
-   in hash; they do not differ in that region, which is why one range serves all three.
+   version 1 (52980 bytes, tag `zenodo-v1`, sha256
+   `bb857fffca9276ce2b1c3f13a4798a03978fea843b2385f84a2581176347ade8`) and at the head of
+   this branch (60916 bytes, sha256
+   `8a7085c5cd4d372843038c6a0a342626a1362f362c2b9f2db41997186ef1b957`). The three files
+   differ in size and in hash; they do not differ in that region, which is why one range
+   serves all three. Hashes are written unabbreviated here and everywhere in this file: a
+   truncated hash cannot be checked, and a record whose identifiers cannot be checked is
+   a record that asks to be believed.
 2. The micro theorem printed in the same appendix states that quartets preserve the
    yang sum and that seven blocks sum to twelve. Under the literal reading of the
    printed description, a pair could leave its block, block sums would not be preserved,
@@ -218,6 +223,26 @@ stands character for character in the PDF inside the version 1 deposit
 **What it should say.** The six nulls are ordered by containment, and that order is
 partial rather than total. A later rung concedes a different part of the architecture,
 not a larger part of it.
+
+**Characterisation.** A false general statement all of whose particular consequences
+hold. It is false as a general statement: the family is not a chain, so there is no
+sense in which each rung concedes more than the one before it. Measured on the printed
+order itself, two of its five consecutive steps are not steps at all. `(P2, P3)` and
+`(P3, P4)` are incomparable, each refuted in both directions by a witness exhibited
+below; the other three, `(P0, P1)`, `(P1, P2)` and `(P4, P5)`, are strict containments.
+Every particular consequence nonetheless holds, and none is withdrawn: the printed order
+is a valid linear extension of the containment order, since all eleven strict
+containments print the larger group before the smaller, so every statement of the form
+"the statistic varies at this rung and is constant at the next" survives unchanged, and
+no figure in Table A1 moves.
+
+The printed sequence cannot be defended as an ordering by size either, and the
+measurement is recorded rather than passed over: the six sets have exact cardinalities
+`|P0|` = 64!, `|P1|` = 32!·2^32, `|P2|` = 15!·17!·2^32, `|P3|` = 28!·2^28,
+`|P4|` = 16!·2^16·2^32, `|P5|` = 2^32, and ordering by those gives P0, P1, **P3, P2**,
+P4, P5. `|P3|` is 41 times `|P2|`, so the two rungs print in the opposite order to their
+size. This is consistent with their being incomparable and it is not a contradiction; it
+is simply one defence the printed wording does not have.
 
 **Evidence.** The fifteen pairwise containments between the six rungs were computed
 from predicates derived from the printed definitions. Eleven strict containments, four
@@ -301,11 +326,13 @@ that matters, a canon boundary falling strictly inside a block. The cross-check 
 its keep, in the way recorded above. The corrected computation and the exhaustive
 enumeration then agree: eleven strict, four incomparable, zero equalities.
 
-**Verification record.** `errata_e2_derivation.py`, in the root of this package on branch
-`errata`. It carries the six predicates, the decision procedure, the eight witnesses and
-the exhaustive enumeration on the shrunk model, and it runs on the standard library
-alone. Until it was committed the code existed only outside the repository, and the slot
-pointed at this entry; it now points at the file, which is what a pointer is for. The
+**Verification record.** `errata-evidence/errata_e2_derivation.py` on branch `errata`. It
+carries the six predicates, the decision procedure, the eight witnesses and the
+exhaustive enumeration on the shrunk model, and it runs on the standard library alone.
+Until it was committed the code existed only outside the repository, and the slot pointed
+at this entry; it now points at the file, which is what a pointer is for. It sits in a
+directory of its own, and not beside `verify_paper.py`, for the reason given in the
+package README: it is not replication code and must not be able to be mistaken for it. The
 prose of the entry first arrived in commit
 `90d4455b140ad9e69fe7ff19c58aa08562a434e6`, on 2026-07-31.
 

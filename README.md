@@ -17,6 +17,12 @@ moment they are found rather than from the moment they are deposited.
 | `paper.pdf` | Compiled manuscript |
 | `index.html` | Landing page for the package |
 | `ERRATA.md` | Defects found in the deposited paper, recorded when found, not when fixed |
+| `errata-evidence/` | Working code behind an errata entry. **Not part of the replication path**: nothing here is run by `verify_paper.py`, and no figure of the paper depends on it |
+
+The directory is separate for one narrow reason, worth stating because it is easy to get
+wrong in the general form: anything that looks like replication code must not sit
+unmarked beside the replication code. A reader who opens this package should not have to
+read a script to find out whether the paper's figures depend on it.
 | `LICENSE` | MIT license, covering the code |
 | `LICENSE-text` | CC BY 4.0, covering the paper text and figures |
 
