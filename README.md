@@ -10,21 +10,47 @@ numerical claim** made in the paper from first principles.
 Defects found in the deposited paper are recorded in [ERRATA.md](ERRATA.md), from the
 moment they are found rather than from the moment they are deposited.
 
-| File | What it is |
-|---|---|
-| `verify_paper.py` | Self-contained verification of every figure in the paper (standard library only) |
-| `paper.tex` | Manuscript source (LaTeX) |
-| `paper.pdf` | Compiled manuscript |
-| `index.html` | Landing page for the package |
-| `ERRATA.md` | Defects found in the deposited paper, recorded when found, not when fixed |
-| `errata-evidence/` | Working code behind an errata entry. **Not part of the replication path**: nothing here is run by `verify_paper.py`, and no figure of the paper depends on it |
+## What is in the package
 
-The directory is separate for one narrow reason, worth stating because it is easy to get
-wrong in the general form: anything that looks like replication code must not sit
-unmarked beside the replication code. A reader who opens this package should not have to
-read a script to find out whether the paper's figures depend on it.
-| `LICENSE` | MIT license, covering the code |
+Every file, with the job it does. The list is a complete inventory, not a selection: it
+is meant to be checkable against the archive, so that a file cannot be added or dropped
+without the list saying so. Three roles are declared, and every file carries exactly one.
+
+**Replication path.** What reproduces the paper's figures, and what it reads.
+
+| File | Role |
+|---|---|
+| `verify_paper.py` | The suite. Reproduces every figure in the paper from first principles; standard library only |
+| `paper.tex` | Manuscript source (LaTeX). Read by the suite as the canonical text |
+| `paper.pdf` | Compiled manuscript, the deposited artifact. Read by the suite for its document metadata |
+
+**Deployed site.** What serves <https://paper.theoriginaliching.com>, and is shipped so
+that the archive and the site are the same object.
+
+| File | Role |
+|---|---|
+| `index.html` | Landing page. Also read by the suite, which checks that it repeats the paper's front matter exactly |
+| `logo-128.webp` | Site logotype, 128 by 128 |
+| `vercel.json` | Deployment configuration: content type and inline disposition for the PDF |
+| `robots.txt` | Crawler directives; points at the sitemap |
+| `sitemap.xml` | One URL, the landing page |
+
+**Record and evidence.** What documents the package rather than running it.
+
+| File | Role |
+|---|---|
+| `README.md` | This file. Also read by the suite, which checks its front matter against `paper.tex` |
+| `ERRATA.md` | Defects found in the deposited paper and in this package, recorded when found, not when fixed |
+| `errata-evidence/` | Working code behind an errata entry. **Not in the replication path**: nothing here is run by `verify_paper.py`, and no figure of the paper depends on it |
+| `LICENSE` | MIT, covering the code |
 | `LICENSE-text` | CC BY 4.0, covering the paper text and figures |
+
+The point of declaring the roles is not tidiness. A list without a criterion cannot be
+wrong, and so cannot be checked; a list with one can be compared against the archive by
+anyone, and a file that does not fit a declared role is a question worth asking rather
+than a detail to be noticed years later. Nothing yet verifies this inventory
+mechanically; see the note in [ERRATA.md](ERRATA.md) on the check that is specified and
+not implemented.
 
 ## Running the verification
 

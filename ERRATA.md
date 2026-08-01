@@ -7,6 +7,15 @@ Hexagrams: Pair Rule, Family Gradient, and the Limits of Demonstrability*
 This is a living document. It is updated when a defect is found, not when a defect is
 fixed.
 
+**Where it stands, 2026-07-31.** Eight entries: two defects in the paper (E-1, E-2), one
+defect in the deposited package (P-1), one clarification for the next version (C-1), and
+four things examined and found sound (X-1 to X-4). **No figure of the paper changes in
+any entry**, and that is measured and not asserted: every figure reproduces in both
+deposits, 192 of 192 in the first and 202 of 202 in the second, with no failures in
+either, and the two defects in the paper are defects of description whose consequences all
+hold. What P-1 corrects is a statement the package makes about its own suite, not about
+the King Wen sequence.
+
 ## What this file is
 
 A public record of every defect found in the deposited paper, with the evidence for
@@ -79,33 +88,49 @@ anything else.
    unmeasured "none" is not an answer.
 6. **Status.**
 
-## Which layer the quoted text comes from
+## How the quoted text is transcribed
 
-This note governs every verbatim in this file, so that it is stated once rather than
+One rule, governing every verbatim in this file, so that it is stated once rather than
 argued in each entry.
 
-Quotations are taken from the **rendered layer of the deposited PDF**, not from the
-LaTeX source that produced it. The reason is the purpose of the document: an erratum
-corrects what the reader has in front of them, and what the reader has is the compiled
-artifact. A reader who compares a quotation here against `paper.tex` will therefore find
-differences that are not defects but the ordinary work of the typesetter. Two such
-differences are present in the spans quoted below, both measured against the deposited
-`paper.tex`:
+**Artefacts of composition are normalised, and named where they occurred. Characters of
+the text are preserved.**
 
-1. **Cross references.** The source writes the reference to Table 2 as the macro
-   `Table~\ref{tab:chan}`; the PDF renders it as `Table 2`. The quotation in E-2 carries
-   the rendered form.
+The line between the two is not a matter of taste. A compositor decides where a line
+breaks, whether `fi` is drawn as one glyph or two, and whether a word is split with a
+hyphen at a margin; none of that is in the text, and all of it changes if the page size
+changes. The author decides that the possessive of `sequence` carries an apostrophe;
+that is in the text, and it survives any re-typesetting. So:
+
+- **Normalised**, and named: line breaks, ligature codepoints, hyphens introduced by a
+  break across a line or a page.
+- **Preserved**, exactly: every other character, including U+2019 where the artifact
+  composes a typographic apostrophe, and every digit, bracket and mark of punctuation
+  the author put there.
+
+There is a practical test behind the rule, and it is the reason the rule is not the
+other way round. A reader should be able to take a quotation from this file, search for
+it in the deposited PDF, and find it. A quotation carrying U+FB01 in `verification`
+fails that test: the string is not findable, because a reader types `fi` and the file
+holds one glyph. A quotation carrying U+2019 passes it, because the reader's copy has
+U+2019 too.
+
+**Where the quotations still differ from the LaTeX source.** They are taken from the
+deposited PDF, because an erratum corrects what the reader has in front of them, and what
+the reader has is the compiled artifact. Measured against the deposited `paper.tex`, two
+differences remain after the normalisation above, and both are the typesetter's work:
+
+1. **Macros that render as text.** The source writes the reference to Table 2 as
+   `Table~\ref{tab:chan}` and the laboratory address as `\url{https://...}`; the PDF
+   renders the first as `Table 2` and the second as the bare address. The quotations here
+   carry the rendered forms.
 2. **Apostrophes.** The source writes an ASCII apostrophe, `sequence's` and `block's`;
-   the PDF composes the typographic form, U+2019. The quotations here carry U+2019,
-   because that is the character in the artifact.
+   the PDF composes U+2019. The quotations here carry U+2019, because that is the
+   character in the artifact and it is a character of the text, not of the composition.
 
-Beyond these, the spans quoted in this file agree with the source character for
-character. Where a printed span contains a ligature codepoint or a word broken by
-hyphenation across a line, the entry quoting it says so. Two entries are in that
-position: the spans quoted in E-1 and E-2 contain neither, and the two spans quoted in
-C-1 contain both, the ligature U+FB01 for `fi` in three words and a page break falling
-inside `accompanying`. Both are reproduced as the artifact has them, and C-1 names them
-where it quotes them.
+Everything else agrees with the source character for character. The spans quoted in C-1
+agree with it exactly once the ligatures are decomposed and the `\url{}` wrapper is
+unwrapped, which is what the rule above requires and what C-1 does.
 
 ---
 
@@ -429,9 +454,14 @@ inferred:
 | 2026-07-27T16:52:01Z | commit `9b4720999e63c5a0ba944ad261b5d6e2aac47031` separates the version DOI from the concept DOI, 35 minutes after the deposit |
 | 2026-07-28T04:36:47Z | commit `73d9a77cdc59ea1410ae815cbb484dc68eb752d1` corrects the count on the surfaces, 192 to 202, twelve hours after the deposit |
 
-The deposit fell into a window in which the suite had already grown and the surfaces had
-not yet caught up. The version 1 deposit is not affected: it declares 192 in the same four
-places, its tree measures 192, and its mutation table reproduces exactly.
+**The version 1 deposit is consistent, and this is measured, not assumed.** All four
+strings read 192 there and its tree measures 192; its mutation table reproduces exactly,
+`175 checks passed, 17 failed, 192 total`, the figure it prints. The package did not carry
+this defect from the start and does not carry it chronically. The mismatch is born in the
+version 2 deposit, in a window of twelve hours and thirty-six minutes between a suite that
+had already grown and surfaces that had not yet been updated, and it is corrected the
+following day. One deposit is affected, and it is the current one, which is why the entry
+is open.
 
 **Date found.** 2026-07-31, during a consistency sweep of the two deposited archives.
 
@@ -464,7 +494,7 @@ deposited PDF, the paragraph headed `Reproducibility.`, whose first sentence is 
 across the page boundary inside the word `accompanying`:
 
 > Every numerical claim in this paper is asserted by an automated suite of 63
-> veriﬁcation sections in a public repository (exit status zero is a publication gate for
+> verification sections in a public repository (exit status zero is a publication gate for
 > the accompanying interactive laboratory).
 
 and page 12, third block, in Section 8:
@@ -473,11 +503,25 @@ and page 12, third block, in Section 8:
 > laboratory of 45 experiments at https://experiments.theoriginaliching.com (in Spanish;
 > an English version is in progress), whose assertion suite comprises 63 sections executed
 > as a publication gate (exit status zero required); computed statistics are frozen as
-> assertions once veriﬁed, so that no ﬁgure can drift silently.
+> assertions once verified, so that no figure can drift silently.
 
-Both spans carry U+FB01 in `veriﬁcation`, `veriﬁed` and `ﬁgure`, which is the ligature the
-typesetter composes for `fi`; the first is hyphenated across the page break. The version 1
-deposit prints 61 in both places and is otherwise identical.
+*Physical layer, named as the transcription rule requires.* Three glyphs in these two
+spans are the ligature U+FB01, which the typesetter composes for the pair `fi`: one on
+page 3, in `verification`, and two on page 12, in `verified` and in `figure`. They are
+written above as `fi`, decomposed. The first span is also cut by the page break inside
+`accompanying`, printed as `accompany-` at the foot of page 3 and `ing` at the head of
+page 4; the hyphen is the break, not the word, and is not reproduced. Line breaks of the
+printed column are not reproduced either. No character of the text is altered.
+
+One consequence worth recording, because it costs nothing and settles a question a reader
+might otherwise have to ask: with the ligatures decomposed, these two spans agree
+character for character with the deposited `paper.tex` as well as with the PDF, once the
+source's `\url{...}` wrapper around the laboratory address is unwrapped. Measured, both
+spans, against the `paper.tex` of the version 2 archive. Neither sentence contains a
+cross reference or an apostrophe, so the other two divergences named in the transcription
+rule do not arise here.
+
+The version 1 deposit prints 61 in both places and is otherwise identical.
 
 **Measurement.** The figure is exact, at both deposits, and it is the laboratory's. The
 laboratory suite executed 61 sections at the commit current when the version 1 record was
@@ -530,13 +574,30 @@ and the table's own header is `| File | What it is |`. A description of what a p
 contains is not a manifest of everything in it, and a header naming a column "File" does
 not promise to enumerate all of them. A claim that was never made cannot be false.
 
-**Observation kept with it.** The repository does two jobs and the README describes one.
+**Observation kept with it.** The repository does two jobs and the README described one.
 It is the replication package, and it is also the source of the deployed landing site;
-the undeclared files are, with one exception, the second job's: `vercel.json`,
+the undeclared files were, with one exception, the second job's: `vercel.json`,
 `robots.txt`, `sitemap.xml` and `logo-128.webp` serve the site, and `README.md` is the
-file doing the describing. The shortfall is not drift in the table. It is a second office
-the table was never written for. This matters for the version 1 archive too, which is
-short by three: it was not clean here and later spoiled.
+file doing the describing. The shortfall was not drift in the table. It was a second
+office the table was never written for. This holds for the version 1 archive too, which
+is short by three: it was not clean here and later spoiled.
+
+**What was changed, and why it is not a correction of this entry.** The table in the
+package README has since been rewritten, on branch `errata`, as a complete inventory:
+every file, grouped under three declared roles, replication path, deployed site, record
+and evidence. The reason is not that files were missing. It is that a selection without a
+written criterion cannot be checked by anyone, so no reader could tell an omission from a
+choice, and neither could the author. With the roles declared, the list can be compared
+against the archive by a stranger, and a file that fits no role is a question rather than
+a detail nobody notices. The earlier table was not false and this is not an erratum
+against it; the new one is merely checkable, which the old one was not.
+
+**Nothing watches it.** The inventory is checkable and unchecked: no part of
+`verify_paper.py` enumerates the directory, so nothing today would notice a file added to
+the archive and left out of the table, or a table row naming a file that is gone. That is
+recorded here rather than left implicit, because an inventory believed to be verified and
+in fact unverified is worse than one known to be manual. Whether the check should exist
+is the open question left in the specification below.
 
 **Date examined.** 2026-07-31. **Status.** EXAMINED, NOT AN ERRATUM.
 
@@ -587,10 +648,35 @@ that tree, it does: `paper.tex`, `README.md`, `index.html` and `verify_paper.py`
 carry `10.5281/zenodo.21609654` and no other Zenodo identifier. The statement is true of
 the tree that makes it.
 
+**It is declared, and here is the declaration.** The record itself says so. The version 2
+deposit carries version notes, held as an additional description of the record rather
+than in its notes field, which read in part:
+
+> Version 2 (2026-07-27): this version adds the preprint PDF as a separate file, so that
+> the full text can be read directly from this record, and updates the replication
+> package with a rebuilt PDF that now carries document metadata (title, author, subject
+> and keywords). The text of the paper is unchanged between versions: no result, figure,
+> table or reference has been modified.
+>
+> Note: the DOI printed inside the PDF (10.5281/zenodo.21609654) is the DOI of version 1
+> of this record; the concept DOI 10.5281/zenodo.21609653 always resolves to the latest
+> version.
+
+Harvested from `https://zenodo.org/api/records/21628654`, requested with
+`Accept: application/vnd.inveniordm.v1+json`, at 2026-08-01T00:17:09Z. The pointer is
+given with the media type because it matters: the same URL requested in the legacy
+representation, at 2026-07-31T21:10:59Z, returns a record with no notes field and no
+additional descriptions, and an earlier pass of this audit concluded from it that no
+version notes existed. They did. The conclusion was wrong because the question was put to
+a representation that cannot carry the answer.
+
+So the reader is not left to discover the discrepancy: the deposit states, in its own
+record, which DOI the PDF prints and why, and which DOI resolves to the latest version.
+
 **Why this is not an erratum.** The identifier printed is the version DOI of the first
-deposit, carried by a package deposited as the second. That is a state prior to a policy,
-not a false assertion: the split, in which the manuscript keeps its version DOI while the
-living surfaces carry the concept DOI, arrives in commit
+deposit, carried by a package deposited as the second, and declared as such. That is a
+state prior to a policy, not a false assertion: the split, in which the manuscript keeps
+its version DOI while the living surfaces carry the concept DOI, arrives in commit
 `9b4720999e63c5a0ba944ad261b5d6e2aac47031`, whose committer timestamp is
 2026-07-27T16:52:01Z. The version 2 record was created at 2026-07-27T16:16:56Z. The
 policy is 35 minutes younger than the deposit it would have changed. A deposit cannot be
@@ -629,6 +715,22 @@ that looked for little.
    and aborts with `KeyError: 0`; mutation (c) completes and reports `175 checks passed,
    17 failed, 192 total`; exit status 1 in all three. Every figure in that table is the
    figure the package produces.
+5. **The version notes of the second deposit agree with the measurement**, which is worth
+   stating because a declaration that nobody checks is a declaration that has not been
+   tested. They say the text of the paper is unchanged between versions and that no
+   result, figure, table or reference has been modified. Measured on the text layers of
+   the two deposited PDFs: Appendix A is identical, 2901 bytes with the same sha256; and
+   across all fifteen pages exactly two characters differ, both of them the same one, the
+   `1` of `61` becoming the `3` of `63` on page 3 and on page 12. That is the laboratory's
+   section count and nothing else. No result, no figure, no table, no reference.
+6. **None of the ten checks added in the second deposit asserts a figure of the paper.**
+   Named, from the run: three in the front matter section, that the title page and the
+   author line are built from the canonical macros and that the canonical author is read
+   from `paper.tex`; and seven in the new PDF metadata section, that `pdftitle` and
+   `pdfauthor` are built from the canonical macros, that the PDF carries a document
+   information dictionary, that `/Title` and `/Author` exist in it, and that each matches
+   `paper.tex`. Every one is about how the document names itself. Not one is about the
+   King Wen sequence.
 
 **Date examined.** 2026-07-31. **Status.** EXAMINED, NOT AN ERRATUM.
 
@@ -685,8 +787,30 @@ Each of the eight walks the whole file once and names the offender: not "an entr
 missing a field" but "P-1 is missing Figures affected". A check that says only that
 something is wrong sends the reader to do the work the check was written to do.
 
-**Cost, measured.** Eight checks, whatever the file grows to: the suite would move from
-202 to 210, once, and then stay there while this file lengthens.
+**And that property is itself proved, by mutation.** A message that names the offender is
+a claim about the checker, and claims about checkers are exactly the ones that go untested
+until they are needed. The proof is the same instrument the package already uses on
+itself: break the file on purpose and read what comes out. Concretely, delete the
+`**Figures affected.**` field from entry P-1 in a throwaway copy of `ERRATA.md`, run the
+suite against that copy, and require two things of the result, not one: that check 1
+fails, and that the failure message contains the string `P-1`. A checker that fails
+without naming the entry passes the first requirement and fails the second, and the
+mutation is what tells them apart. The same shape, on a copy that nothing in the
+repository sees, as the three mutations documented in the package README. A check whose
+failure mode has never been run is a check whose failure mode is unknown.
+
+**One open question, deliberately left open.** Should the checker also verify that the
+file table in `README.md` is a complete inventory of the package, now that the table
+declares itself to be one? It is the natural companion of the entry X-1 above, and it has
+a cost the other eight do not: `verify_paper.py` has never enumerated its own directory.
+It opens five files by name and nothing else, and a rule of this kind would make it read
+the directory listing for the first time. That is a different relationship between the
+suite and the package, and it deserves a decision rather than a drift into it.
+
+**Cost, measured, in both shapes.** Eight checks without the inventory rule, taking the
+suite from 202 to 210. Nine with it, taking the suite to 211. Either way the contribution
+is fixed and does not grow when an entry is added to this file, which is the property the
+shape was chosen for.
 
 **Design constraint, stated as the principle it is.** *A document that describes tokens
 contains them, so every check over such a document must distinguish use from mention.*
