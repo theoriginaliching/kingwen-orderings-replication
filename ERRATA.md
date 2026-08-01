@@ -39,6 +39,26 @@ is the only public record of it.
 - **EXAMINED, NOT AN ERRATUM**: something was checked and found to be correct. These
   entries stay. A record that lists only what it found is a record that has dropped
   what it looked for.
+- **NOTED, FOR THE NEXT VERSION**: nothing printed is false, and something could be said
+  more precisely. It is not a correction and creates no obligation to deposit; it is a
+  note to whoever edits the sentence next.
+
+## Categories
+
+An entry's identifier says which kind of thing it is, because the kinds are not judged
+by the same standard. The prefixes are separate series and none continues another.
+
+- **E-**: a defect in the text of the deposited paper. This is what the file was opened
+  for.
+- **P-**: a defect in the deposited replication package: its README, its landing page,
+  its suite, anything shipped in the archive that is not the paper. The paper can be
+  correct while the package that carries it is not.
+- **C-**: a clarification for the next version. Nothing printed is false.
+- **X-**: examined and found not to be an erratum.
+
+The six required fields below govern **E-** and **P-** entries, which are the entries
+that assert a defect. **C-** and **X-** entries carry four: what was examined, the
+measurement, the date, and the status.
 
 ## Required fields
 
@@ -81,8 +101,11 @@ differences are present in the spans quoted below, both measured against the dep
 
 Beyond these, the spans quoted in this file agree with the source character for
 character. Where a printed span contains a ligature codepoint or a word broken by
-hyphenation across a line, an entry quoting it says so; none of the spans quoted so far
-contains either.
+hyphenation across a line, the entry quoting it says so. Two entries are in that
+position: the spans quoted in E-1 and E-2 contain neither, and the two spans quoted in
+C-1 contain both, the ligature U+FB01 for `fi` in three words and a page break falling
+inside `accompanying`. Both are reproduced as the artifact has them, and C-1 names them
+where it quotes them.
 
 ---
 
@@ -238,8 +261,8 @@ no figure in Table A1 moves.
 
 The printed sequence cannot be defended as an ordering by size either, and the
 measurement is recorded rather than passed over: the six sets have exact cardinalities
-`|P0|` = 64!, `|P1|` = 32!·2^32, `|P2|` = 15!·17!·2^32, `|P3|` = 28!·2^28,
-`|P4|` = 16!·2^16·2^32, `|P5|` = 2^32, and ordering by those gives P0, P1, **P3, P2**,
+`|P0|` = 64!, `|P1|` = 32! x 2^32, `|P2|` = 15! x 17! x 2^32, `|P3|` = 28! x 2^28,
+`|P4|` = 16! x 2^16 x 2^32, `|P5|` = 2^32, and ordering by those gives P0, P1, **P3, P2**,
 P4, P5. `|P3|` is 41 times `|P2|`, so the two rungs print in the opposite order to their
 size. This is consistent with their being incomparable and it is not a contradiction; it
 is simply one defence the printed wording does not have.
@@ -355,6 +378,128 @@ smaller. Every statement of the form "the statistic varies at this rung and is c
 at the next" therefore survives unchanged.
 
 **Status.** OPEN.
+
+---
+
+## P-1. The deposited package declares a check count its own suite does not have
+
+The first entry about the package rather than the paper. The distinction is measured and
+not assumed: neither `paper.tex` nor the compiled PDF states the number of checks in this
+package anywhere, so no figure printed in the paper is touched by what follows.
+
+**Printed text.** Four places in the version 2 deposit (10.5281/zenodo.21628654). In
+`README.md` line 35 and `index.html` line 197, inside a sample of the program's own
+output:
+
+> ```
+>   192 checks passed, 0 failed, 192 total
+> ```
+
+In `index.html` line 179:
+
+> paper source, compiled PDF, and a self-contained script that reproduces every figure
+> (192 checks, standard library only)
+
+In `README.md` line 115, in the table of what each documented mutation produces:
+
+> the run completes and reports `175 checks passed, 17 failed, 192 total`
+
+**What it should say.** 202 in the first three. In the fourth, `185 checks passed, 17
+failed, 202 total`.
+
+**Evidence.** The suite deposited in the same archive, run against its own tree,
+extracted from the deposited zip and not from a working copy: **202 checks passed, 0
+failed, 202 total**. The documented mutation (c) then run on that tree exactly as its own
+README prescribes: **185 passed, 17 failed, 202 total**, exit status 1, first failing
+check `3.1`, which is the check the table names. The failure count of 17 and the identity
+of the first failing check are correct as printed; the two totals are not.
+
+Where the ten went, measured per section: the front matter section grew from 16 checks to
+19, and a new section asserting the document metadata of the PDF contributed 7. Sixteen
+plus three plus seven is the whole of the difference; no other section moved, and no
+figure of the paper is among them.
+
+The timeline is the explanation, and every instant in it is measured rather than
+inferred:
+
+| instant (UTC) | event |
+|---|---|
+| 2026-07-27T15:40:26Z | commit `61486e35665f0fc42212205ca05b0ead7048e0f6`, the tree later deposited, already carrying the 202-check suite |
+| 2026-07-27T16:16:56Z | the version 2 record is created on Zenodo, 36 minutes later, with the surfaces still saying 192 |
+| 2026-07-27T16:52:01Z | commit `9b4720999e63c5a0ba944ad261b5d6e2aac47031` separates the version DOI from the concept DOI, 35 minutes after the deposit |
+| 2026-07-28T04:36:47Z | commit `73d9a77cdc59ea1410ae815cbb484dc68eb752d1` corrects the count on the surfaces, 192 to 202, twelve hours after the deposit |
+
+The deposit fell into a window in which the suite had already grown and the surfaces had
+not yet caught up. The version 1 deposit is not affected: it declares 192 in the same four
+places, its tree measures 192, and its mutation table reproduces exactly.
+
+**Date found.** 2026-07-31, during a consistency sweep of the two deposited archives.
+
+**Figures affected.** None in the paper, and this is measured rather than asserted: every
+figure of the paper reproduces in both deposits, 192 of 192 in version 1 and 202 of 202 in
+version 2, with no failures in either. What is wrong is the package's statement about its
+own suite, not any statement about the King Wen sequence.
+
+**Status.** OPEN. Corrected in the repository on 2026-07-28 in commit
+`73d9a77cdc59ea1410ae815cbb484dc68eb752d1`; still present in the deposited archive
+10.5281/zenodo.21628654, which is what a reader downloads today; closes with the next
+deposit, which will carry the corrected surfaces and be named here as the version that
+applied it.
+
+**Note for a reader who has the package.** Run it. The program prints its own count, and
+the count it prints is the true one.
+
+---
+
+# Clarifications for the next version
+
+Nothing in this section is false. Each entry records a sentence that is exact as printed
+and could be less easy to misread, so that whoever edits it next is not editing blind.
+
+## C-1. "A public repository" does not say which repository
+
+**What was examined.** The number the paper gives for its verification suite, and whether
+it describes the replication package the reader downloads with the paper. Page 3 of the
+deposited PDF, the paragraph headed `Reproducibility.`, whose first sentence is broken
+across the page boundary inside the word `accompanying`:
+
+> Every numerical claim in this paper is asserted by an automated suite of 63
+> veriﬁcation sections in a public repository (exit status zero is a publication gate for
+> the accompanying interactive laboratory).
+
+and page 12, third block, in Section 8:
+
+> As a secondary resource, the same material is explored in an extended interactive
+> laboratory of 45 experiments at https://experiments.theoriginaliching.com (in Spanish;
+> an English version is in progress), whose assertion suite comprises 63 sections executed
+> as a publication gate (exit status zero required); computed statistics are frozen as
+> assertions once veriﬁed, so that no ﬁgure can drift silently.
+
+Both spans carry U+FB01 in `veriﬁcation`, `veriﬁed` and `ﬁgure`, which is the ligature the
+typesetter composes for `fi`; the first is hyphenated across the page break. The version 1
+deposit prints 61 in both places and is otherwise identical.
+
+**Measurement.** The figure is exact, at both deposits, and it is the laboratory's. The
+laboratory suite executed 61 sections at the commit current when the version 1 record was
+created and 63 at the commit current when the version 2 record was created; it executes 63
+today. The identity is enforced rather than observed: the laboratory's own suite reads the
+number printed in the manuscript and asserts that it equals the count of sections it
+executes, failing its publication gate otherwise. Nothing here is wrong, and nothing needs
+correcting in any deposited version.
+
+**What could be said more precisely.** The phrase "a public repository" does not name
+which repository, and the reader is holding another one that answers to the same
+description: this replication package is a public repository too, and it also runs an
+automated suite as a gate. Its suite is a different object of a different size, measured
+in both deposits: ten section functions and 192 checks in version 1, eleven and 202 in
+version 2. Neither deposit contains 61 or 63 of anything. A reader who takes "a public
+repository" to mean the package in their hands will look for 63 of something and find no
+such number, with nothing in the sentence to tell them they are looking in the wrong
+place. Naming the repository, once, would close that.
+
+**Date examined.** 2026-07-31.
+
+**Status.** NOTED, FOR THE NEXT VERSION.
 
 ---
 
@@ -508,18 +653,40 @@ the version DOI it creates.
 here so that it is not re-invented, and the reason for holding it back is written down
 next to it so that the delay is not mistaken for an oversight.
 
-**Proposed check.** For every entry under `# Open entries`:
+**Shape, decided before the code.** One check per property, not one per entry. Each check
+iterates over the entries inside itself and reports a single verdict; when it fails, its
+message names the entry that broke it. The consequence is the point of the choice: the
+contribution to the suite is **fixed at eight checks** and does not grow when an entry is
+added. A file that costs a check per entry teaches the author to write fewer entries,
+which is the opposite of what this file is for.
 
-1. all six required fields are present, by their printed labels;
-2. no pointer is empty, that is, no field of an entry still reads `PENDING POINTER`
-   without the entry saying in its own text that it is incomplete;
-3. no verbatim is empty without a mark, that is, a `**Printed text.**` field either
-   quotes the artifact or carries an explicit `PENDING TRANSCRIPTION` marker, never a
-   silent blank;
-4. every `sha256` written in the file is 64 hexadecimal characters;
-5. every entry carries a status drawn from the vocabulary above;
-6. the count of entries in the file matches the count the check reports, so that an
-   entry cannot be dropped silently.
+The rules are separate by category, because the categories are not held to one standard:
+the six required fields govern **E-** and **P-** entries only, and **C-** and **X-**
+entries carry four. A single rule applied to all four categories would either fail on the
+examined entries or be too weak to catch anything.
+
+**The eight checks.**
+
+1. every **E-** and **P-** entry carries the six required fields, by their printed labels;
+2. every **C-** and **X-** entry carries its four;
+3. every entry identifier uses a declared category prefix, and no identifier is used
+   twice;
+4. every status is drawn from the vocabulary, and is one its category admits: no **C-**
+   entry may be OPEN, no **E-** or **P-** entry may be EXAMINED, NOT AN ERRATUM;
+5. no entry leaves a `PENDING POINTER` or `PENDING TRANSCRIPTION` marker standing unless
+   its own text says it is incomplete;
+6. every `**Printed text.**` field either quotes the artifact or carries an explicit
+   pending marker, never a silent blank;
+7. every hash written as a sha256 is 64 hexadecimal characters, unabbreviated;
+8. every entry appears exactly once in the section its category belongs to, so that an
+   entry cannot be dropped, duplicated, or filed where nobody will look for it.
+
+Each of the eight walks the whole file once and names the offender: not "an entry is
+missing a field" but "P-1 is missing Figures affected". A check that says only that
+something is wrong sends the reader to do the work the check was written to do.
+
+**Cost, measured.** Eight checks, whatever the file grows to: the suite would move from
+202 to 210, once, and then stay there while this file lengthens.
 
 **Design constraint, stated as the principle it is.** *A document that describes tokens
 contains them, so every check over such a document must distinguish use from mention.*
@@ -549,7 +716,9 @@ from a use of it is not checking the thing it names, and its passes mean nothing
 is cited by name outside this file: in `README.md`, in `index.html`, and in the records
 of the project that quote them. Moving it in the same act that introduces the errata
 file would make the two changes indistinguishable afterwards, and the first thing this
-file exists to prevent is exactly that kind of drift.
+file exists to prevent is exactly that kind of drift. Entry P-1 above is that drift, in
+its own package, caught between a suite that grew and surfaces that had not: the count
+must move once, deliberately, with the surfaces moving in the same act.
 
 **The number, measured rather than assumed.** Run on 2026-07-31: 202 checks, 0 failed,
 at the head of this branch, and 202 likewise on the deposited tree of version 2. The
