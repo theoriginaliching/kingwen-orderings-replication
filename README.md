@@ -72,6 +72,16 @@ six conditional nulls in Appendix A is the largest of them.
 The script prints `PASS` or `FAIL` for each check, showing the reproduced value beside the
 value printed in the paper, and exits `0` if and only if all checks pass:
 
+**A non-zero exit now means one of two different things**, and the failure line says which.
+Either a claim of the paper did not reproduce, or the working directory does not match the
+file table above. The second is not a statement about the paper at all: since
+`section_errata` checks the inventory, a stray file in your clone makes the run fail, and
+the message names the file, for example `present and unlisted: notes.swp`. If that is the
+only failure, every figure in the paper reproduced. Delete the stray file, or add it to
+the table if it belongs there, and the run is green again. A failure whose message names a
+section and a figure, `[FAIL] 3.1 Mawangdui inversions vs binary`, is the other kind, and
+that one is about the paper.
+
 ```
 ==================================================================
   211 checks passed, 0 failed, 211 total
@@ -168,12 +178,14 @@ Exit status is `1` in all three cases. Note the shape of (a) and (b): a corrupte
 table is no longer a permutation of the 64 values, Section 0 says so before any statistic is
 computed, and the run then aborts rather than printing numbers derived from impossible data.
 Mutation (c) is the subtler one, since a reordered Mawangdui family is still a valid
-permutation; it is caught by the inversion counts, and 17 of its 18 failures are exactly the
-claims that depend on the Mawangdui construction. The eighteenth is the inventory check of
-`section_errata` reporting `mutant.py` itself: the recipe writes a scratch file into the
-package, and the gate that watches the file list notices it. That is the check working, not
-an artefact to be explained away, and it is why the triple above is measured after each
-change rather than carried forward.
+permutation; it is caught by the inversion counts. **It breaks eighteen checks and not
+seventeen, and the eighteenth is not about the Mawangdui construction: it is the recipe
+itself.** The command writes `mutant.py` into the package before running it, and the
+inventory check of `section_errata` sees a file the table above does not list, reporting
+`present and unlisted: mutant.py`. Seventeen of the eighteen are exactly the claims that
+depend on the Mawangdui construction; the eighteenth is the gate noticing the scaffolding
+of its own demonstration. That is the check working, not an artefact to be explained away,
+and it is why the triple above is measured after each change rather than carried forward.
 
 ## Compiling the manuscript
 
