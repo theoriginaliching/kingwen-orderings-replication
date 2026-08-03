@@ -1413,6 +1413,29 @@ asserts both of those and the absence of the superseded version DOI. The surface
 in the same commit and the remote's check reported them until they were, twice, first at
 256 against 259 and then on the mutation line alone.
 
+**A surface that reads a figure cannot go stale. A surface that copies one can.** This is
+the general form of what P-1 records, and it is worth stating as a preference and not only
+as a lesson.
+
+The package publishes its check count in `README.md` and in `index.html`, which are copies:
+they hold a number that was true when someone typed it, and the only thing standing between
+them and P-1 happening again is `check_published_counts`, a gate that compares the copy
+against the truth and fails when they part. The gate is necessary precisely because the
+figure is copied.
+
+The laboratory does the other thing. Its suite runs this package's `verify_paper.py` as a
+subprocess, reads the count out of the output, and asserts what it actually cares about,
+that nothing failed and that the passes equal the total. Measured on 2026-08-03: the count
+moved from 202 to 259 in one act and **the laboratory needed no sweep at all**, because it
+never held a copy to sweep. It printed the new figure by itself.
+
+So: where a figure can be read at the moment it is needed, read it, and assert the property
+that matters rather than the number. Where it has to be copied, because a human reads the
+surface and no program runs there, copy it and put a gate behind it. The gate is the
+second-best form and it is what this package uses on its two published surfaces; the
+laboratory's consumption is the better one and is the model to prefer when the choice
+exists.
+
 **A self-referential figure is not measured once. It is iterated to a fixed point, and
 the number of iterations is reported.** This is a rule and not an anecdote of one round.
 

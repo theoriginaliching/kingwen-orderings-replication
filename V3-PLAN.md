@@ -1,8 +1,24 @@
 # Plan for version 3
 
-Written 2026-08-03 on branch `errata`. **Nothing here has been executed.** The plan exists
-so that the first irreversible step can be looked at before it happens rather than
-explained afterwards.
+**This is a plan as of 2026-08-03, and a copy of it is sealed inside the deposited
+archive. Its status is not read here. It is read in `ERRATA.md` and in the commit
+history.**
+
+That warning is not decoration. This file is part of the package, so it goes into the
+archive, and the archive is built before the deposit exists: steps (f) and (g), reserving
+the version DOI and tagging the deposited commit, happen *after* the zip is sealed. A
+sealed copy therefore says that the deposit has not been made, and it will go on saying so
+for as long as the archive exists, because nothing inside a frozen artifact can be
+corrected later. The alternative was to mark every step done before sealing, which would
+have been worse: it would have declared as finished two steps that had not yet happened.
+Of the two available honesties, this file takes the dated one.
+
+**Where each step actually stands is recorded outside this file**, in the entries and in
+the git log, which are the things that can still be written to after a deposit is sealed.
+
+Originally written 2026-08-03 on branch `errata`, when nothing here had been executed. The
+plan exists so that the first irreversible step can be looked at before it happens rather
+than explained afterwards.
 
 The steps are in order. Each carries what it needs before it can start, what it produces,
 what can go wrong, and how the result is checked. Where a step has a cheap way to be
@@ -271,6 +287,14 @@ two would be easy and would be wrong.
 ## (e) Build the archive from `main`, extract it into a clean directory, and run the suite there
 
 **Needs.** Steps (a) to (d) done, everything committed and `main` carrying it.
+
+**Decided, and it closes a question rather than answering it once.** *The archive is always
+built from this package, on `main`, and never from the laboratory's `replication/`
+snapshot.* The package is canonical for that directory and a copy cannot be the origin of a
+deposit. The rule matters because the snapshot drifts: it is refreshed by hand, so any
+commit here leaves it stale until someone re-synchronises it, and if the archive could come
+from either side then "which of the two" would have to be decided correctly every single
+time. With the rule, the drift cannot reach the archive at all.
 
 **Why this step exists.** Because it did not exist when the current archives were built,
 and P-1 is the consequence: the version 2 archive shipped a suite of 202 checks with four
