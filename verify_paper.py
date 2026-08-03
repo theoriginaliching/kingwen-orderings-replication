@@ -1183,8 +1183,14 @@ def section_front_matter():
     # string, in each surface; nothing in this file touches the network.
     doi_version = "10.5281/zenodo.21609654"
     doi_concept = "10.5281/zenodo.21609653"
-    check("front", "paper.tex carries the version DOI it was archived with",
-          doi_version in tex, True)
+    # Since the manuscript was rewritten for version 3 it carries BOTH: the concept
+    # DOI, which is known before any deposit exists and always resolves to the
+    # newest one, and a named gap where the version DOI goes once it is reserved.
+    # The gap is asserted rather than trusted, so that it cannot be deposited blank.
+    check("front", "paper.tex carries the concept DOI, which needs no deposit to exist",
+          doi_concept in tex, True)
+    check("front", "paper.tex names the gap where its version DOI goes",
+          "PENDING VERSION DOI" in tex, True)
     for name in ("README.md", "index.html"):
         surface = read_text(os.path.join(here, name))
         if surface is None:
@@ -1621,7 +1627,9 @@ SURFACE_LOCATIONS = (
 #: as much a claim as any other: the landing must NOT carry the version DOI,
 #: because following it would land a reader on a superseded deposit.
 IDENTIFIER_COUNTS = (
-    ("paper.tex", "10.5281/zenodo.21609654", 1, "the version DOI it was archived with"),
+    ("paper.tex", "10.5281/zenodo.21609653", 1, "the concept DOI, once"),
+    ("paper.tex", "10.5281/zenodo.21609654", 0, "no superseded version DOI"),
+    ("paper.tex", "PENDING VERSION DOI", 1, "the named gap for its version DOI, once"),
     ("README.md", "10.5281/zenodo.21609653", 4, "the concept DOI"),
     ("README.md", "10.5281/zenodo.21609654", 1, "the version DOI, named once in the claim map"),
     ("index.html", "10.5281/zenodo.21609653", 3, "the concept DOI"),

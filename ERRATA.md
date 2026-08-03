@@ -12,12 +12,23 @@ E-3), three in the deposited package (P-1, P-2, P-3), two clarifications for the
 version (C-1, C-2), and seven things examined and found sound (X-1 to X-7). **No figure of
 the paper changes in any entry**, and that is measured and not asserted: every figure
 reproduces in every tree of the package: 192 of 192 in the first deposit, 202 of 202 in
-the second, 246 of 246 on the `main` this branch has now merged, and 256 of 256 at the head
-of this branch after that merge, with no failures anywhere. Two entries, P-2 and the pair E-3 and P-3, have been repaired
+the second, 246 of 246 on the `main` this branch has now merged, and 259 of 259 at the head
+of this branch after the manuscript changes for version 3, with no failures anywhere. Five
+entries now carry a line naming where they were corrected: P-2, E-3 and P-3 in the suite,
+E-1 and E-2 in the manuscript. None of the entries themselves was rewritten. Two entries, P-2 and the pair E-3 and P-3, have been repaired
 on this branch and remain open in the deposits, which is where they exist; each names the
 commit that repairs it. The defects in the paper are defects of description whose
 consequences all hold, and one missing assertion; the defects in the package are
 statements it makes about itself.
+
+**What a corrected version does with these entries.** It corrects the text and it keeps
+the record. Both halves are needed and neither replaces the other: without correcting the
+text, a new version goes on saying what is known to be false; without the record, a reader
+cannot find out what the version they hold actually said. So the entries below are **not**
+rewritten when a correction is made. Each goes on describing the defect as it stands in the
+deposits, where it exists and cannot be taken out, and a separate line names where it was
+corrected. A reader holding any version can therefore tell which of the two they are
+looking at.
 
 **What holds an entry up.** No entry here depends on the follow up paper being correct.
 Each states the evidence available in this package, or in printed sources anyone can
@@ -326,6 +337,22 @@ and could not be cited by URL. Found by that work; established by this package.
 **Note for a reader who has only the paper.** The theorem, not the sentence, states what
 the sampler does. A reader who follows the theorem is not misled.
 
+**Corrected in the manuscript for version 3**, on branch `errata`, 2026-08-03. The clause
+now reads:
+
+> (P4) the sixteen blocks of four consecutive positions permuted among themselves, so
+> that a pair never leaves its block, with the two pairs inside a block free to exchange
+> and all orientations free
+
+which says what the sampler does. The test that mattered was not that the new sentence
+reads well but that it leaves the printed theorem two paragraphs below **true under its
+literal reading**, which the old one did not: blocks permuted among themselves, with no
+pair leaving its block, preserve the block partition, so each block's yang sum is
+preserved, so the count of blocks summing to twelve is invariant and the statistic is a
+constant from P4 upward, exactly as the theorem says. The mechanical counterpart of that
+argument is already asserted and passes: `rung P4: yang-balanced groups equal 7 in every
+control sample`. The entry above is unchanged and still describes the deposits.
+
 ---
 
 ## E-2. The ladder described as one of increasing structure
@@ -485,6 +512,23 @@ smaller. Every statement of the form "the statistic varies at this rung and is c
 at the next" therefore survives unchanged.
 
 **Status.** OPEN.
+
+**Corrected in the manuscript for version 3**, on branch `errata`, 2026-08-03. The opening
+sentence now reads:
+
+> under a ladder of six nulls ordered by containment, an order that is partial rather than
+> a chain: each rung concedes some part of the sequence's architecture, not uniformly more
+> than the rung before it, and we ask what remains
+
+The word `increasing` is gone, and it has not been replaced by a second general claim that
+would not hold either. What the new sentence asserts is what was measured: the family is
+ordered by containment, and that order is partial. It does not claim the rungs grow, which
+is false, nor that they are ordered by size, which is also false, since ordering the six
+by cardinality puts P3 before P2 while the paper prints P2 first. The name `ladder` is kept
+because the printed order is a valid linear extension of the containment order, so every
+later reference to rungs, to `from P4 upward` and to the top of the ladder remains true as
+a reference to the printed sequence. The entry above is unchanged and still describes the
+deposits.
 
 ---
 
@@ -1342,7 +1386,22 @@ the published counts, and the merged suite runs both sides. Two figures were mea
 day rather than one, and both are reported: **254 passed with 2 failed out of 256**
 immediately after the merge, before the surfaces were swept, and **256 of 256** after. The
 total does not change between them. What changes is whether the package agrees with itself,
-and the two failures were the remote's own check saying it did not. The count is declared in surfaces that a reader reads, and
+and the two failures were the remote's own check saying it did not.
+
+On the same day it went from **256 to 259**, by the manuscript changes for version 3. The
+three are declarations about the manuscript rather than about the King Wen sequence: the
+paper now carries the concept DOI and a named gap where its version DOI goes, and the suite
+asserts both of those and the absence of the superseded version DOI. The surfaces were swept
+in the same commit and the remote's check reported them until they were, twice, first at
+256 against 259 and then on the mutation line alone.
+
+**The published mutation triple is self-referential, and it was iterated rather than
+guessed.** The line in the README that records what the documented mutation produces is
+itself a published count, so the check reads it, so changing it changes the run that
+measures it. Setting it from a stale copy gave `240 checks passed, 19 failed`; measured
+against the tree that contained the correction it is `241 checks passed, 18 failed, 259
+total`, and a second run against that reproduced it exactly. The figure written is the
+fixed point, reached by measuring twice, not the first number that appeared. The count is declared in surfaces that a reader reads, and
 this is exactly the shape of P-1, so it is declared here rather than left to be discovered.
 
 Every live declaration of the count was swept in the same commit that moved it, and each
@@ -1419,6 +1478,7 @@ out because a count without one is not a measurement:
 | live `main` on GitHub | `95437d30f805be447cccabb30ea54ff983741f52` | 246 |
 | head of branch `errata`, from `d25149ac4dc1105918f7fadb3ae067314f184cbd` onward | 212 |
 | head of branch `errata`, after merging `origin/main` into it | 256 |
+| head of branch `errata`, after the manuscript changes for version 3 | 259 |
 
 The first two are frozen and their figures are unchanged. The third and the fifth are this
 branch, before and after the repairs of P-2 and E-3, which added one assertion and moved
