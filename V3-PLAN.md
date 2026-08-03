@@ -307,6 +307,28 @@ in twenty seconds. This is the precondition this lane wrote for itself.
 `python3 verify_paper.py` there; require exit status 0 and record the literal tail of the
 output; then hash the archive and every file in it, and keep those hashes for step (f).
 
+**Build it with the line endings turned off, and this was measured the hard way.** A first
+archive built on 2026-08-03 with a plain `git archive` on this machine came out with CRLF
+in all twelve text files, because the command applies the checkout's conversion. By content
+it was exactly the tree it claimed to be; by raw bytes every text file differed from the
+blob. That would have broken the one method this project uses to place a deposit tag: for
+`zenodo-v1` and `zenodo-v2` the commit was identified by hashing every file of the
+deposited archive against every commit tree, and a CRLF archive matches no tree at all. The
+deposited archives of v1 and v2 are LF, because GitHub generates them from the blobs
+without conversion. So the archive must be built the same way:
+
+    git -c core.autocrlf=false -c core.eol=lf archive --format=zip         --prefix=kingwen-orderings-replication-main/ -o <name>.zip main
+
+Rebuilt that way it is byte for byte the tree of its commit, which is the property step (g)
+depends on. **Verify that property before depositing, not after**: hash every file in the
+archive against the commit tree and require an exact match.
+
+**One figure cannot live in the archive: the archive's own hash.** Recording it inside the
+package would change the package, which would change the archive, which would change the
+hash. It belongs in the annotated tag of step (g), which is written after the archive
+exists and lives outside the tree it describes. Same shape as the mutation triple, with no
+fixed point available.
+
 **What can go wrong.**
 
 1. The archive carries files the file table does not list, or lists files it does not
