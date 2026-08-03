@@ -552,6 +552,14 @@ def section_5():
     check("5.1", "free-shuffle percentile, yang-balanced groups",
           round(free_pct["yang-balanced groups of four"], 1), 99.2,
           ok=close(free_pct["yang-balanced groups of four"], 99.2, 0.8))
+    # The third free-shuffle percentile of Table 2. It was computed here and never
+    # asserted, which made the abstract's "every numerical claim is asserted" false
+    # by exactly one figure; entries E-3 and P-3 of ERRATA.md record that state.
+    # The band is the width its two neighbours use, and it has to be a band: the
+    # figure comes from the other implementation and its draw, not from this one.
+    check("5.1", "free-shuffle percentile, lag-1 autocorrelation",
+          round(free_pct["lag-1 autocorrelation"], 1), 4.0,
+          ok=close(free_pct["lag-1 autocorrelation"], 4.0, 0.6))
 
     pair_pct, pair_draws = percentiles(pair_sample)
     # The paper documents both implementations: 29.0 and 29.4 (P(<) on a tied statistic).
