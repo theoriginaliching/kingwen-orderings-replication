@@ -60,14 +60,57 @@ sides both edit `verify_paper.py`, and 212 plus 246 is not the answer to anythin
    shifts and that column is wrong until re-measured. The deposit columns are unaffected,
    which is the reason they were written as the ones that sustain the entry.
 
-**Rehearse it first, at no cost.** Do the merge on a throwaway branch, measure the count
-and read the resolved file, then throw it away and do it for real with the answer already
-known:
+**Rehearsed on 2026-08-03, in a throwaway worktree, and then destroyed.** The answers
+below are measured and not predicted. The trial used a worktree rather than a branch
+switch, so the real checkout was never touched:
 
-    git switch -c merge-trial errata
-    git merge origin/main
-    ... resolve, run the suite, note the count ...
-    git switch errata && git branch -D merge-trial
+    git worktree add <scratch>/merge-trial -b merge-trial errata
+    cd <scratch>/merge-trial && git merge origin/main
+    ... resolve, run, measure ...
+    git worktree remove --force <scratch>/merge-trial && git branch -D merge-trial
+
+**What the rehearsal measured.**
+
+| question | answer |
+|---|---|
+| conflicts | three files, exactly the three predicted: `verify_paper.py`, `README.md`, `index.html` |
+| checks after the merge | **256**, which is 212 plus 246 minus the 202 they share |
+| `section_errata` | present, called, and emitting all nine of its checks |
+| the P-2 repair | alive, by its effect: the run prints `reproduced: 0.342   paper: 0.35` |
+| the E-3 repair | alive, by its effect: `reproduced: 3.8   paper: 4.0`, and still able to fail, since moving the declared value to 6.0 fails it alone on the merged tree |
+| documented mutation (c) | **238 passed, 18 failed, 256 total**, re-measured and not computed |
+| `ok=` overrides | 24 on the merged tree, unchanged from this branch: the remote added checks, none of them with an override |
+| banned dash characters | zero in the merged tree |
+
+**What the rehearsal found that this plan did not anticipate**, and it is the most useful
+thing it produced.
+
+1. **The remote has already mechanised P-1.** Its two commits add `section_surfaces()` and
+   `check_published_counts()`, and the second asserts that every check count published in
+   `README.md` and `index.html` is the number the script actually runs. That is precisely
+   the defect P-1 records, turned into a gate. **The consequence for the merge is
+   excellent: immediately after it, the suite fails until the surfaces are swept.** The
+   merge cannot be left half done and green. The two failures the trial saw were exactly
+   that, `reproduced: [212, 246]   paper: [256]`, and they disappeared when the surfaces
+   were set to the measured figure.
+2. **"Keep both sides" is the right resolution everywhere except the count lines.** For
+   `verify_paper.py` it is right and the order that falls out is the required one, with
+   `section_errata()` before `section_surfaces()` and `check_published_counts()` last,
+   because that one counts the assertions it is about to add. For the README's map table
+   it is right: the branch's row and the remote's three rows are all true. For the count
+   lines it is wrong and produced a README declaring two different totals at once, which
+   the remote's own check then reported. Resolve those to a single line and set it to the
+   measured number.
+3. **P-1 itself needs a line after the merge**: the class it records is enforced on the
+   merged tree, and the entry should say so, still describing the deposits, in the same
+   shape as the repair lines of P-2 and E-3.
+4. **The README's account of a non-zero exit becomes incomplete.** It now explains two
+   meanings, a claim of the paper failing and a directory that does not match the file
+   table. After the merge there is a third: a published count that no longer matches the
+   suite. That sentence must gain its third case.
+5. **E-1's branch column of line pointers shifts** to 1050 and 1092 on the merged tree.
+   The deposit columns are untouched, which is why they were written as the ones that
+   sustain the entry.
 
 **How the result is checked.** The suite runs; the count is recorded as measured, never
 computed; `git log --oneline errata` shows both histories; and, specifically against
@@ -167,13 +210,26 @@ output; then hash the archive and every file in it, and keep those hashes for st
 **What it produces.** Version 3 of the record: a new version DOI, the same concept DOI,
 `10.5281/zenodo.21609653`.
 
-**What can go wrong, and the one trap that is already known.** The manuscript prints its
-own archive DOI, and at v2 that was the version DOI of v1, because the PDF was compiled
-before the new version existed. Entry X-3 records that this was declared in the version
-notes rather than hidden, which is the honest handling of an unavoidable ordering. Zenodo
-can reserve a DOI before publication, and reserving it first and compiling the manuscript
-with the reserved DOI removes the trap instead of documenting it. **Decide which of the two
-before depositing, not after.**
+**The DOI the manuscript prints: print both, and the trap disappears.** At v2 the
+manuscript printed the version DOI of v1, because a PDF is compiled before the version it
+will become exists. Entry X-3 records that this was declared in the version notes rather
+than hidden, which is the honest handling of an unavoidable ordering, but it is still a
+sentence that has to be revisited at every deposit.
+
+The manuscript should print **both** identifiers, which removes the ordering problem
+instead of documenting it:
+
+- the **concept DOI**, `10.5281/zenodo.21609653`, which always resolves to the latest
+  version and is known in advance, so it depends on nothing that does not yet exist.
+  Measured rather than assumed, from the record's own metadata: requested at
+  `https://zenodo.org/api/records/21628654` on 2026-08-03T10:42:46Z, the field
+  `conceptdoi` reads `10.5281/zenodo.21609653` and `conceptrecid` reads `21609653`;
+- the **version DOI**, reserved at Zenodo before depositing, so that the paper can say
+  which exact version each figure was checked against.
+
+With both printed, no future version forces that sentence to be touched again: the concept
+DOI keeps pointing at the newest deposit, and the version DOI keeps pointing at the one
+the numbers were measured on.
 
 Second risk: the version notes are part of the deposit and are where a reader learns what
 changed. They should say, in the plain form v2 used, what moved and what did not: that the
@@ -206,24 +262,29 @@ be placed with certainty, and the rule is the one already applied twice: **if it
 identified with certainty, do not tag.** A wrong tag is worse than none, because it looks
 authoritative afterwards.
 
-## (g) The `IsReviewedBy` relation to the second paper
+## (g) The relation to the second paper: `IsCitedBy`
 
-**Needs.** The second paper having an identifier to point at.
+**Decided.** The relation is **`IsCitedBy`**, the exact reciprocal of the `Cites` the
+second paper already declares. Both records then state one fact, from their two ends, and
+claim nothing else.
 
-**What can go wrong, and it is a wording risk rather than a technical one.** `IsReviewedBy`
-says, to every machine that reads the metadata, that this work was reviewed by that one.
-The second paper is by the same author and comes out of the same process. This lane has
-already written, in the section on the printed sources, that the audit of this repository
-is not independent and that what is independent here is Shaughnessy and Nielsen. Declaring
-a review relation to a work by the same author, in the record of a paper whose errata log
-insists on that distinction, would undo the distinction in the one place where readers of
-the record will see it.
+**`IsReviewedBy` is discarded, and the reason is worth keeping.** It was proposed to
+declare the asymmetry between the two works. But "review" connotes independent review;
+the author of both is the same; and `ERRATA.md` insists, in the section that opens the
+document, that what is independent here is Shaughnessy and Nielsen and that the audit of
+this repository is not. A metadata field saying otherwise would contradict the document in
+the one place a reader looks before opening anything.
 
-The safer relations say the true thing without the implication: `IsSupplementedBy`, or
-`IsReferencedBy`, or `IsCitedBy` once the second paper cites this one. If `IsReviewedBy` is
-still wanted, the version notes should state plainly who performed the review, so that the
-relation cannot be read as third party. **This one is a decision and not a step, and it
-should be taken deliberately.**
+**Where the substantive relation lives.** Not in a metadata field. It lives in `ERRATA.md`,
+where each entry states its own evidence, names the follow up work as where a discrepancy
+was found rather than as what establishes it, and where the reader can check the claim
+instead of taking the record's word for it. A relation type is a label with no evidence
+attached, and labels are exactly what this file exists to distrust.
+
+**Needs.** The second paper having a registered identifier to point at.
+
+**What can still go wrong.** Declaring `IsCitedBy` before the second paper is published
+points at nothing; the relation waits until that identifier exists.
 
 ---
 
