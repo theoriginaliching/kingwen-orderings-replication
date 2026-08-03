@@ -11,9 +11,11 @@ fixed.
 E-3), three in the deposited package (P-1, P-2, P-3), two clarifications for the next
 version (C-1, C-2), and six things examined and found sound (X-1 to X-6). **No figure of
 the paper changes in any entry**, and that is measured and not asserted: every figure
-reproduces in all four trees of the package, 192 of 192 in the first deposit, 202 of 202
-in the second, 211 of 211 at the head of this branch and 246 of 246 on the live `main`,
-with no failures anywhere. The defects in the paper are defects of description whose
+reproduces in every tree of the package: 192 of 192 in the first deposit, 202 of 202 in
+the second, 246 of 246 on the live `main`, and 212 of 212 at the head of this branch,
+with no failures anywhere. Two entries, P-2 and the pair E-3 and P-3, have been repaired
+on this branch and remain open in the deposits, which is where they exist; each names the
+commit that repairs it. The defects in the paper are defects of description whose
 consequences all hold, and one missing assertion; the defects in the package are
 statements it makes about itself.
 
@@ -301,7 +303,8 @@ from the zip files of the two deposits and not from a working copy:
 |---|---|---|---|
 | version 2 deposit, 10.5281/zenodo.21628654 | 202 | 0 | 202 |
 | version 1 deposit, 10.5281/zenodo.21609654 | 192 | 0 | 192 |
-| head of branch `errata` of this package | 211 | 0 | 211 |
+| head of branch `errata`, before the repairs | 211 | 0 | 211 |
+| head of branch `errata`, after the repairs | 212 | 0 | 212 |
 
 No check fails and no figure moves. The two deposits differ in the size of the suite,
 not in any reproduced figure: the suite grew between them.
@@ -560,8 +563,9 @@ the count it prints is the true one.
 
 ## P-2. The suite prints a value the paper does not print, in the column that claims to quote it
 
-**Printed text.** `verify_paper.py` of both deposits, line 742, and of the head of this
-branch at the same line:
+**Printed text.** As it stands in the deposits, which is where the defect exists and
+where it cannot be taken out. `verify_paper.py` of both deposits, line 742, and of the
+live `main`, line 743:
 
 ```python
     check("5.6", "Bonferroni over the nine criteria (0.038 x 9)",
@@ -621,7 +625,15 @@ override as it stands, and would still pass with the column corrected to 0.35, s
 0.342 is within 0.02 of 0.35. No conclusion of the paper moves either way, because both
 0.34 and 0.35 are far above the 0.05 the sentence is arguing about.
 
-**Status.** OPEN. Present in both deposits, in the live `main` and in this branch.
+**Status.** OPEN. Present in both deposits and in the live `main`, which is what a
+reader downloads.
+
+**Repaired on this branch**, in commit `10786bdd2e8ff40fb0271dbfa6fd50b259ef0b44`, which
+changes the declared value to 0.35 and leaves the tolerance alone. The entry above
+describes the deposits and is not rewritten to match the repair: a reader of a future
+version who finds this entry and then reads the shipped code must be able to tell which
+of the two they are looking at. Nothing in a deposit is altered by that commit, and the
+correction reaches a reader only when a version carrying it is deposited.
 
 ---
 
@@ -659,9 +671,9 @@ of the lag-1 statistic, and the sentence becomes true as printed.
 The tuple form matters and a literal-only test is wrong: the suite asserts 7/15 as
 `(7, 15)`.
 
-Of 115 figures printed in each deposit and 112 in the live `main` and at the head of this
-branch, **eight have no counterpart, the same eight in all four trees**: 98.2, 0.037,
-0.251, 4.0, 0.000, 1.000, 1/24, 120/32. Three of the eight are Chan's figures rather than
+Of 115 figures printed in each deposit and 112 in the live `main`, **eight have no
+counterpart, the same eight in all three of those trees**: 98.2, 0.037, 0.251, 4.0,
+0.000, 1.000, 1/24, 120/32. Three of the eight are Chan's figures rather than
 this paper's, and one of those, 0.251, is quoted only to be compared with our own -0.247.
 Four more are formatting variants of figures the suite does assert: 0.000 and 1.000 are
 Kendall taus printed to three places and asserted as 0.0, 1/24 is printed beside the
@@ -688,20 +700,30 @@ one governs. The count came out different, which is the ordinary reason to re-me
 lead rather than adopt it.
 
 **Figures affected.** None. The unasserted figure is not a wrong figure: 4.0 is not
-contradicted by anything, it is simply not checked. Measured: all four trees pass their
-full suites, 192, 202, 211 and 246 checks respectively, none failing.
+contradicted by anything, it is simply not checked. Measured: every tree passes its full
+suite, 192 in the first deposit, 202 in the second, 246 on the live `main` and 212 at the
+head of this branch after the repair below, none failing anywhere.
 
-**Status.** OPEN.
+**Status.** OPEN. In the deposits and in the live `main`, which are the objects this
+entry is about.
+
+**Repaired on this branch**, in commit `d25149ac4dc1105918f7fadb3ae067314f184cbd`, which
+asserts the figure: the free-shuffle percentile of the lag-1 statistic, band 0.6, the
+width its two neighbours use, because the printed 4.0 comes from the other implementation
+and this one measures 3.8. The assertion was shown able to fail before it was believed:
+moving the declared value to 6.0 fails it alone, and negating the statistic it rests on
+fails it along with its two relatives. The entry above describes the deposits, where the
+figure is still unasserted, and is deliberately not rewritten to match the branch.
 
 **Cross reference.** The same defect on the package's surface is P-3, which follows. One
-defect, two surfaces, one figure.
+defect, two surfaces, one figure, one repair.
 
 ---
 
 ## P-3. The README makes the same promise, in the definite
 
-**Printed text.** `README.md` of both deposits and of the head of this branch, in the
-opening paragraph:
+**Printed text.** As it stands in the deposits. `README.md` of both deposits and of the
+live `main`, in the opening paragraph:
 
 > This repository is the replication package for the paper. It contains the manuscript
 > source, the compiled PDF, and a single self-contained script that reproduces **every
@@ -724,7 +746,10 @@ The provenance is the same audit, recorded as where it was found.
 
 **Figures affected.** None, as in E-3.
 
-**Status.** OPEN.
+**Status.** OPEN. In the deposits and in the live `main`.
+
+**Repaired on this branch** by the same commit as E-3,
+`d25149ac4dc1105918f7fadb3ae067314f184cbd`. One assertion makes both sentences true.
 
 **Cross reference.** E-3. The two entries are the same defect on two surfaces and are
 kept apart only because the categories of this file are by surface: the paper's text is
@@ -1226,14 +1251,17 @@ one chooses the rule that shouts. Measured against both deposited archives, the 
 no-op there: it excludes nothing from either, nine files in the version 1 archive and
 eleven in version 2, all of them part of the package by this criterion.
 
-**Cost, measured.** Nine checks, taking the suite from 202 to 211. The contribution is
+**Cost, measured.** Nine checks, taking the suite from 202 to 211, and from 211 to 212 when the repair of E-3 added one assertion of its own. The contribution is
 fixed and does not grow when an entry is added to this file, which is the property the
 shape was chosen for.
 
 ## The count moved, and what that invalidates
 
 On 2026-07-31, on branch `errata`, the suite went from **202 checks to 211**: the nine of
-`section_errata`, no others. The count is declared in surfaces that a reader reads, and
+`section_errata`, no others. On 2026-08-03 it went from **211 to 212**, one assertion, the
+repair of E-3 and P-3 recorded in commit `d25149ac4dc1105918f7fadb3ae067314f184cbd`. The
+repair of P-2, commit `10786bdd2e8ff40fb0271dbfa6fd50b259ef0b44`, changed a declared
+value and no count. The count is declared in surfaces that a reader reads, and
 this is exactly the shape of P-1, so it is declared here rather than left to be discovered.
 
 Every live declaration of the count was swept in the same commit that moved it, and each
@@ -1306,11 +1334,15 @@ out because a count without one is not a measurement:
 |---|---|---|
 | deposit v1, 10.5281/zenodo.21609654 | `88d3d5e7295520b47c32aea2591d8f01a53d007f` | 192 |
 | deposit v2, 10.5281/zenodo.21628654 | `61486e35665f0fc42212205ca05b0ead7048e0f6` | 202 |
-| head of branch `errata` | `a6ed004b0bf5094265e2f29c00070287db351679` | 211 |
+| head of branch `errata`, before the repairs | `a6ed004b0bf5094265e2f29c00070287db351679` | 211 |
 | live `main` on GitHub | `95437d30f805be447cccabb30ea54ff983741f52` | 246 |
+| head of branch `errata`, after the two repairs | `d25149ac4dc1105918f7fadb3ae067314f184cbd` | 212 |
 
-The first two are frozen and their figures are unchanged. The third is this branch. **The
-fourth is the tree this lane did not have.** An earlier version of this paragraph said
+The first two are frozen and their figures are unchanged. The third and the fifth are this
+branch, before and after the repairs of P-2 and E-3, which added one assertion and moved
+the count by one. **The fourth is the tree this lane did not have.** Five rows is not a
+problem to be tidied away: it is what the table is for, since each row is a different
+object and a reader has to be able to tell which one a figure belongs to. An earlier version of this paragraph said
 that the figure 246 circulated in the records of the project and belonged to no tree
 measured here, which was true of the three trees then examined and false as an impression:
 246 is what the live `main` prints, measured on 2026-08-03 by extracting `95437d30` into a
