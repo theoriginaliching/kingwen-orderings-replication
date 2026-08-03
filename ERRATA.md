@@ -1413,6 +1413,28 @@ asserts both of those and the absence of the superseded version DOI. The surface
 in the same commit and the remote's check reported them until they were, twice, first at
 256 against 259 and then on the mutation line alone.
 
+**Three mirror problems in two rounds, and the class is architectural.** Worth recording
+together, because each was fixed locally and the pattern is not local. First the direction
+was inverted: a text change was born in the package when the laboratory is canonical for
+it. Second the comparison was wrong: two copies were compared by raw disk bytes, which
+measured the checkouts and not the content, and produced an "identical" and a "different"
+without the text changing once. Third the copy fell behind: the laboratory's snapshot of
+this package is refreshed by hand, so every commit here leaves it stale, and nothing
+notices.
+
+Three different faults, one cause. **The same content lives in two repositories with no
+mechanical link between them**, so every property that ought to follow from being one thing
+has to be re-established by somebody remembering to do it. The fixes so far are all of the
+same shape: declare the direction, compare by content, write a manifest and a gate. They
+make the drift legible; they do not remove it, because none of them can.
+
+The structural repair would be for the laboratory to *link* rather than copy, by submodule
+or subtree or a build step that fetches the package at a pinned commit, so that the copy
+cannot be edited independently and cannot silently age. **That decision is not taken here**,
+and it belongs to the laboratory rather than to this log. What belongs here is the record
+that three separate defects came out of one arrangement, which is the argument anyone
+weighing that decision will want.
+
 **A surface that reads a figure cannot go stale. A surface that copies one can.** This is
 the general form of what P-1 records, and it is worth stating as a preference and not only
 as a lesson.
