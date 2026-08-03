@@ -747,14 +747,12 @@ def section_5():
           battery_threshold(28), 22)
     check("5.6", "agreements needed over 16 decidable pairs to survive it",
           battery_threshold(16), 14)
-    # The paper prints "0.038 x 9 ~ 0.35" and the exact product is 0.342. The
-    # column on the right quotes what the paper prints; the column on the left
-    # shows the exact product, not its two-place rounding, so that the reader can
-    # see the approximation the paper is making instead of two numbers that look
-    # like they should be equal. Entry P-2 of ERRATA.md records the previous state,
-    # in which this line declared 0.34, a value the paper does not print anywhere.
-    check("5.6", "Bonferroni over the nine criteria (0.038 x 9, printed as approximately 0.35)",
-          round(0.038 * 9, 3), 0.35, ok=close(0.038 * 9, 0.35, 0.02))
+    # From version 3 the paper prints the exact product, "0.038 x 9 = 0.342", so this
+    # is an equality and not a band. It used to be neither: it declared 0.34, which the
+    # paper did not print, while a tolerance quietly compared against the 0.35 it did.
+    # Entries P-2 and C-2 of ERRATA.md record that state and why it ended here.
+    check("5.6", "Bonferroni over the nine criteria (0.038 x 9)",
+          round(0.038 * 9, 3), 0.342)
     check("5.6", "the sample is fixed forever at 28 rotation pairs", len(rot), 28)
 
 
@@ -1183,14 +1181,15 @@ def section_front_matter():
     # string, in each surface; nothing in this file touches the network.
     doi_version = "10.5281/zenodo.21609654"
     doi_concept = "10.5281/zenodo.21609653"
+    doi_v3 = "10.5281/zenodo.21776041"
     # Since the manuscript was rewritten for version 3 it carries BOTH: the concept
     # DOI, which is known before any deposit exists and always resolves to the
     # newest one, and a named gap where the version DOI goes once it is reserved.
     # The gap is asserted rather than trusted, so that it cannot be deposited blank.
     check("front", "paper.tex carries the concept DOI, which needs no deposit to exist",
           doi_concept in tex, True)
-    check("front", "paper.tex names the gap where its version DOI goes",
-          "PENDING VERSION DOI" in tex, True)
+    check("front", "paper.tex carries the version DOI reserved for this deposit",
+          doi_v3 in tex, True)
     for name in ("README.md", "index.html"):
         surface = read_text(os.path.join(here, name))
         if surface is None:
@@ -1354,7 +1353,10 @@ FROZEN_FIGURES = (
     ("74.5", ((72, 1), (257, 1), (278, 1), (284, 1), (288, 1))),
     ("95/224", ((129, 1),)),
     ("664/1792", ((129, 1),)),
-    ("776", ((133, 2),)),
+    # The second occurrence is not the figure: it is the digits 776 inside the version
+    # DOI 10.5281/zenodo.21776041 on the archive line. A check that pins positions is
+    # what makes a collision like this visible instead of silently loosening the count.
+    ("776", ((133, 2), (306, 1))),
     ("18.0", ((131, 1),)),
     ("26.6", ((131, 1),)),
     ("31.9", ((131, 1), (393, 1))),
@@ -1503,12 +1505,12 @@ def readme_inventory(readme):
 #: standard library alone, so a needle containing one would never be found however new
 #: the PDF was. A marker that cannot be found is worse than no marker.
 PDF_TEXT_MARKS = (
-    "PENDING VERSION DOI",                                  # the named gap for the version DOI
     "10.5281/zenodo.21609653",                              # the concept DOI, printed from v3 on
     "BA GONG GUA",                                          # the Nielsen page pointer
     "permuted among themselves",                            # the corrected description of P4
     "ordered by containment",                               # the corrected description of the ladder
     "position by position against the printed sources",     # the source verification sentence
+    "10.5281/zenodo.21776041",                              # the version DOI of this deposit
 )
 
 #: The DOI the manuscript used to print, and must not print any more.
@@ -1714,7 +1716,7 @@ SURFACE_LOCATIONS = (
 IDENTIFIER_COUNTS = (
     ("paper.tex", "10.5281/zenodo.21609653", 1, "the concept DOI, once"),
     ("paper.tex", "10.5281/zenodo.21609654", 0, "no superseded version DOI"),
-    ("paper.tex", "PENDING VERSION DOI", 1, "the named gap for its version DOI, once"),
+    ("paper.tex", "10.5281/zenodo.21776041", 1, "the version DOI reserved for this deposit, once"),
     ("README.md", "10.5281/zenodo.21609653", 4, "the concept DOI"),
     ("README.md", "10.5281/zenodo.21609654", 1, "the version DOI, named once in the claim map"),
     ("index.html", "10.5281/zenodo.21609653", 3, "the concept DOI"),

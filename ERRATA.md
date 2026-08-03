@@ -673,10 +673,12 @@ and which compares against a third value, the printed one, that the column never
 
 **It is a case and not a class, and the difference decides the repair.** Measured over
 every `check()` call: 154 calls in the version 2 deposit, 161 in the live `main`, 164 at
-the head of this branch when this entry was written and 165 now, of which **23 carry an
-`ok=` override in the deposits and in the live `main`, and 24 at the head of this branch**,
-the extra one being the assertion added by the repair of E-3, whose band is discussed
-there. Three of the 23 declare a value different from the one their tolerance tests:
+the head of this branch when this entry was written and 177 now, of which **23 carry an
+`ok=` override in the deposits and in the live `main`, 24 at the head of this branch once
+the assertion of E-3 was added, and 23 again from version 3 on**, because the correction
+recorded in C-2 made the manuscript print the exact product and turned this very check from
+a band into an equality. The assertion added by the repair of E-3 keeps its band, and the
+reason is discussed there. Three of the 23 declare a value different from the one their tolerance tests:
 
 | check | column declares | tolerance tests | the paper prints |
 |---|---|---|---|
@@ -953,9 +955,57 @@ script print different digits for the same quantity. A reader who computes the p
 gets a third rendering. One of the three should give way, and the cheapest is the printed
 one.
 
+**Corrected in the manuscript for version 3.** The sentence now prints the exact product:
+
+> With nine tests, 0.038 x 9 = 0.342.
+
+**This entry stays a clarification and is not reclassified.** Under its intended reading
+the printed sentence was not false: it was an approximation, and its point was that a
+corrected value of that size is nowhere near 0.05, which is true of 0.342. What made it
+worth a note was never falsity but disagreement, the manuscript and its own verification
+script printing different digits for one quantity, and printing the exact value removes the
+disagreement at its source rather than papering over it. The good consequence is
+mechanical: with an exact figure printed, the check that guards it stops being a tolerance
+and becomes an equality. Measured after the change: the suite carries **23** `ok=`
+overrides where it carried 24, and the one that went is this one.
+
+**Swept for siblings before closing, because one case and a class need different repairs.**
+Every printed approximation in the manuscript was checked against the value it
+approximates. There are three. The standard deviation of the inversion count prints 86.3
+against an exact 86.30179604156567, which is its correct rounding to one place. The
+probability of a monotone arrangement prints 0.042 against an exact 0.041666..., which is
+its correct rounding to three. The battery correction printed 0.35 against an exact 0.342,
+which is the rounding of nothing: not to two places, where it is 0.34, and not to three,
+where it is 0.342. **One of three, so a case and not a class**, and the repair is the case.
+
+**Corrected in the manuscript for version 3.** The sentence now prints the exact product:
+
+> With nine tests, 0.038 x 9 = 0.342.
+
+**This entry stays a clarification and is not reclassified.** Under its intended reading
+the printed sentence was not false: it was an approximation, and its point was that a
+corrected value of that size is nowhere near 0.05, which is true of 0.342. What made it
+worth a note was never falsity but disagreement, the manuscript and its own verification
+script printing different digits for one quantity, and printing the exact value removes the
+disagreement at its source rather than papering over it. The good consequence is
+mechanical: with an exact figure printed, the check that guards it stops being a tolerance
+and becomes an equality. Measured after the change: the suite carries **23** `ok=`
+overrides where it carried 24, and the one that went is this one.
+
+**Swept for siblings before closing, because one case and a class need different repairs.**
+Every printed approximation in the manuscript was checked against the value it
+approximates. There are three. The standard deviation of the inversion count prints 86.3
+against an exact 86.30179604156567, which is its correct rounding to one place. The
+probability of a monotone arrangement prints 0.042 against an exact 0.041666..., which is
+its correct rounding to three. The battery correction printed 0.35 against an exact 0.342,
+which is the rounding of nothing: not to two places, where it is 0.34, and not to three,
+where it is 0.342. **One of three, so a case and not a class**, and the repair is the case.
+
 **Date examined.** 2026-08-03.
 
-**Status.** NOTED, FOR THE NEXT VERSION.
+**Status.** NOTED, FOR THE NEXT VERSION. The clarification is applied in the manuscript of
+version 3, and the entry stays here describing what the deposited versions print. The clarification is applied in the manuscript of
+version 3, and the entry stays here describing what the deposited versions print.
 
 ---
 

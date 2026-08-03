@@ -426,6 +426,21 @@ points at nothing; the relation waits until that identifier exists.
 
 ---
 
+## One thing in the record that only the author can change
+
+The Zenodo record declares a relation **`Is identical to`** pointing at
+`https://paper.theoriginaliching.com`. That is a claim about identity, and the site is
+becoming something that *references* the deposit rather than being a copy of it, so the
+relation will be false. **Only the author can remove it: nothing in git reaches Zenodo.**
+
+Checked here, because a change on one side can falsify a sentence on the other: the paper
+describes that address as "the second address is a human-readable gateway to the same
+package". Measured against what the landing actually serves, it links the concept DOI, the
+replication repository and the ORCID record, and it serves `paper.pdf` itself out of the
+package. A gateway to the same package is exactly what it is, and it does not claim to be
+the deposit or to be identical to it. **The sentence in the paper stays exact under the
+change; the false claim lives only in the record's metadata.**
+
 ## The order of what is left, step by step, so that nothing is compiled twice
 
 Written on 2026-08-03, when `paper.pdf` was measured and found to be the **uncorrected**

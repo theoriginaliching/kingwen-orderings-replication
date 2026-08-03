@@ -179,7 +179,7 @@ sed 's/"Qian", "Gen", "Kan"/"Qian", "Kan", "Gen"/' verify_paper.py > mutant.py &
 |---|---|---|
 | (a) one flipped bit | `0`, the King Wen ordering is a permutation of 0 to 63 | 12 of the first 43 checks fail, then the run aborts with `KeyError: 63` in Section 4 |
 | (b) duplicated hexagram | `0`, the King Wen ordering is a permutation of 0 to 63 | 12 of the first 43 checks fail, then the run aborts with `KeyError: 0` |
-| (c) Mawangdui family swapped | `3.1`, Mawangdui inversions vs binary | the run completes and reports `241 checks passed, 20 failed, 261 total` |
+| (c) Mawangdui family swapped | `3.1`, Mawangdui inversions vs binary | the run completes and reports `243 checks passed, 18 failed, 261 total` |
 
 Exit status is `1` in all three cases. Note the shape of (a) and (b): a corrupted King Wen
 table is no longer a permutation of the 64 values, Section 0 says so before any statistic is
