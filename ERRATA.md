@@ -816,6 +816,55 @@ instead of trusting it. It also makes the entry's new check the twenty-fourth `o
 override on this branch, which is recorded in the inventory in P-2. The entry above describes the deposits, where the
 figure is still unasserted, and is deliberately not rewritten to match the branch.
 
+**What the repair did to the sentence, which is the reason this entry is an E.** The last
+line of the abstract reads:
+
+> Every numerical claim in this paper is asserted by an automated test suite in a public
+> repository.
+
+That sentence was false, and this entry is what made it false. It is now **true, and not one
+word of the manuscript was changed to make it so.** The repair happened entirely in the
+code: two assertions were added, one for the free-shuffle percentile of the lag-1 statistic
+and one for the degenerate row of Table 1. **This is the only entry in this log where the
+repair restores a claim of the paper instead of correcting it**, and that is precisely why
+it is an **E** and not only a **P**: the defect lived in a promise the manuscript makes, and
+the place to keep the promise was the suite.
+
+*The subject set, declared, and every exclusion named.* Measured over `paper.tex` and
+`verify_paper.py` of the same tree: 112 printed figures, of which **eight had no counterpart
+when this entry was opened and none has one now**. Two were repaired by assertion:
+
+1. **4.0**, the free-shuffle percentile of the lag-1 statistic in Table 2, asserted in
+   commit `d25149ac4dc1105918f7fadb3ae067314f184cbd`.
+2. **1.000**, the Kendall tau of the binary ordering against itself in Table 1, asserted
+   together with the 0 inversions of the same row.
+
+Three are not claims of this paper, and the distinction is not a convenience. They are
+**98.2**, **0.037** and **0.251**: the first two appear inside the report of what Chan
+(2026) found, and the third is printed as "against Chan's -0.251". A figure quoted from
+another author is a claim about what that paper reports, which this suite cannot verify
+without that author's implementation; and this paper's own counterparts to all three, the
+3.349, the 97.9 and the -0.247 it measured for itself, are asserted.
+
+Three are formatting variants of quantities that are asserted, and they do not count
+because the quantity is checked and only its printed precision differs from the literal in
+the code: **0.000** is the three-place rendering of the Kendall taus asserted as `0.0`,
+**1/24** is printed beside the 0.042 that is asserted, and **120/32** is printed beside the
+3.75 that is asserted, with 120 asserted separately.
+
+Eight without a counterpart at the start, **zero at the end**.
+
+*Why the last one was invisible, which is the part worth keeping.* The tau of the binary
+ordering against itself is 1 by definition, and the inversions are 0 by definition. Nothing
+in the suite compares an ordering **with itself**: every check in it was built to compare
+two different orderings, so the degenerate case sat outside the shape of the instrument.
+Its triviality is what hid it, not its difficulty. Swept for others of the same form across
+every table in the paper, Table 1, Table 2, the centers table, the battery, the spectral
+fingerprints and Table A1: **those two cells are the only self-comparisons in the paper, and
+there are no other definitional values left unasserted.** The spectral row for the binary
+ordering looks similar and is not the same thing, since its Walsh energies are computed and
+are asserted with the other four.
+
 **Cross reference.** The same defect on the package's surface is P-3, which follows. One
 defect, two surfaces, one figure, one repair.
 

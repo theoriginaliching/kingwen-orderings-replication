@@ -318,6 +318,15 @@ def section_3():
     check("3.1", "King Wen Kendall tau", round(kendall_tau(inv_kw), 3), -0.005)
     check("3.1", "Mawangdui Kendall tau exactly zero", kendall_tau(inv_mwd), 0.0)
     check("3.1", "Jing Fang Kendall tau exactly zero", kendall_tau(inv_jf), 0.0)
+    # The degenerate row of Table 1: the binary ordering against itself, zero inversions
+    # and a Kendall tau of exactly one. It printed unasserted through three deposits, and
+    # the reason is worth keeping: every other check in this file compares two DIFFERENT
+    # orderings, so an apparatus built for that never looks at the case where the two are
+    # the same. Its triviality is what made it invisible, not its difficulty.
+    inv_bin = inversions_between(BINARY, BINARY)
+    check("3.1", "the binary row of Table 1: binary against itself",
+          (inv_bin, kendall_tau(inv_bin)), (0, 1.0))
+
     worst = max(abs(i - EXPECTED_INV) / SD_INV for i in (inv_kw, inv_mwd, inv_jf))
     check("3.1", "all three within 0.06 sd of the expectation", worst < 0.06, True)
 
