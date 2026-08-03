@@ -1493,6 +1493,91 @@ def readme_inventory(readme):
     return listed
 
 
+#: Strings that must be printed by the compiled PDF, chosen so that each one appears
+#: only in the text this paper.tex became for version 3. They are the four changes of
+#: that version, plus the two identifiers of the archive sentence, and they sit on
+#: three different pages, so a partial or stale recompile fails on some of them.
+#:
+#: None contains fi, ff or fl. That is not taste: a TeX font sets those as single
+#: ligature glyphs, and the reader below works from the raw content streams with the
+#: standard library alone, so a needle containing one would never be found however new
+#: the PDF was. A marker that cannot be found is worse than no marker.
+PDF_TEXT_MARKS = (
+    "PENDING VERSION DOI",                                  # the named gap for the version DOI
+    "10.5281/zenodo.21609653",                              # the concept DOI, printed from v3 on
+    "BA GONG GUA",                                          # the Nielsen page pointer
+    "permuted among themselves",                            # the corrected description of P4
+    "ordered by containment",                               # the corrected description of the ladder
+    "position by position against the printed sources",     # the source verification sentence
+)
+
+#: The DOI the manuscript used to print, and must not print any more.
+PDF_SUPERSEDED_DOI = "10.5281/zenodo.21609654"
+
+#: Ligature codes of the OT1 encoding, which is what a TeX font uses for these pairs.
+_OT1_LIGATURES = {11: "ff", 12: "fi", 13: "fl", 14: "ffi", 15: "ffl"}
+
+
+def _pdf_text(data):
+    """The text a PDF prints, squeezed, using nothing but the standard library.
+
+    Every inflatable stream that shows text is decompressed and its string literals
+    are concatenated in order. All whitespace is then removed, on both sides of every
+    later comparison: a typesetter splits a line wherever it likes and breaks a word
+    across a kerning pair, so any needle carrying a space would be a needle that
+    depends on where the line broke. What survives is the sequence of characters,
+    which is what a version of the text actually is."""
+    import re
+    import zlib
+    out = []
+    for m in re.finditer(rb"stream\r?\n", data):
+        start = m.end()
+        end = data.find(b"endstream", start)
+        if end < 0:
+            continue
+        try:
+            blob = zlib.decompress(data[start:end])
+        except Exception:
+            continue
+        if b"Tj" not in blob and b"TJ" not in blob:
+            continue
+        for literal in re.findall(rb"\((?:[^()\\]|\\.)*\)", blob):
+            s = literal[1:-1]
+            s = re.sub(rb"\\([()\\])", rb"\1", s)
+            s = re.sub(rb"\\(\d{1,3})",
+                       lambda mm: bytes([int(mm.group(1), 8) & 0xFF]), s)
+            out.append("".join(_OT1_LIGATURES.get(b, chr(b)) for b in s))
+    return _squeeze("".join(out))
+
+
+def _squeeze(s):
+    return "".join(s.split()).lower()
+
+
+def section_pdf_text():
+    """The compiled PDF is the paper.tex beside it, and not an older compile of it.
+
+    Nothing else in this package could tell. The suite reads paper.tex, so a correction
+    to the manuscript makes every figure check pass while the PDF a reader downloads
+    still carries the uncorrected sentence; the laboratory only checks that the PDF is
+    committed, is a PDF, and is not empty. That gap is how a deposit ships a corrected
+    source beside a stale artifact, and this section closes it."""
+    head("The compiled PDF carries the text of the paper.tex beside it")
+
+    import os
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "paper.pdf")
+    if not os.path.exists(path):
+        check("pdf", "paper.pdf is present next to this script", False, True)
+        check("pdf", "paper.pdf no longer prints the superseded version DOI", None, False)
+        return
+    text = _pdf_text(open(path, "rb").read())
+    missing = [m for m in PDF_TEXT_MARKS if _squeeze(m) not in text]
+    check("pdf", f"paper.pdf prints the {len(PDF_TEXT_MARKS)} strings that identify "
+                 f"this version of the text", missing, [])
+    check("pdf", "paper.pdf no longer prints the superseded version DOI",
+          _squeeze(PDF_SUPERSEDED_DOI) in text, False)
+
+
 def section_errata():
     head("The errata log, against the shape it declares for itself")
 
@@ -1723,6 +1808,7 @@ def main():
     section_appendix_a()
     section_front_matter()
     section_pdf_metadata()
+    section_pdf_text()
     section_paper()
     section_errata()
     section_surfaces()

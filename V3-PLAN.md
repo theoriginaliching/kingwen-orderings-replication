@@ -426,6 +426,42 @@ points at nothing; the relation waits until that identifier exists.
 
 ---
 
+## The order of what is left, step by step, so that nothing is compiled twice
+
+Written on 2026-08-03, when `paper.pdf` was measured and found to be the **uncorrected**
+text: it is still the file deposited as version 2, and it carries the old description of
+P4, the old wording of the ladder, and the superseded version DOI. The manuscript beside it
+is the corrected one. Nothing in the package could see that until `section_pdf_text` was
+added, because the suite reads `paper.tex` and the laboratory only checks that the PDF is
+committed, is a PDF and is not empty.
+
+The compile happens **once**, and it happens after the DOI, because the DOI is printed in
+the text. In order:
+
+1. **The author reserves the version DOI at Zenodo**, through New version and Reserve DOI,
+   publishing nothing. This is manual and outside this repository.
+2. **That DOI replaces the named gap** `PENDING VERSION DOI` in `paper.tex` here, and the
+   same change is mirrored into the laboratory's canonical copy, laboratory first if the
+   rule of step (c) is followed.
+3. **`paper.pdf` is compiled once**, from the final `paper.tex`.
+4. **`section_pdf_text` is run**, and must pass: it is the assertion that the compiled
+   artifact is the manuscript beside it. If the compile went stale or partial, this is what
+   says so.
+5. **The archive is built from `main`, with the line-ending flags**, verified byte for byte
+   against the tree of its commit, extracted into a clean directory, and the suite is run
+   there.
+6. **The author deposits**, manually.
+7. **The tag `zenodo-v3` is placed on the exact commit**, annotated, with the sha256 of the
+   archive in the annotation, which is where it can live.
+8. **`IsCitedBy` is declared** in the record's metadata.
+
+Two things move between now and then, and both are expected. The check count will change
+when the marks of `section_pdf_text` start passing and again if anything else is added, so
+the published counts are swept in the same act each time. And the archive of this round,
+`e52ff4bfcb6fd63d54da4f56c32516f397e8c93a1255b10dea575a68b4959239`, built from
+`cf800dc6`, **is superseded**: it was built to prove the extract-and-run precondition works,
+and the archive that is deposited is built from the final commit, after step 3.
+
 ## The order, in one line
 
 Merge `origin/main` into `errata`; sweep and re-measure; make the paper's v3 changes;
