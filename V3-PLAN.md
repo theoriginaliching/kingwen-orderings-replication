@@ -167,13 +167,27 @@ the canonical copy lives but not where to begin, and on 2026-08-03 the work was 
 the order the errata made convenient: the corrections were written here first and the
 mirror ran backwards until the canonical copy caught up. Recorded in `ERRATA.md`.
 
-**Compare the mirror on content, not on raw bytes.** Measured on 2026-08-03: this checkout
-stores `paper.tex` with LF endings and the laboratory checkout stores it with CRLF, so the
-same text hashes differently on disk, 53552 bytes against 53955, which is exactly one byte
-per line. An earlier check in this lane compared the raw bytes of the two working trees and
-read "identical" while they were, and later read "different" for a change of line endings
-alone. Compare the git blobs, or normalise the endings before hashing, and state which was
-done.
+**The rule for comparing a mirror.** *Two copies of the same file are compared by
+normalised content or by git blob, never by raw bytes on disk, and the report says which of
+the two was used.* The reason is measured, not theoretical: this checkout stores
+`paper.tex` with LF and the laboratory checkout stores it with CRLF, so the same text
+hashes differently on disk, one byte per line, 53552 against 53955 before the change and
+54419 against 54822 after it. An earlier check in this lane compared raw working-tree bytes
+and read "identical", then later read "different" for a change of line endings alone, while
+the text was the same both times. Neither reading was informative.
+
+Measured after the repair of 2026-08-03, and stated in the required form: **by blob**, both
+sides are `526ea9881d29295498265fd2e90e587e1594abf8`; **by normalised content**, both are
+`2c22fc181a9957514365f2c14214f02d07e7601f479ea8e3b09558b76068b1f0`; **by raw disk bytes**
+they differ, 54419 here against 54822 there, which is the 403 line endings and nothing else.
+
+The laboratory's own mirror gate compares **raw disk bytes**, measured by reading it:
+`verificar_replicacion` in `scripts/experimentos.py` opens both files with `'rb'` and
+compares. It is sound where it stands, because both of its operands live inside the same
+checkout and therefore share one line-ending convention, but the comparison it makes is of
+the checkout rather than of the content, and it would give a false verdict the day those
+two files were ever checked out under different settings. That is a defect of that
+repository to fix in that repository, and it was left alone here.
 
 **What goes in.**
 
