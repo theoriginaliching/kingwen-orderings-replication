@@ -488,6 +488,21 @@ def rotation_pairs():
     return pairs, rot, pal
 
 
+#: The four signatures Chan (2026) reports and this paper re-evaluates under the
+#: pair-preserving null. They are named once, here, and used twice: as the keys of the
+#: statistics computed below, and as the row count Table 2 of the manuscript must have.
+#: The paper says "four" in three places and "all four statistics" in a fourth; until
+#: this constant existed, that four was the last countable claim the paper made about
+#: its own contents with nothing behind it. Entry X-9 of ERRATA.md is where it was
+#: found, in the sweep that enumerated the eleven such claims.
+CHAN_SIGNATURES = (
+    "mean transition distance",
+    "lag-1 autocorrelation",
+    "yang-balanced groups of four",
+    "within-pair mean distance",
+)
+
+
 def section_5():
     head("Section 5: the pair structure, conditional re-analysis and the limits")
 
@@ -514,12 +529,8 @@ def section_5():
     def within_pair_mean(seq):
         return sum(hamming(seq[2 * k], seq[2 * k + 1]) for k in range(32)) / 32
 
-    stats = {
-        "mean transition distance": mean_transition,
-        "lag-1 autocorrelation": autocorrelation,
-        "yang-balanced groups of four": balanced_groups,
-        "within-pair mean distance": within_pair_mean,
-    }
+    stats = dict(zip(CHAN_SIGNATURES, (mean_transition, autocorrelation,
+                                       balanced_groups, within_pair_mean)))
     observed = {name: fn(KING_WEN) for name, fn in stats.items()}
     check("5.1", "mean transition distance of the King Wen sequence",
           round(observed["mean transition distance"], 3), 3.349)
@@ -1285,16 +1296,16 @@ def _pdf_info(data):
     return {}
 
 
-#: Floats whose label nothing references. Declared, not hidden: each of these three
-#: is a real gap in the manuscript, found by an external audit on 2026-08-03, and the
-#: repair is new prose, which is the author's to write and not a script's to invent.
-#: Until then the check below passes on exactly these three and fails on a fourth, so
-#: the gap is bounded and a new one cannot slip in behind it. Entry X-9 of ERRATA.md
-#: records what they are and where a pointer would go.
-#:
-#: tab:orders is the worst of the three: it is Table 1, the table of the five orderings
-#: against the binary order, and no sentence in the paper sends a reader to it.
-ORPHAN_FLOATS_DECLARED = ("fig:fingerprints", "tab:fingerprints", "tab:orders")
+#: Floats whose label nothing references, declared rather than hidden. The list is
+#: EMPTY, and it was not always: an external audit on 2026-08-03 found three, one of
+#: them Table 1, the table of the paper's first result. The repair was new prose, which
+#: is the author's to write and not a script's to invent, so for one round the three
+#: were named here and the check passed on exactly those three and failed on a fourth,
+#: which bounded the gap instead of concealing it. The pointers are now written and the
+#: list is empty, so the check below permits no orphan at all. It stays as a tuple, and
+#: not as a deleted line, because that is what makes the next exception have to be
+#: declared by name. Entries C-3 and X-9 of ERRATA.md hold the history.
+ORPHAN_FLOATS_DECLARED = ()
 
 
 def section_floats():
@@ -1318,8 +1329,9 @@ def section_floats():
     labels = set(re.findall(r"\\label\{([^}]+)\}", tex))
     refs = set(re.findall(r"\\(?:page)?ref\{([^}]+)\}", tex))
     orphans = sorted(labels - refs - set(ORPHAN_FLOATS_DECLARED))
-    check("float", f"every label is referenced, beyond the "
-                   f"{len(ORPHAN_FLOATS_DECLARED)} declared orphans", orphans, [])
+    beyond = (" beyond the %d declared" % len(ORPHAN_FLOATS_DECLARED)
+              if ORPHAN_FLOATS_DECLARED else ", with none declared")
+    check("float", "every label of the manuscript is referenced" + beyond, orphans, [])
     check("float", "every reference resolves to a label", sorted(refs - labels), [])
 
 
@@ -1495,6 +1507,19 @@ FROZEN_FIGURES = (
 )
 
 
+def _table_rows(text, label):
+    """How many data rows a labelled table prints, counted between its rules.
+
+    Rows are separated by the row terminator, and a data row is one that has columns
+    in it, which leaves out the rules and the spacing commands."""
+    marker = chr(92) + "label{" + label + "}"
+    if marker not in text:
+        return None
+    body = text[text.index(marker):]
+    body = body[body.index(chr(92) + "midrule"):body.index(chr(92) + "bottomrule")]
+    return sum(1 for row in body.split(chr(92) * 2) if "&" in row)
+
+
 def _positions(text, needle):
     """Where a string sits: ((line number, occurrences on that line), ...)."""
     return tuple((number, line.count(needle))
@@ -1515,6 +1540,13 @@ def section_paper():
         check("tex", f"paper.tex carries {value} at exactly the declared positions",
               _positions(tex, value), expected)
     check("tex", "paper.tex contains no em dash", tex.count(chr(0x2014)), 0)
+
+    # Table 2 has one row per signature, and the suite evaluates one statistic per row.
+    # The paper calls them "four" four times; this is what makes that four true. A fifth
+    # row, or a fourth removed, breaks it, and so does a signature added to the suite
+    # without a row to print it in: the two counts are the same constant read twice.
+    check("tex", "Table 2 prints one row per signature the suite re-evaluates",
+          _table_rows(tex, "tab:chan"), len(CHAN_SIGNATURES))
 
 
 # ---------------------------------------------------------------------------

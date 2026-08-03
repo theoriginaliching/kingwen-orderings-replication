@@ -7,9 +7,9 @@ Hexagrams: Pair Rule, Family Gradient, and the Limits of Demonstrability*
 This is a living document. It is updated when a defect is found, not when a defect is
 fixed.
 
-**Where it stands, 2026-08-03.** Twenty entries: four defects in the paper (E-1 to E-4),
-four in the deposited package (P-1 to P-4), three clarifications for the next version (C-1
-to C-3), and nine things examined and found sound (X-1 to X-9). **No figure of
+**Where it stands, 2026-08-03.** Twenty-one entries: four defects in the paper (E-1 to
+E-4), four in the deposited package (P-1 to P-4), three clarifications for the next version
+(C-1 to C-3), and ten things examined and found sound (X-1 to X-10). **No figure of
 the paper changes in any entry**, and that is measured and not asserted: every figure
 reproduces in every tree of the package: 192 of 192 in the first deposit, 202 of 202 in
 the second, 246 of 246 on the `main` this branch has now merged, and 259 of 259 at the head
@@ -1129,7 +1129,6 @@ where it is 0.342. **One of three, so a case and not a class**, and the repair i
 **Date examined.** 2026-08-03.
 
 **Status.** NOTED, FOR THE NEXT VERSION. The clarification is applied in the manuscript of
-version 3, and the entry stays here describing what the deposited versions print. The clarification is applied in the manuscript of
 version 3, and the entry stays here describing what the deposited versions print.
 
 ---
@@ -1160,9 +1159,25 @@ Walsh energies, which is what both display. **This is new prose in the manuscrip
 the author's to write**, so nothing was changed: this entry records the gap and the
 proposal, and the manuscript is untouched.
 
+**Written in the manuscript for version 3.** The author decided the three pointers and
+they are in the text, each with `\ref` rather than a literal number, each the shortest
+sentence that carries a reader to the float, and none of them asserting anything the paper
+did not already assert:
+
+| float | where it went | the sentence, verbatim |
+|---|---|---|
+| `tab:orders` | end of Result 3.1, the sentence that states the three inversion counts | `Table~\ref{tab:orders} collects these counts.` |
+| `tab:fingerprints` | end of Result 6.1, the sentence that describes the three columns | `These are the columns of Table~\ref{tab:fingerprints}.` |
+| `fig:fingerprints` | the same place | `Figure~\ref{fig:fingerprints} plots the Walsh energies.` |
+
+Measured after the change: 15 labels, 38 references, **zero orphans**, zero unresolved
+references. The three names were then removed from `ORPHAN_FLOATS_DECLARED` in
+`verify_paper.py`, so the check that bounded the gap now permits none at all.
+
 **Date examined.** 2026-08-03.
 
-**Status.** NOTED, FOR THE NEXT VERSION.
+**Status.** NOTED, FOR THE NEXT VERSION. The three pointers are written in the manuscript of
+version 3, and the entry stays here describing what the deposited versions print.
 
 ---
 
@@ -1589,6 +1604,69 @@ the exact product of C-2 and the citation of E-4, and both times what caught it 
 holding the list of what had been agreed against the file. **The only instrument for that
 class is the list itself, compared by hand**, which is the sweep recorded in X-8. Every
 checker here watches what is written; the list is what watches what was decided.
+
+**What changed after this entry was written.** Three of the five measurements above
+describe a state that no longer exists, and saying so here is cheaper than leaving a reader
+to discover it. The three orphan floats now have pointers, written as C-3 records. The three
+real missing ties are written: `Result~4.1`, `Appendix~A` and `Section~4.3`. The four
+signatures of Table 2 are asserted: `CHAN_SIGNATURES` names them once and is read twice,
+as the keys of the statistics the suite computes and as the row count Table 2 must print,
+so the paper's four and the suite's four are one constant read in two places. Proved able to
+fail: a fifth row printed in Table 2 reports `reproduced: 5   paper: 4`, and the fourth row
+removed reports `reproduced: 3   paper: 4`. **The two measurements that stand unchanged are
+the repeated figures, which named no quantity twice, and the pointers into other people's
+works, none of them ambiguous.** What does not change at all is the closing paragraph: the
+apparatus still cannot see a decision that was taken and never written.
+
+**Date examined.** 2026-08-03.
+
+**Status.** EXAMINED, NOT AN ERRATUM.
+
+---
+
+## X-10. What each sweep actually looked at, and a report of mine that had to be corrected
+
+**What was examined.** Whether the sentence "zero long dashes" is true of the set of files
+a reader would take it to cover. It was not, in reports of mine written earlier in this
+phase, and the correction is the entry.
+
+**Measurement.** The subject set of each sweep, declared, because a count is meaningless
+without the set it counted over.
+
+| sweep | subjects | result |
+|---|---|---|
+| dashes, package | the 12 tracked text files of this repository, decoded as UTF-8 | 0 of U+2012, U+2013, U+2014, U+2015, U+2212 |
+| dashes, deposited archive | every file inside the zip | 0 |
+| dashes, laboratory | the 273 tracked text files of `iching-experiments` | 0 em dashes; **113 U+2013 and 97 U+2212 in 45 files** |
+| floats | `paper.tex`, all `\label`, `\ref` and `\pageref` | 15 labels, 38 references, 0 orphans |
+| bibliography | `paper.tex`, the body against `thebibliography` | 16 entries, 0 unnamed, 15 citations, 0 unresolved |
+| frozen figures | the 29 pinned figures, old text against new | 0 changed their count, 0 moved |
+
+**The laboratory's 210 stay, and this is the reason.** They are not this package's files and
+not this project's prose: none falls in `paper/`, `replication/` or `scripts/`. That
+repository's own style arbiter permits the en dash in references and APA ranges and forbids
+only the em dash, of which there are none; and its U+2212 are typographic minus signs in
+numbers the web renders, which its own comparison code normalises back to a hyphen before
+reading them. A blanket replacement across 45 files of an application would change what is
+rendered and could break its internationalisation checks, for a rule that repository never
+adopted. The count is recorded here so that it is a decision and not an oversight.
+
+**The report that had to be corrected.** Earlier rounds of this phase reported "zero long
+dashes in both repositories". The package figure was right. The laboratory figure was
+measured over the files this work touched, and reported as though it covered the repository.
+**The same shape as the count that was published while stale**, which is the defect recorded
+in P-1: a true statement about a narrow set, published where a reader reads it as a wide
+one. It was found by widening the sweep to every tracked file and comparing the result
+against what had been said, and the correction was issued in the same report that found it.
+What it costs to prevent is one line: the subjects, written next to the count.
+
+**And one more, found while writing this entry.** The status line of C-2 printed the same
+sentence twice, consecutively and verbatim. It is the identical mechanism as the duplicated
+block that X-8 found, an edit whose anchor still matched when a script was re-run, and it
+survived the sweep that found the first one because that sweep compares whole paragraphs and
+this repetition sits inside one. Removed. The sweep is not widened to sentences: the entry
+records where its resolution ends, which is the honest repair when the alternative is a
+check that would report every deliberate repetition in a log that quotes itself.
 
 **Date examined.** 2026-08-03.
 
