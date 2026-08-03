@@ -738,8 +738,14 @@ def section_5():
           battery_threshold(28), 22)
     check("5.6", "agreements needed over 16 decidable pairs to survive it",
           battery_threshold(16), 14)
-    check("5.6", "Bonferroni over the nine criteria (0.038 x 9)",
-          round(0.038 * 9, 2), 0.34, ok=close(0.038 * 9, 0.35, 0.02))
+    # The paper prints "0.038 x 9 ~ 0.35" and the exact product is 0.342. The
+    # column on the right quotes what the paper prints; the column on the left
+    # shows the exact product, not its two-place rounding, so that the reader can
+    # see the approximation the paper is making instead of two numbers that look
+    # like they should be equal. Entry P-2 of ERRATA.md records the previous state,
+    # in which this line declared 0.34, a value the paper does not print anywhere.
+    check("5.6", "Bonferroni over the nine criteria (0.038 x 9, printed as approximately 0.35)",
+          round(0.038 * 9, 3), 0.35, ok=close(0.038 * 9, 0.35, 0.02))
     check("5.6", "the sample is fixed forever at 28 rotation pairs", len(rot), 28)
 
 
