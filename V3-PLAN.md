@@ -246,6 +246,28 @@ the sweep, which would put a `main` on public view whose surfaces contradict its
 and the remote's `check_published_counts` would fail on the default branch. Run the suite
 on `main` after the merge, before pushing, and confirm the same count.
 
+**Done on 2026-08-03, and one thing about the rehearsal is worth stating plainly.** The
+throwaway worktree was created from the *local* `main`, which was still
+`73d9a77cdc59ea1410ae815cbb484dc68eb752d1`, so the "202 checks before" it measured is the
+old base and the merge it rehearsed is not the operation that was then applied: the applied
+operation was a fast forward from `95437d30f805be447cccabb30ea54ff983741f52` to
+`a3d8dea53693173145cc14213d4ed3634681c543`. Nothing is invalidated by that, and the reason
+is worth keeping: **a fast forward resolves nothing and therefore cannot drop a check.** It
+moves a pointer to a commit that already exists and has already been measured. The
+rehearsal was insurance against a resolution that never had to happen. What needed
+correcting was the report, which read as though the rehearsal had validated the applied
+operation.
+
+**Then step (d) required one more thing, which the plan had not foreseen.** The laboratory
+carries its own snapshot of this package under `replication/`, and it was stale by the
+whole errata. Re-synchronised mechanically from `a3d8dea` on the same day: five files
+entering, four changing, none leaving, five unchanged. **The direction matters and the two
+directions live in the same repository.** For `paper.tex` the laboratory is canonical and
+the package is the mirror, which is why the inversion recorded in `ERRATA.md` was an
+inversion. For `replication/` the package is canonical and the laboratory holds the mirror,
+so package to laboratory is the correct direction and not a second inversion. Confusing the
+two would be easy and would be wrong.
+
 ## (e) Build the archive from `main`, extract it into a clean directory, and run the suite there
 
 **Needs.** Steps (a) to (d) done, everything committed and `main` carrying it.
