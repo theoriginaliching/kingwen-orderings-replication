@@ -177,9 +177,45 @@ itself.
 byte-identical to the canonical one; this package's suite passes; the recompiled
 `paper.pdf` carries the same document metadata checks it carries now.
 
-## (d) Build the archive, extract it into a clean directory, and run the suite there
+## (d) Merge `errata` into `main`
 
-**Needs.** Steps (a) to (c) done, everything committed.
+**This step was missing from the first draft of this plan, and its absence was a defect.**
+The plan merged `origin/main` into `errata` and then deposited from `errata`, and never
+said when `errata` returns to `main`. Left that way, a reader arriving at GitHub sees the
+default branch without the errata while Zenodo serves a version 3 that contains it: two
+truths, decided by which door you came through. The whole point of the log is that there
+is one record of what is known.
+
+**The prohibition is lifted, and the lifting is declared rather than assumed.** Every round
+of this work carried the instruction not to merge into `main`. That rule had a reason: while
+the errata was being written, `main` was the frozen thing the entries described, and a merge
+would have moved the object under the description. **That reason has now expired.** The
+entries name the deposits, by DOI and by commit hash and by file hash, and the deposits are
+frozen whatever `main` does. The rule protected the description while it was being written;
+the description is written; the rule is retired here, in the open, so that it is not
+quietly ignored later.
+
+**Needs.** Steps (a) to (c) done: `origin/main` merged into `errata`, the surfaces swept,
+the count re-measured, the paper's v3 changes mirrored, and the suite green.
+
+**What it produces.** A `main` that contains everything: the remote's checks, this
+branch's errata log, its two repairs, `section_errata`, and the plan. From here on there
+is one line of history and the branch has done its job.
+
+**Order matters and it is why this step sits here.** It goes **before** the archive is
+built, so that the archive is built from `main` and the tag `zenodo-v3` lands on `main`.
+An archive built from a side branch would deposit a tree that the default branch does not
+show, which is the same two-truths problem one layer down.
+
+**What can go wrong.** Little, if (a) to (c) really are done: the merge is a fast forward
+or close to it, since `errata` already contains `origin/main`. The risk is doing it before
+the sweep, which would put a `main` on public view whose surfaces contradict its own suite,
+and the remote's `check_published_counts` would fail on the default branch. Run the suite
+on `main` after the merge, before pushing, and confirm the same count.
+
+## (e) Build the archive from `main`, extract it into a clean directory, and run the suite there
+
+**Needs.** Steps (a) to (d) done, everything committed and `main` carrying it.
 
 **Why this step exists.** Because it did not exist when the current archives were built,
 and P-1 is the consequence: the version 2 archive shipped a suite of 202 checks with four
@@ -203,7 +239,7 @@ output; then hash the archive and every file in it, and keep those hashes for st
    interesting case and the reason for the step: a working copy has files an archive does
    not.
 
-## (e) Deposit as a new version of the same Zenodo record
+## (f) Reserve the version DOI, then deposit as a new version of the same record
 
 **Needs.** Step (d) green, with the run recorded.
 
@@ -240,9 +276,10 @@ Third risk, procedural: this plan does not authorise the deposit. Depositing is 
 facing and irreversible in the sense that matters, a public record with a DOI, and it
 happens only on an explicit instruction that says so.
 
-## (f) Tag `zenodo-v3` on the exact commit
+## (g) Tag `zenodo-v3` on the exact commit of `main`
 
-**Needs.** The deposit published and its files downloadable.
+**Needs.** The deposit published and its files downloadable. The tag goes on the commit
+of `main`, which after step (d) is the commit the archive was built from.
 
 **The method, which is settled and should not be improvised.** Identify the commit by hash
 of the deposited artifacts, never by date. Download the deposited files, hash them, and
@@ -262,7 +299,7 @@ be placed with certainty, and the rule is the one already applied twice: **if it
 identified with certainty, do not tag.** A wrong tag is worse than none, because it looks
 authoritative afterwards.
 
-## (g) The relation to the second paper: `IsCitedBy`
+## (h) The relation to the second paper: `IsCitedBy`
 
 **Decided.** The relation is **`IsCitedBy`**, the exact reciprocal of the `Cites` the
 second paper already declares. Both records then state one fact, from their two ends, and
@@ -288,7 +325,15 @@ points at nothing; the relation waits until that identifier exists.
 
 ---
 
+## The order, in one line
+
+Merge `origin/main` into `errata`; sweep and re-measure; make the paper's v3 changes;
+merge `errata` into `main`; build the archive from `main`; extract it into a clean
+directory and run the suite there; reserve the version DOI; deposit; tag `zenodo-v3` on
+`main`; declare `IsCitedBy`.
+
 ## What this plan does not authorise
 
-Merging to `main`. Touching Zenodo. Building a checker of the printed sources. Any of the
-seven steps above, until each is asked for by name.
+Touching Zenodo. Building a checker of the printed sources. Any step above, until it is
+asked for by name. Merging into `main` is now a step of this plan rather than a
+prohibition, but it is still a step, and it happens when it is asked for and not before.
