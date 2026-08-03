@@ -1285,6 +1285,44 @@ def _pdf_info(data):
     return {}
 
 
+#: Floats whose label nothing references. Declared, not hidden: each of these three
+#: is a real gap in the manuscript, found by an external audit on 2026-08-03, and the
+#: repair is new prose, which is the author's to write and not a script's to invent.
+#: Until then the check below passes on exactly these three and fails on a fourth, so
+#: the gap is bounded and a new one cannot slip in behind it. Entry X-9 of ERRATA.md
+#: records what they are and where a pointer would go.
+#:
+#: tab:orders is the worst of the three: it is Table 1, the table of the five orderings
+#: against the binary order, and no sentence in the paper sends a reader to it.
+ORPHAN_FLOATS_DECLARED = ("fig:fingerprints", "tab:fingerprints", "tab:orders")
+
+
+def section_floats():
+    """Every label is referenced, and every reference resolves.
+
+    A float with no reference is not a typographical nicety: LaTeX places it where it
+    likes, the prose never sends anyone to it, and a reader meets a table with no idea
+    why it is there. A reference with no label is worse and louder, printing as a bare
+    marker. LaTeX reports the second as a warning buried in a successful compile and the
+    first not at all, so neither reaches anyone."""
+    head("Floats and references: every label used, every reference resolved")
+
+    import os
+    import re
+    tex = read_text(os.path.join(os.path.dirname(os.path.abspath(__file__)), "paper.tex"))
+    if tex is None:
+        check("float", "paper.tex is present next to this script", False, True)
+        check("float", "every label of the manuscript is referenced", None, [])
+        return
+
+    labels = set(re.findall(r"\\label\{([^}]+)\}", tex))
+    refs = set(re.findall(r"\\(?:page)?ref\{([^}]+)\}", tex))
+    orphans = sorted(labels - refs - set(ORPHAN_FLOATS_DECLARED))
+    check("float", f"every label is referenced, beyond the "
+                   f"{len(ORPHAN_FLOATS_DECLARED)} declared orphans", orphans, [])
+    check("float", "every reference resolves to a label", sorted(refs - labels), [])
+
+
 def section_bibliography():
     """Every entry of the bibliography is named in the body, and every author-date
     citation in the body has an entry.
@@ -1973,6 +2011,7 @@ def main():
     section_pdf_layout()
     section_paper()
     section_bibliography()
+    section_floats()
     section_errata()
     section_surfaces()
 

@@ -7,9 +7,9 @@ Hexagrams: Pair Rule, Family Gradient, and the Limits of Demonstrability*
 This is a living document. It is updated when a defect is found, not when a defect is
 fixed.
 
-**Where it stands, 2026-08-03.** Eighteen entries: four defects in the paper (E-1 to E-4),
-four in the deposited package (P-1 to P-4), two clarifications for the next version (C-1,
-C-2), and eight things examined and found sound (X-1 to X-8). **No figure of
+**Where it stands, 2026-08-03.** Twenty entries: four defects in the paper (E-1 to E-4),
+four in the deposited package (P-1 to P-4), three clarifications for the next version (C-1
+to C-3), and nine things examined and found sound (X-1 to X-9). **No figure of
 the paper changes in any entry**, and that is measured and not asserted: every figure
 reproduces in every tree of the package: 192 of 192 in the first deposit, 202 of 202 in
 the second, 246 of 246 on the `main` this branch has now merged, and 259 of 259 at the head
@@ -1134,6 +1134,38 @@ version 3, and the entry stays here describing what the deposited versions print
 
 ---
 
+## C-3. Three floats the prose never points at, one of them Table 1
+
+**What was examined.** Whether every table and figure of the paper is reached from the
+text. Measured on the final `paper.tex`: 15 labels and 35 references, and **three labels
+that nothing references**.
+
+| label | line | what it is |
+|---|---|---|
+| `tab:orders` | 98 | **Table 1**, the five orderings against the binary order: the table of the paper's first result |
+| `tab:fingerprints` | 248 | Table 5, the spectral fingerprints of the five orderings |
+| `fig:fingerprints` | 285 | the figure of the same spectral portraits |
+
+**Measurement.** They are not reached another way either. The literal strings `Table 1`,
+`Table 5` and `Figure 1` appear nowhere in the prose, and no deictic phrase stands in for
+them: no `the table below`, no `the figure above`, none of that family anywhere in the
+manuscript. The floats are placed by LaTeX where it finds room, and nothing in the sentences
+sends a reader to them. **A reader of Section 3 is never told that the table of results is a
+table, or where it is.**
+
+**Where a pointer would go, proposed and not written.** For `tab:orders`, the sentence of
+Section 3 that states the three inversion counts, which is the sentence the table tabulates;
+for `tab:fingerprints` and `fig:fingerprints`, the paragraph of Section 6 that describes the
+Walsh energies, which is what both display. **This is new prose in the manuscript and it is
+the author's to write**, so nothing was changed: this entry records the gap and the
+proposal, and the manuscript is untouched.
+
+**Date examined.** 2026-08-03.
+
+**Status.** NOTED, FOR THE NEXT VERSION.
+
+---
+
 # Examined and not an erratum
 
 Everything below was measured on 2026-07-31 inside the two deposited archives themselves,
@@ -1496,6 +1528,67 @@ decision that left no trace anywhere leaves nothing to measure. The permanent ch
 alongside, `section_bibliography`, closes one narrow case of that shape and says in its own
 docstring that it would not have caught E-4: an apparatus that checks what is written
 cannot check what was decided and never written.
+
+**Date examined.** 2026-08-03.
+
+**Status.** EXAMINED, NOT AN ERRATUM.
+
+
+---
+
+
+## X-9. What the checkers found, what they now watch, and what none of them can see
+
+**What was examined.** An external audit of the manuscript raised three findings and asked
+for three sweeps. All were measured on the final tree; the results are here so that the
+figures are not only in a commit message.
+
+**Measurement.**
+
+*Floats.* 15 labels, 35 references, 3 orphans, 0 references without a label. The orphans are
+the subject of C-3 above. Now watched: `section_floats` fails on a label nothing references
+and on a reference that resolves to nothing, with the three known orphans **declared by name
+in the code** so that the gap is bounded and a fourth cannot hide behind it. Proved able to
+fail both ways: a new unreferenced label is reported as `['tab:brandnew']`, a reference to a
+missing label as `['tab:ghost']`.
+
+*The non-breaking space.* 36 prose references carry the tie and 9 do not. Six of the nine
+are not references at all but paragraph headings, `Result 3.1.`, `Conclusion 4.2.` and their
+kind, where a tie would be meaningless. **Three are real**: `Result 4.1` at line 121,
+`Section 4.3` at line 318, and `Appendix A` at line 294, which is in the sentence added to
+Related work this same day. A line break can separate any of the three from its number. Not
+repaired: it is a change to the manuscript and it waits for the author.
+
+*Figures printed more than once.* 64 distinct values appear at least twice once years,
+small integers and structural constants are set aside. The largest groups are 1008 with
+sixteen appearances, 0.038 with seven, and 1013, 759, 12/16, 3.75, 120 and 74.5 with five
+each. **Every group was read, and no group names one quantity with two different values.**
+The repetitions are the abstract restating the body, the body restating a table, and a
+figure appearing as both a count and a component of a ratio, which is what a paper does. It
+is not made a gate: a check on repeated values would have to know which appearances mean the
+same quantity, and that distinction is editorial, not mechanical. The measurement is
+recorded so that the next reader does not have to redo it.
+
+*Countable claims about the paper's own contents.* Eleven were enumerated and counted.
+**Ten already have an assertion behind them**, including the seventeen non-constant cells of
+Table A1, which is asserted as `non-constant entries of Table A1` and not merely believed.
+**One does not: the four signatures of Table 2**, which the paper names repeatedly and no
+check counts.
+
+*Pointers into other people's works.* Seven, all naming the work they point into: two into
+Shaughnessy (1996), one into Nielsen (2003), four into Hacker (1993). **None is ambiguous**,
+and none could be confused with a pointer into this paper's own sections, which are written
+`Section~` with a tie and a `ref`.
+
+**The limit of the whole apparatus, which is the part worth keeping.** The suite now runs
+269 checks across the figures, the surfaces, the compiled PDF's text and layout, the
+bibliography, the floats and this log's own shape. **Not one of them can see a decision that
+was taken and never written.** That is not a gap to be closed by another check: a decision
+that left no trace leaves nothing to compare against. It failed twice in this project, with
+the exact product of C-2 and the citation of E-4, and both times what caught it was a person
+holding the list of what had been agreed against the file. **The only instrument for that
+class is the list itself, compared by hand**, which is the sweep recorded in X-8. Every
+checker here watches what is written; the list is what watches what was decided.
 
 **Date examined.** 2026-08-03.
 
