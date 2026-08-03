@@ -7,9 +7,9 @@ Hexagrams: Pair Rule, Family Gradient, and the Limits of Demonstrability*
 This is a living document. It is updated when a defect is found, not when a defect is
 fixed.
 
-**Where it stands, 2026-08-03.** Seventeen entries: four defects in the paper (E-1 to
-E-4), four in the deposited package (P-1 to P-4), two clarifications for the next version
-(C-1, C-2), and seven things examined and found sound (X-1 to X-7). **No figure of
+**Where it stands, 2026-08-03.** Eighteen entries: four defects in the paper (E-1 to E-4),
+four in the deposited package (P-1 to P-4), two clarifications for the next version (C-1,
+C-2), and eight things examined and found sound (X-1 to X-8). **No figure of
 the paper changes in any entry**, and that is measured and not asserted: every figure
 reproduces in every tree of the package: 192 of 192 in the first deposit, 202 of 202 in
 the second, 246 of 246 on the `main` this branch has now merged, and 259 of 259 at the head
@@ -1126,29 +1126,6 @@ its correct rounding to three. The battery correction printed 0.35 against an ex
 which is the rounding of nothing: not to two places, where it is 0.34, and not to three,
 where it is 0.342. **One of three, so a case and not a class**, and the repair is the case.
 
-**Corrected in the manuscript for version 3.** The sentence now prints the exact product:
-
-> With nine tests, 0.038 x 9 = 0.342.
-
-**This entry stays a clarification and is not reclassified.** Under its intended reading
-the printed sentence was not false: it was an approximation, and its point was that a
-corrected value of that size is nowhere near 0.05, which is true of 0.342. What made it
-worth a note was never falsity but disagreement, the manuscript and its own verification
-script printing different digits for one quantity, and printing the exact value removes the
-disagreement at its source rather than papering over it. The good consequence is
-mechanical: with an exact figure printed, the check that guards it stops being a tolerance
-and becomes an equality. Measured after the change: the suite carries **23** `ok=`
-overrides where it carried 24, and the one that went is this one.
-
-**Swept for siblings before closing, because one case and a class need different repairs.**
-Every printed approximation in the manuscript was checked against the value it
-approximates. There are three. The standard deviation of the inversion count prints 86.3
-against an exact 86.30179604156567, which is its correct rounding to one place. The
-probability of a monotone arrangement prints 0.042 against an exact 0.041666..., which is
-its correct rounding to three. The battery correction printed 0.35 against an exact 0.342,
-which is the rounding of nothing: not to two places, where it is 0.34, and not to three,
-where it is 0.342. **One of three, so a case and not a class**, and the repair is the case.
-
 **Date examined.** 2026-08-03.
 
 **Status.** NOTED, FOR THE NEXT VERSION. The clarification is applied in the manuscript of
@@ -1474,6 +1451,51 @@ Two independent responses to one defect, arriving from two directions in the sam
 record of it here, a gate against it there. Neither is redundant. The record explains what
 went wrong in an archive that cannot be changed; the gate stops it happening again in one
 that can.
+
+**Date examined.** 2026-08-03.
+
+**Status.** EXAMINED, NOT AN ERRATUM.
+
+
+---
+
+## X-8. Every correction this log claims to have applied, checked where it points
+
+**What was examined.** Two decisions of this phase were agreed in a message and never
+reached the file: the exact product of C-2 and the citation of E-4. Both were caught by a
+person reading, not by a mechanism, which is a poor way to find things. So rather than
+assert that there are no others, the question was measured: does every correction this log
+declares applied actually exist in the place it names?
+
+**Measurement.** Three sweeps, on the tree at the head of `errata`.
+
+*The content decisions of this phase, against the final `paper.tex`, seventeen of them:*
+the two Shaughnessy pointers, the Nielsen pointer, the source-verification sentence and its
+count of 64 of 64, the independence caution, `0.038 x 9 = 0.342`, the concept DOI, the
+version DOI, the corrected ladder wording, the corrected P4 wording, the bibliography entry
+for the companion preprint, its citation in Related work, its citation in Appendix A, the
+`\clearpage`, and the two negatives, that the superseded version DOI is gone and that no
+trace of the old 0.35 remains. **Seventeen present, none absent.**
+
+*The declarations of applied correction in this file, sixteen of them:* every
+`Repaired on this branch` and every `Corrected in the manuscript for version 3`, each
+checked where it points, including the two that name a commit by hash, which were verified
+against that commit rather than against the current file. **Sixteen verified, none
+failing.**
+
+*The prose of the log itself.* This one found something. **A run of four paragraphs was
+duplicated inside C-2**, the correction note repeated verbatim with its two following
+paragraphs. It came from a script that failed halfway, was fixed and re-run, and applied an
+edit whose anchor still matched. Removed. The same sweep also found the README's opening
+quoted twice, in P-3 and in X-1, which is two entries quoting one source and not a defect.
+
+**What this does and does not settle.** It settles that nothing else agreed in this phase
+is missing from the manuscript, and that no entry claims a repair that is not there. It
+does not settle that nothing was ever agreed and forgotten before this phase, because a
+decision that left no trace anywhere leaves nothing to measure. The permanent check added
+alongside, `section_bibliography`, closes one narrow case of that shape and says in its own
+docstring that it would not have caught E-4: an apparatus that checks what is written
+cannot check what was decided and never written.
 
 **Date examined.** 2026-08-03.
 

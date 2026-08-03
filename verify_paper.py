@@ -1285,6 +1285,81 @@ def _pdf_info(data):
     return {}
 
 
+def section_bibliography():
+    """Every entry of the bibliography is named in the body, and every author-date
+    citation in the body has an entry.
+
+    Two failures, opposite in direction and both invisible to a reader of the source: an
+    entry nobody names is dead weight that suggests a reading which never happened, and a
+    citation with no entry sends the reader nowhere. This paper cites author-date in prose
+    and uses no \\cite command, so both directions are matched on the author token and the
+    year, and each direction needed a different rule because the two questions are not
+    symmetric. An entry counts as named when its first author token and its year appear
+    within ninety characters of each other, which is what catches `the Mawangdui editing
+    group (1984)`, where no capitalised name touches the parenthesis. A citation counts as
+    resolved when its token matches ANY token of some entry's author string and that
+    entry's text carries the year, which is what catches `Yu Haoliang (1984)` and `Han
+    Zhongmin (1992)`, where the family name comes first and the body names the other half.
+
+    WHAT THIS DOES NOT COVER, written here because a check that does not say where it
+    stops gets read as covering everything. It compares the citations that exist against
+    the entries that exist. **It cannot see a citation that was never written.** Entry E-4
+    of ERRATA.md is exactly that: the follow up work was cited nowhere, so there was no
+    orphan marker to find and no unused entry to flag, and this section would have passed
+    in silence through every version that omitted it. An apparatus that checks what is
+    written cannot check what was decided and never written."""
+    head("The bibliography: every entry named, every citation resolved")
+
+    import os
+    import re
+    tex = read_text(os.path.join(os.path.dirname(os.path.abspath(__file__)), "paper.tex"))
+    if tex is None:
+        check("bib", "paper.tex is present next to this script", False, True)
+        check("bib", "every entry of the bibliography is named in the body", None, [])
+        check("bib", "every author-date citation in the body has an entry", None, [])
+        return
+
+    NAME = r"[A-Z][A-Za-z\u00c0-\u017f']+"
+    opening = tex.index(r"\begin{thebibliography}")
+    body, back = tex[:opening], tex[opening:]
+
+    entries = {}
+    for m in re.finditer(r"\\bibitem\{([^}]+)\}(.*?)(?=\\bibitem\{|\\end\{thebibliography\})",
+                         back, re.S):
+        key, text = m.group(1), m.group(2)
+        authors = text.split("(")[0]
+        entries[key] = (re.findall(NAME, authors), re.findall(r"\d{4}", text), text)
+
+    check("bib", f"the bibliography has {len(entries)} entries and no key is repeated",
+          sorted(k for k in entries if back.count("bibitem{%s}" % k) > 1), [])
+
+    # an entry is named when its first token and its year sit close together in the body
+    unnamed = []
+    for key, (tokens, years, _) in entries.items():
+        first, year = (tokens or ["?"])[0], (years or ["?"])[0]
+        near = any(year in body[m.start():m.start() + 90]
+                   for m in re.finditer(re.escape(first), body))
+        if not near:
+            unnamed.append(key)
+    check("bib", "every entry of the bibliography is named in the body", sorted(unnamed), [])
+
+    # a citation is resolved when its token matches any token of an entry carrying the year
+    cites = set()
+    for m in re.finditer(r"\b(" + NAME + r")(?: (?:and|\\&) " + NAME + r")? \((\d{4})", body):
+        if 1600 <= int(m.group(2)) <= 2100:
+            cites.add((m.group(1), m.group(2)))
+    for group in re.findall(r"\(([^()]*\d{4}[^()]*)\)", body):
+        for part in group.split(";"):
+            m = re.search(r"(" + NAME + r")[^,]*,\s*(\d{4})", part)
+            if m and 1600 <= int(m.group(2)) <= 2100:
+                cites.add((m.group(1), m.group(2)))
+    orphans = sorted(f"{tok} ({year})" for tok, year in cites
+                     if not any(tok in tokens and year in years
+                                for tokens, years, _ in entries.values()))
+    check("bib", f"each of the {len(cites)} author-date citations in the body has an entry",
+          orphans, [])
+
+
 def section_pdf_metadata():
     """The PDF a reader downloads carries its own title and author in the document
     information dictionary: that is what a repository, a reference manager and a browser
@@ -1897,6 +1972,7 @@ def main():
     section_pdf_text()
     section_pdf_layout()
     section_paper()
+    section_bibliography()
     section_errata()
     section_surfaces()
 
