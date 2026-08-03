@@ -41,6 +41,7 @@ that the archive and the site are the same object.
 |---|---|
 | `README.md` | This file. Also read by the suite, which checks its front matter against `paper.tex` |
 | `ERRATA.md` | Defects found in the deposited paper and in this package, recorded when found, not when fixed |
+| `V3-PLAN.md` | The steps to the next deposited version, with what each needs and what can go wrong. Written, not executed |
 | `errata-evidence/` | Working code behind an errata entry. **Not in the replication path**: nothing here is run by `verify_paper.py`, and no figure of the paper depends on it |
 | `LICENSE` | MIT, covering the code |
 | `LICENSE-text` | CC BY 4.0, covering the paper text and figures |

@@ -573,7 +573,8 @@ live `main`, line 743:
 ```
 
 The fourth argument is the value the suite attributes to the paper, and the run prints it
-under a column headed `paper:`. A clean run therefore shows
+under a column headed `paper:`. A clean run of either deposit, or of the live `main`,
+therefore shows
 
 ```
   [PASS] 5.6   Bonferroni over the nine criteria (0.038 x 9)
@@ -596,9 +597,11 @@ something else. The equality that would have caught it is overridden by
 and which compares against a third value, the printed one, that the column never shows.
 
 **It is a case and not a class, and the difference decides the repair.** Measured over
-every `check()` call in four trees: 154 calls in the version 2 deposit, 161 in the live
-`main`, 164 at the head of this branch, of which **23 carry an `ok=` override in every
-tree**. Three of the 23 declare a value different from the one their tolerance tests:
+every `check()` call: 154 calls in the version 2 deposit, 161 in the live `main`, 164 at
+the head of this branch when this entry was written and 165 now, of which **23 carry an
+`ok=` override in the deposits and in the live `main`, and 24 at the head of this branch**,
+the extra one being the assertion added by the repair of E-3, whose band is discussed
+there. Three of the 23 declare a value different from the one their tolerance tests:
 
 | check | column declares | tolerance tests | the paper prints |
 |---|---|---|---|
@@ -629,7 +632,17 @@ override as it stands, and would still pass with the column corrected to 0.35, s
 reader downloads.
 
 **Repaired on this branch**, in commit `10786bdd2e8ff40fb0271dbfa6fd50b259ef0b44`, which
-changes the declared value to 0.35 and leaves the tolerance alone. The entry above
+changes the declared value to 0.35 and leaves the tolerance alone. The same commit changed
+the left column from the two-place rounding to the three-place one, so that the line reads
+`reproduced: 0.342   paper: 0.35` instead of showing 0.34 beside 0.35 on a line marked
+PASS. That was not asked for, so it was measured rather than assumed: the suite has no
+single display precision to break. Across its 165 checks, `round` is called to one place
+19 times, to two places 5 times, to three places 16 times and to four places 4 times, and
+the precision follows the figure being shown. The nearest sibling does exactly what this
+line now does: the Appendix A check of `0.035 x 17 = 0.6` displays the exact product to
+three places against a printed figure rounded to one, with a tolerance carrying the
+difference. So this is not a new convention, it is the existing one, and the measurement
+is recorded here rather than left as a matter of taste. The entry above
 describes the deposits and is not rewritten to match the repair: a reader of a future
 version who finds this entry and then reads the shipped code must be able to tell which
 of the two they are looking at. Nothing in a deposit is altered by that commit, and the
@@ -712,7 +725,18 @@ asserts the figure: the free-shuffle percentile of the lag-1 statistic, band 0.6
 width its two neighbours use, because the printed 4.0 comes from the other implementation
 and this one measures 3.8. The assertion was shown able to fail before it was believed:
 moving the declared value to 6.0 fails it alone, and negating the statistic it rests on
-fails it along with its two relatives. The entry above describes the deposits, where the
+fails it along with its two relatives.
+
+*What that band can see and what it cannot, said plainly.* It catches a gross error: the
+2.0 point move to 6.0 fails it, as does any change to the statistic underneath, which
+shifts the percentile to the other end of the scale. It would not see a drift of 0.3
+points, and it is not meant to: the printed 4.0 comes from a different implementation and
+a different draw, and this one measures 3.8, so a band narrower than the gap between two
+honest implementations of the same quantity would fail for the wrong reason. That is the
+line between a band with a reason and a tolerance that hides something, and it is the same
+line P-2 is about. The reason is written here so that a later reader can judge the band
+instead of trusting it. It also makes the entry's new check the twenty-fourth `ok=`
+override on this branch, which is recorded in the inventory in P-2. The entry above describes the deposits, where the
 figure is still unasserted, and is deliberately not rewritten to match the branch.
 
 **Cross reference.** The same defect on the package's surface is P-3, which follows. One
@@ -1336,11 +1360,16 @@ out because a count without one is not a measurement:
 | deposit v2, 10.5281/zenodo.21628654 | `61486e35665f0fc42212205ca05b0ead7048e0f6` | 202 |
 | head of branch `errata`, before the repairs | `a6ed004b0bf5094265e2f29c00070287db351679` | 211 |
 | live `main` on GitHub | `95437d30f805be447cccabb30ea54ff983741f52` | 246 |
-| head of branch `errata`, after the two repairs | `d25149ac4dc1105918f7fadb3ae067314f184cbd` | 212 |
+| head of branch `errata`, from `d25149ac4dc1105918f7fadb3ae067314f184cbd` onward | 212 |
 
 The first two are frozen and their figures are unchanged. The third and the fifth are this
 branch, before and after the repairs of P-2 and E-3, which added one assertion and moved
-the count by one. **The fourth is the tree this lane did not have.** Five rows is not a
+the count by one. The fifth row names the commit the figure starts at and not the head of
+the branch, deliberately: the head moves every time this file is edited, and a row that
+named it would be stale before the commit that wrote it finished. Every commit from
+`d25149ac4dc1105918f7fadb3ae067314f184cbd` onward measures 212, because none of them
+touches the suite. A count that names one commit while the head is another is the same
+defect as a count without its subject set, in miniature. **The fourth is the tree this lane did not have.** Five rows is not a
 problem to be tidied away: it is what the table is for, since each row is a different
 object and a reader has to be able to tell which one a figure belongs to. An earlier version of this paragraph said
 that the figure 246 circulated in the records of the project and belonged to no tree
