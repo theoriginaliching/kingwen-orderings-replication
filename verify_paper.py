@@ -1483,8 +1483,13 @@ def section_errata():
         if e["cat"] not in "EP":
             continue
         field = errata_field(e["body"], "Printed text.")
-        quoted = field is not None and any(l.lstrip().startswith(">")
-                                           for l in field.split("\n"))
+        # A blockquote or a fenced block both count as quotation. The second is
+        # what an entry about the package uses, because what it quotes is code,
+        # and a rule that only knew about blockquotes would push those entries
+        # into the wrong form to satisfy it.
+        quoted = field is not None and (any(l.lstrip().startswith(">")
+                                            for l in field.split("\n"))
+                                        or "```" in field)
         marked = field is not None and any(m in field for m in ERRATA_MARKERS)
         if not (quoted or marked):
             bad.append(f"{e['id']} has no quoted printed text and no pending mark")

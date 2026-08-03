@@ -7,14 +7,22 @@ Hexagrams: Pair Rule, Family Gradient, and the Limits of Demonstrability*
 This is a living document. It is updated when a defect is found, not when a defect is
 fixed.
 
-**Where it stands, 2026-07-31.** Eight entries: two defects in the paper (E-1, E-2), one
-defect in the deposited package (P-1), one clarification for the next version (C-1), and
-four things examined and found sound (X-1 to X-4). **No figure of the paper changes in
-any entry**, and that is measured and not asserted: every figure reproduces in both
-deposits, 192 of 192 in the first and 202 of 202 in the second, with no failures in
-either, and the two defects in the paper are defects of description whose consequences all
-hold. What P-1 corrects is a statement the package makes about its own suite, not about
-the King Wen sequence.
+**Where it stands, 2026-08-03.** Fourteen entries: three defects in the paper (E-1, E-2,
+E-3), three in the deposited package (P-1, P-2, P-3), two clarifications for the next
+version (C-1, C-2), and six things examined and found sound (X-1 to X-6). **No figure of
+the paper changes in any entry**, and that is measured and not asserted: every figure
+reproduces in all four trees of the package, 192 of 192 in the first deposit, 202 of 202
+in the second, 211 of 211 at the head of this branch and 246 of 246 on the live `main`,
+with no failures anywhere. The defects in the paper are defects of description whose
+consequences all hold, and one missing assertion; the defects in the package are
+statements it makes about itself.
+
+**What holds an entry up.** No entry here depends on the follow up paper being correct.
+Each states the evidence available in this package, or in printed sources anyone can
+consult, and can be checked from those alone. Where an entry names that work, it is
+recording **where the discrepancy was found**, which is not the same as what establishes
+it: found by, not established by. If the follow up paper vanished tomorrow, every entry
+below would stand exactly as it is.
 
 ## What this file is
 
@@ -103,7 +111,12 @@ changes. The author decides that the possessive of `sequence` carries an apostro
 that is in the text, and it survives any re-typesetting. So:
 
 - **Normalised**, and named: line breaks, ligature codepoints, hyphens introduced by a
-  break across a line or a page.
+  break across a line or a page, and the symbol glyphs the compositor draws for operators
+  the source writes as plain text or as a macro: U+2212 for a hyphen-minus, U+00D7 for
+  `\times`, U+2248 for `\approx`. These are written here as `-`, `x` and `~`, and the
+  entry that quotes them says so. The operator is the text; the glyph is the drawing of
+  it, and a reader searching a PDF viewer for a quotation is better served by the form
+  they can type.
 - **Preserved**, exactly: every other character, including U+2019 where the artifact
   composes a typographic apostrophe, and every digit, bracket and mark of punctuation
   the author put there.
@@ -131,6 +144,45 @@ differences remain after the normalisation above, and both are the typesetter's 
 Everything else agrees with the source character for character. The spans quoted in C-1
 agree with it exactly once the ligatures are decomposed and the `\url{}` wrapper is
 unwrapped, which is what the rule above requires and what C-1 does.
+
+---
+
+# Verification against the printed sources
+
+The two constructed sequences of the paper have been compared, position by position,
+against the printed record they claim to reproduce. This is the part of the work that
+rests on nothing in this project.
+
+| sequence | source | comparison | result |
+|---|---|---|---|
+| Jing Fang | Nielsen (2003), Table 2, p. 3, entry BA GONG GUA | 64 of 64 positions | no discrepancy |
+| Mawangdui | Shaughnessy (1996), pp. 28-29, printed figures | 11 of 11 | no discrepancy |
+| Mawangdui | Shaughnessy (1996), p. 17, the stated rule, reimplemented separately | 64 of 64 positions | no discrepancy |
+
+**What the package did and did not do until now**, measured in all four trees rather than
+recalled: `MAWANGDUI` and `JING_FANG` occur fifteen times in `verify_paper.py` and not one
+of those occurrences is a comparison against a source; the names `Shaughnessy` and
+`Nielsen` occur zero times in it; and the only literal sequence table anywhere in the
+package is `KING_WEN`, sixty-four values. The other two sequences are generated from the
+construction rules, so there was no list of either to compare against anything. Both were
+therefore verified against the rules as implemented, and not against the printed record,
+which is the gap these comparisons close.
+
+**A consequence worth having.** Jing Fang agrees in all sixty-four positions, and
+`KW_NUMBER` is a bijection, so the comparison also validates `KING_WEN` itself, the single
+external datum this package embeds, against Nielsen. The one number nobody could derive is
+now the one number checked against a third party.
+
+**What is independent here, and what is not.** Shaughnessy and Nielsen are printed, third
+party and unconnected to this project, and they are the independent element. The audit of
+this repository that turned up several of the entries below is **not** independent: it was
+run by a separate session of the same process, with the same author, and it appears in
+those entries as provenance and nothing more. Claiming otherwise in the very document
+where errors are corrected would be the worst possible place to overstate.
+
+The comparisons above were carried out in the course of the follow up work, with the books
+in hand. This file records them, with their page pointers, so that a reader can repeat
+them; the package does not perform them, and this round does not add a checker that would.
 
 ---
 
@@ -189,9 +241,20 @@ sampler; what is randomised is the arrangement of the blocks.
    version 1 (52980 bytes, tag `zenodo-v1`, sha256
    `bb857fffca9276ce2b1c3f13a4798a03978fea843b2385f84a2581176347ade8`) and at the head of
    this branch (60916 bytes, sha256
-   `8a7085c5cd4d372843038c6a0a342626a1362f362c2b9f2db41997186ef1b957`). The three files
+   `8a7085c5cd4d372843038c6a0a342626a1362f362c2b9f2db41997186ef1b957`). Those three files
    differ in size and in hash; they do not differ in that region, which is why one range
-   serves all three. Hashes are written unabbreviated here and everywhere in this file: a
+   serves all three.
+
+   **A fourth tree exists and these ranges do not index it.** The live `main` of the
+   repository, commit `95437d30f805be447cccabb30ea54ff983741f52`, carries a
+   `verify_paper.py` of 69341 bytes, sha256
+   `72abade176ab5f8826afa4dece160ab46b2641fa2fde8dbeff2d7e6b4d7a3faf`, in which the file
+   has shifted: the line quoted above as 1035 is 1036 there, and the micro theorem comment
+   quoted below as 1077 is 1078. The ranges are deliberately **not** re-derived for that
+   tree, because this entry is about what the deposits contain and the deposits are what
+   the reader holds. They are excluded by name rather than by silence. A line range
+   without its tree is the same defect as a count without its subject set, and this file
+   has now made that mistake once, in the paragraph on the count, which is enough. Hashes are written unabbreviated here and everywhere in this file: a
    truncated hash cannot be checked, and a record whose identifiers cannot be checked is
    a record that asks to be believed.
 2. The micro theorem printed in the same appendix states that quartets preserve the
@@ -238,11 +301,15 @@ not in any reproduced figure: the suite grew between them.
 
 **Status.** OPEN.
 
-**Cross reference.** Recorded a second time, as `SELF D-2`, in the verification record
-of the follow up paper on the generalised null ladder. One defect, two records, and
-this is the pointer between them. That record is internal: its repository has no public
-remote, so it cannot be cited here by URL, and nothing in this entry is transported from
-it. The evidence above stands on the deposited artifact and on this package alone.
+**Cross reference, and what it is not.** The same defect is recorded a second time, as
+`SELF D-2`, in the verification record of the follow up paper on the generalised null
+ladder. That record is where the discrepancy was found. It is not what establishes it,
+and this entry does not lean on it: the two witnesses above, the sampler and the printed
+theorem, are both inside the published replication package, two paragraphs apart in the
+same appendix and a few lines apart in the same script, and a reader holding the deposit
+can check them without knowing that any follow up paper exists. Nothing here is
+transported from that record, which in any case sits in a repository with no public remote
+and could not be cited by URL. Found by that work; established by this package.
 
 **Note for a reader who has only the paper.** The theorem, not the sentence, states what
 the sampler does. A reader who follows the theorem is not misled.
@@ -298,11 +365,14 @@ incomparable pairs, zero equalities. Each refutation is accompanied by an exhibi
 witness, that is a concrete permutation lying in one rung and not in the other, checked
 in both directions.
 
-The derivation below is not transported from anywhere. An earlier record of the same
-result exists in a repository with no public remote, which cannot be cited here, and
-copying its prose would be copying a paraphrase; so the predicates were written again
-from the printed definitions of P0 to P5 in the deposit, and the witnesses were
-produced again.
+The derivation below is not transported from anywhere, and it does not rest on the follow
+up work in which the question arose. An earlier record of the same result exists in a
+repository with no public remote, which cannot be cited here, and copying its prose would
+be copying a paraphrase; so the predicates were written again from the printed definitions
+of P0 to P5 in the deposit, and the witnesses were produced again. The fifteen containments
+and their witnesses are computable from the definitions the paper itself prints, by anyone
+holding the deposit, which is what establishes the entry. That work is where the question
+came from, and that is all it is.
 
 *What this is, named exactly.* It is not an independent derivation, and calling it one
 would overstate it. The result was already written in this file before the computation
@@ -481,6 +551,176 @@ the count it prints is the true one.
 
 ---
 
+## P-2. The suite prints a value the paper does not print, in the column that claims to quote it
+
+**Printed text.** `verify_paper.py` of both deposits, line 742, and of the head of this
+branch at the same line:
+
+```python
+    check("5.6", "Bonferroni over the nine criteria (0.038 x 9)",
+          round(0.038 * 9, 2), 0.34, ok=close(0.038 * 9, 0.35, 0.02))
+```
+
+The fourth argument is the value the suite attributes to the paper, and the run prints it
+under a column headed `paper:`. A clean run therefore shows
+
+```
+  [PASS] 5.6   Bonferroni over the nine criteria (0.038 x 9)
+         reproduced: 0.34   paper: 0.34
+```
+
+**What it should say.** `0.35`, which is what the manuscript prints, with the equality
+left to do its work; or, if the tolerance is kept, centred on the same value the column
+declares. The two must not name different numbers.
+
+**Evidence.** The manuscript prints `0.35` and never prints `0.34`. Measured in the
+deposited `paper.tex` of version 2, in its compiled PDF at page 9, and in the same files
+of version 1 and of the live `main`: the string `0.34` does not occur in `paper.tex` in
+any of the four trees, and the sentence at issue reads `With nine tests, 0.038 x 9 ~
+0.35.` The exact product is 0.34199999999999997, whose rounding to two places is 0.34,
+which is what `round(0.038 * 9, 2)` returns and what both columns of the output show. So
+the reader of the output sees `0.34` twice and has no way to learn that the paper says
+something else. The equality that would have caught it is overridden by
+`ok=close(0.038 * 9, 0.35, 0.02)`, whose band is wide enough to swallow the difference
+and which compares against a third value, the printed one, that the column never shows.
+
+**It is a case and not a class, and the difference decides the repair.** Measured over
+every `check()` call in four trees: 154 calls in the version 2 deposit, 161 in the live
+`main`, 164 at the head of this branch, of which **23 carry an `ok=` override in every
+tree**. Three of the 23 declare a value different from the one their tolerance tests:
+
+| check | column declares | tolerance tests | the paper prints |
+|---|---|---|---|
+| 5.6, Bonferroni over the nine criteria | 0.34 | 0.35 | 0.35 |
+| 5.1, pair-null percentile, lag-1 autocorrelation | 6.4 | 6.3 | 6.4 |
+| 5.1, pair-null percentile, yang-balanced groups | 89.6 | 89.7 | 89.6 |
+
+Only the first declares a value the paper does not print. The other two declare the
+printed value and merely centre a Monte Carlo band on the value actually measured, which
+is ordinary practice and conceals nothing. One case. Had it been a class, the repair would
+have been a rule, that no check may declare one value and test another, enforced
+mechanically; for a single case the repair is to correct the case and to record that the
+sweep was done, so that nobody has to wonder later whether it was.
+
+**Date found.** 2026-08-03. The discrepancy was found in the course of an audit of this
+repository run by a separate session of the same process. That is where it was found and
+not what establishes it: everything above is internal to the published package, the line
+of code and the sentence of the manuscript sit in the same archive, and a reader with the
+deposit and nothing else can check every claim in this entry. It would stand if the audit
+had never happened.
+
+**Figures affected.** None. Measured: the suite passes in all four trees with the
+override as it stands, and would still pass with the column corrected to 0.35, since
+0.342 is within 0.02 of 0.35. No conclusion of the paper moves either way, because both
+0.34 and 0.35 are far above the 0.05 the sentence is arguing about.
+
+**Status.** OPEN. Present in both deposits, in the live `main` and in this branch.
+
+---
+
+## E-3. The abstract says every numerical claim is asserted, and one is not
+
+**Printed text.** Page 1 of the deposited PDF, the abstract, its last sentence:
+
+> Every numerical claim in this paper is asserted by an automated test suite in a public
+> repository.
+
+Line breaks of the printed column are not reproduced; no other character is altered.
+
+The figure at issue is in Table 2, page 7:
+
+> lag-1 autocorrelation of distances -0.247 4.0 6.4 marginal, not significant
+
+The typographic minus U+2212 that the compositor draws in `-0.247` is written above as an
+ordinary hyphen-minus, which is what the source writes; the ligature and spacing rules of
+the transcription note apply as usual. The figure `4.0` is the free-shuffle percentile of
+the lag-1 statistic.
+
+**What it should say.** Either the sentence admits its exception, or the suite asserts the
+figure. The narrow correction is the second: one assertion for the free-shuffle percentile
+of the lag-1 statistic, and the sentence becomes true as printed.
+
+**Evidence.** Measured over four trees, with the subject set declared: `paper.tex` and
+`verify_paper.py` of the same tree; a figure is a decimal or a fraction in the body of
+`paper.tex` after LaTeX markup is stripped; covered means the decimal appears in
+`verify_paper.py`, or, for a fraction `a/b`, that either `a/b` or the tuple `(a, b)` does.
+The tuple form matters and a literal-only test is wrong: the suite asserts 7/15 as
+`(7, 15)`.
+
+Of 115 figures printed in each deposit and 112 in the live `main` and at the head of this
+branch, **eight have no counterpart, the same eight in all four trees**: 98.2, 0.037,
+0.251, 4.0, 0.000, 1.000, 1/24, 120/32. Three of the eight are Chan's figures rather than
+this paper's, and one of those, 0.251, is quoted only to be compared with our own -0.247.
+Four more are formatting variants of figures the suite does assert: 0.000 and 1.000 are
+Kendall taus printed to three places and asserted as 0.0, 1/24 is printed beside the
+0.042 that is asserted, and 120/32 is printed beside the 3.75 that is asserted. That
+leaves exactly one figure of the paper's own that the suite does not assert in any form:
+**4.0**.
+
+**A reading that was corrected before this entry was written.** The self-referential count
+of verification sections, 61 in the first deposit and 63 in the second, is not asserted by
+this package's suite either: measured, the strings `verification sections`,
+`assertion suite comprises` and `laboratory of` occur zero times in `verify_paper.py` in
+all four trees. It was tempting to add it to this entry and it would have been wrong. The
+sentence says `an automated test suite in a public repository`, indefinite twice over. It
+does not say this suite or this repository, and the laboratory's suite does assert that
+count and is public. The sentence survives the section count. What it does not survive is
+4.0.
+
+**Date found.** 2026-08-03. Found in the course of an audit of this repository run by a
+separate session of the same process, and established here by the measurement above, which
+reads only `paper.tex` and `verify_paper.py` of the four trees and can be repeated by
+anyone holding either deposit. That audit reported thirteen unasserted figures; the
+measurement made here gives eight by the method declared, and where the two disagree this
+one governs. The count came out different, which is the ordinary reason to re-measure a
+lead rather than adopt it.
+
+**Figures affected.** None. The unasserted figure is not a wrong figure: 4.0 is not
+contradicted by anything, it is simply not checked. Measured: all four trees pass their
+full suites, 192, 202, 211 and 246 checks respectively, none failing.
+
+**Status.** OPEN.
+
+**Cross reference.** The same defect on the package's surface is P-3, which follows. One
+defect, two surfaces, one figure.
+
+---
+
+## P-3. The README makes the same promise, in the definite
+
+**Printed text.** `README.md` of both deposits and of the head of this branch, in the
+opening paragraph:
+
+> This repository is the replication package for the paper. It contains the manuscript
+> source, the compiled PDF, and a single self-contained script that reproduces **every
+> numerical claim** made in the paper from first principles.
+
+**What it should say.** The same repair as E-3 makes both sentences true: assert the free
+shuffle percentile of the lag-1 statistic. Failing that, the promise needs the exception
+written into it.
+
+**Evidence.** The measurement is the one recorded in E-3 and is not repeated here. What
+differs is the strength of the claim, and it differs against this surface: the abstract
+says `an automated test suite in a public repository`, indefinite, and survives everything
+except 4.0; the README says `a single self-contained script`, definite and named, and so
+promises that this script asserts every numerical claim of the paper. There is no second
+suite for it to be leaning on. The same single figure falsifies it, and falsifies it more
+plainly.
+
+**Date found.** 2026-08-03, with E-3, and established by the same internal measurement.
+The provenance is the same audit, recorded as where it was found.
+
+**Figures affected.** None, as in E-3.
+
+**Status.** OPEN.
+
+**Cross reference.** E-3. The two entries are the same defect on two surfaces and are
+kept apart only because the categories of this file are by surface: the paper's text is
+E, the package is P. They are repaired by one assertion.
+
+
+---
+
 # Clarifications for the next version
 
 Nothing in this section is false. Each entry records a sentence that is exact as printed
@@ -542,6 +782,38 @@ such number, with nothing in the sentence to tell them they are looking in the w
 place. Naming the repository, once, would close that.
 
 **Date examined.** 2026-07-31.
+
+**Status.** NOTED, FOR THE NEXT VERSION.
+
+---
+
+## C-2. An approximation that rounds the wrong way
+
+**What was examined.** The sentence on page 9 of the deposited PDF, in the paragraph on
+the battery of nine criteria:
+
+> With nine tests, 0.038 x 9 ~ 0.35.
+
+The multiplication sign is U+00D7 in the artifact and the approximation sign is U+2248;
+both are the compositor's rendering of the source's `\times` and `\approx`, and are
+written here as `x` and `~` so that the sentence can be searched for in a plain terminal.
+No digit is altered.
+
+**Measurement.** The exact product is 0.34199999999999997. Its rounding to two decimal
+places is 0.34, not 0.35, and the package's own suite computes exactly that:
+`round(0.038 * 9, 2)` returns 0.34, and the corresponding check declares 0.34 as the
+paper's value, which is the separate defect recorded in P-2. Nothing in the paper is
+false: the sentence is an approximation, its point is that a Bonferroni-corrected value of
+this size is nowhere near 0.05, and 0.342 is nowhere near 0.05. Under its intended reading
+the claim holds.
+
+What lifts it out of "examined and sound" is not the arithmetic but the disagreement:
+0.35 is not the two-place rounding of 0.342, and the manuscript and its own verification
+script print different digits for the same quantity. A reader who computes the product
+gets a third rendering. One of the three should give way, and the cheapest is the printed
+one.
+
+**Date examined.** 2026-08-03.
 
 **Status.** NOTED, FOR THE NEXT VERSION.
 
@@ -748,6 +1020,91 @@ record that looked for little.
 
 ---
 
+## X-5. The returning soul is built by a different operation than the one the source states
+
+**What was examined.** The construction of the Jing Fang sequence in `verify_paper.py`,
+function `build_palace`, the line that produces the eighth member of each palace, at line
+136 of the version 2 deposit:
+
+```python
+    returning = (wandering & ~LOWER_MASK & 63) | (pure & LOWER_MASK)
+```
+
+The source rule for the returning soul is that the whole lower trigram of the wandering
+soul is inverted, which in this representation is `wandering ^ LOWER_MASK`. The code does
+something else: it restores the lower trigram of the pure hexagram. Two different
+operations, and the question is whether they agree here.
+
+**Measurement.** They agree, in all eight palaces, computed and not argued:
+
+| palace head | pure | wandering | code | source rule | equal |
+|---|---|---|---|---|---|
+| Qian | 63 | 5 | 61 | 61 | yes |
+| Zhen | 36 | 30 | 38 | 38 | yes |
+| Kan | 18 | 40 | 16 | 16 | yes |
+| Gen | 9 | 51 | 11 | 11 | yes |
+| Kun | 0 | 58 | 2 | 2 | yes |
+| Xun | 27 | 33 | 25 | 25 | yes |
+| Li | 45 | 23 | 47 | 47 | yes |
+| Dui | 54 | 12 | 52 | 52 | yes |
+
+Built either way, the 64 positions of the sequence are identical, and both equal the
+`JING_FANG` the package ships. The reason is measured too, in the same run: on arrival at
+the wandering soul, lines 1, 2 and 3 have already been flipped, so the lower trigram of
+the wandering soul is the exact complement of the pure hexagram's lower trigram, in all
+eight palaces. Restoring it and inverting it are then the same operation.
+
+**Why this is a note and not a defect.** Nothing printed is wrong and nothing computed is
+wrong. What is recorded is a coincidence with a condition attached: the agreement holds
+because of the order in which this calendar of generations flips its lines. Change that
+calendar, and the two operations part company silently, with no check to notice, since
+the suite asserts the sequence and not the rule that generates it. The note exists so that
+whoever changes it knows what they are standing on.
+
+**Date examined.** 2026-08-03.
+
+**Status.** EXAMINED, NOT AN ERRATUM.
+
+---
+
+## X-6. The figure that looked orphaned, and the set that was too small
+
+**What was examined.** The number 246, which circulated in the records of the project and
+which this file recorded as belonging to no tree of the package. That statement was made
+over three trees: the two deposits and the head of this branch.
+
+**Measurement.** The live `main` of this repository, commit
+`95437d30f805be447cccabb30ea54ff983741f52`, prints exactly that. Extracted on 2026-08-03
+into a clean directory and run there:
+
+```
+  246 checks passed, 0 failed, 246 total
+```
+
+with exit status 0. The figure had a home the whole time. The tree that produces it was
+absent from the set that was examined, because this lane's clone of the repository was two
+commits behind the remote and nobody had measured that: local `main` at
+`73d9a77cdc59ea1410ae815cbb484dc68eb752d1` with 30 commits, `origin/main` at
+`95437d30f805be447cccabb30ea54ff983741f52` with 32, behind by two and ahead by none. The
+two commits, both of 2026-07-28, are
+`d6669487b51ac141ab779891ab85db2503e08974` and
+`95437d30f805be447cccabb30ea54ff983741f52`, and together they add 187 lines to the suite.
+
+**The lesson, which is why this entry is kept.** A statement that something does not
+exist is only ever a statement about the set that was looked at, and the set has to be
+written down beside the claim. The sentence in this file was scoped honestly, it said "at
+any of the three points measured here", and it was still misleading, because a reader
+takes "measured here" to mean "measured". The scope was correct and invisible. Every
+count in this file now names its trees in a table, and the live `main` is the fourth
+column. The same correction was applied to the line pointers of E-1, which name the trees
+they index and name the one they do not.
+
+**Date examined.** 2026-08-03.
+
+**Status.** EXAMINED, NOT AN ERRATUM.
+
+---
+
 Entries appear here when something is checked and found correct. They are kept for
 the same reason the entries above are kept: a list that records only its hits does not
 let a later reader tell what was looked at from what was never looked at.
@@ -875,6 +1232,18 @@ into the package. The gate notices the apparatus of its own demonstration. Nothi
 wrong with either the recipe or the check, and no amount of arithmetic would have
 predicted the eighteenth failure from the seventeen.
 
+**What merging would do to the count, said in advance.** This branch descends from
+`73d9a77cdc59ea1410ae815cbb484dc68eb752d1` and does not contain the two commits that
+`main` gained on 2026-07-28, `d6669487b51ac141ab779891ab85db2503e08974` and
+`95437d30f805be447cccabb30ea54ff983741f52`, which add 187 lines to the suite and take it
+to 246 checks. If this branch is ever merged, the count will move again, to the sum of
+what the two sides assert rather than to either figure alone, and the surfaces will have
+to be swept in that same act exactly as they were here. It is expected, it is nobody's
+defect, and it is written before the fact so that it cannot later be read as drift. The
+branch is **not** rebased onto the newer `main`, and will not be: rebasing rewrites every
+commit hash on it, and the line pointers and commit names already recorded in these
+entries would all become false in the same instant.
+
 **What the older figures still mean.** Every reference to 202 in this file that speaks of
 a deposit, of `main`, or of the version 2 archive remains correct and is left standing:
 those objects have not changed and will not change here. The deposited archives measure
@@ -914,11 +1283,21 @@ file exists to prevent is exactly that kind of drift. Entry P-1 above is that dr
 its own package, caught between a suite that grew and surfaces that had not: the count
 must move once, deliberately, with the surfaces moving in the same act.
 
-**The number, measured rather than assumed.** Run on 2026-07-31 at the head of this
-branch: 211 checks, 0 failed, which is the 202 of the previous run plus the nine of
-`section_errata`. The deposited tree of version 2 gives 202 and the deposited tree of
-version 1 gives 192, and those two figures are unchanged and remain correct: nothing in
-this branch alters a deposit. At least one other figure, 246, circulates in the records of the project; it
-does not belong to this package at any of the three points measured here, and the
-discrepancy is recorded rather than quietly reconciled, since a number that two records
-give differently is itself a finding.
+**The number, measured rather than assumed, over four trees.** The subject set is written
+out because a count without one is not a measurement:
+
+| tree | commit | checks |
+|---|---|---|
+| deposit v1, 10.5281/zenodo.21609654 | `88d3d5e7295520b47c32aea2591d8f01a53d007f` | 192 |
+| deposit v2, 10.5281/zenodo.21628654 | `61486e35665f0fc42212205ca05b0ead7048e0f6` | 202 |
+| head of branch `errata` | `a6ed004b0bf5094265e2f29c00070287db351679` | 211 |
+| live `main` on GitHub | `95437d30f805be447cccabb30ea54ff983741f52` | 246 |
+
+The first two are frozen and their figures are unchanged. The third is this branch. **The
+fourth is the tree this lane did not have.** An earlier version of this paragraph said
+that the figure 246 circulated in the records of the project and belonged to no tree
+measured here, which was true of the three trees then examined and false as an impression:
+246 is what the live `main` prints, measured on 2026-08-03 by extracting `95437d30` into a
+clean directory and running the suite there, `246 checks passed, 0 failed, 246 total`,
+exit status 0. The figure was never orphaned. The set that was looked at was too small,
+and it was too small because nobody had written it down. See X-6.
