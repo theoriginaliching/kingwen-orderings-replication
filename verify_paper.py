@@ -1199,16 +1199,17 @@ def section_front_matter():
     #
     # They are not required to agree: they differ on purpose. What is checked is the
     # string, in each surface; nothing in this file touches the network.
-    doi_version = "10.5281/zenodo.21609654"
     doi_concept = "10.5281/zenodo.21609653"
     doi_v3 = "10.5281/zenodo.21776041"
     # Since the manuscript was rewritten for version 3 it carries BOTH: the concept
-    # DOI, which is known before any deposit exists and always resolves to the
-    # newest one, and a named gap where the version DOI goes once it is reserved.
-    # The gap is asserted rather than trusted, so that it cannot be deposited blank.
+    # DOI, which is known before any deposit exists and always resolves to the newest
+    # one, and the version DOI of the deposit it belongs to, published on 2026-08-03 as
+    # 10.5281/zenodo.21776041. The superseded version DOI of version 1 is not named here
+    # at all: its ABSENCE from the manuscript is asserted in IDENTIFIER_COUNTS, which is
+    # the one place that says how often each identifier may appear on each surface.
     check("front", "paper.tex carries the concept DOI, which needs no deposit to exist",
           doi_concept in tex, True)
-    check("front", "paper.tex carries the version DOI reserved for this deposit",
+    check("front", "paper.tex carries the version DOI of the deposit it belongs to",
           doi_v3 in tex, True)
     for name in ("README.md", "index.html"):
         surface = read_text(os.path.join(here, name))
@@ -1947,9 +1948,11 @@ IDENTIFIER_COUNTS = (
     ("paper.tex", "10.5281/zenodo.21609654", 0, "no superseded version DOI"),
     ("paper.tex", "10.5281/zenodo.21776041", 1, "the version DOI reserved for this deposit, once"),
     ("README.md", "10.5281/zenodo.21609653", 4, "the concept DOI"),
-    ("README.md", "10.5281/zenodo.21609654", 1, "the version DOI, named once in the claim map"),
+    ("README.md", "10.5281/zenodo.21609654", 0, "no superseded version DOI anywhere"),
+    ("README.md", "10.5281/zenodo.21776041", 2, "the deposited version DOI, in the claim map and in the deposit block"),
     ("index.html", "10.5281/zenodo.21609653", 3, "the concept DOI"),
     ("index.html", "10.5281/zenodo.21609654", 0, "no version DOI at all"),
+    ("index.html", "10.5281/zenodo.21776041", 0, "not even the current one: the landing carries the concept DOI, which never ages"),
 )
 
 

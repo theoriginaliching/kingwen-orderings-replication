@@ -1,5 +1,12 @@
 # Plan for version 3
 
+**EXECUTED. Version 3 was deposited on 2026-08-03**, version DOI `10.5281/zenodo.21776041`, archive
+sha256 `0069259effc1290d4fc2c598ea8bf88dc0e1c1b76fa2523d0521f2c016c48aa5`, tag `zenodo-v3` on
+commit `d6afae20bbefba56728251f34f8e3870c43e2cbd`. What follows is the plan as it was
+written, kept unrewritten: a plan that is edited after the fact stops being evidence of
+what was intended and becomes a description of what happened. What actually happened is in
+the entries of ERRATA.md and in the history of the branch.
+
 **This is a plan as of 2026-08-03, and a copy of it is sealed inside the deposited
 archive. Its status is not read here. It is read in `ERRATA.md` and in the commit
 history.**

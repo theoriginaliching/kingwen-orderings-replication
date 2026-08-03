@@ -41,7 +41,7 @@ that the archive and the site are the same object.
 |---|---|
 | `README.md` | This file. Also read by the suite, which checks its front matter against `paper.tex` |
 | `ERRATA.md` | Defects found in the deposited paper and in this package, recorded when found, not when fixed |
-| `V3-PLAN.md` | The steps to the next deposited version, with what each needs and what can go wrong. Written, not executed |
+| `V3-PLAN.md` | The steps that produced version 3, with what each needed and what could go wrong. Executed: version 3 was deposited on 2026-08-03 |
 | `errata-evidence/` | Working code behind an errata entry. **Not in the replication path**: nothing here is run by `verify_paper.py`, and no figure of the paper depends on it |
 | `LICENSE` | MIT, covering the code |
 | `LICENSE-text` | CC BY 4.0, covering the paper text and figures |
@@ -87,7 +87,7 @@ the landing page quotes a total the suite no longer produces, and it names both 
 
 ```
 ==================================================================
-  270 checks passed, 0 failed, 270 total
+  272 checks passed, 0 failed, 272 total
 ==================================================================
   REPLICATION COMPLETE: every figure in the paper reproduces.
 ```
@@ -150,7 +150,7 @@ Every claim in the paper maps to a named check in `verify_paper.py`.
 | A | Invariance: `7` yang-balanced blocks in every control sample of rungs P4 and P5 | `section_appendix_a` |
 | A | Multiplicity of the ladder: `17` non-constant entries, correction `0.035 x 17 = 0.6` | `section_appendix_a` |
 | all | Title, subtitle and BibTeX repeat `paper.tex` character for character on every surface | `section_front_matter` |
-| 8 | The manuscript carries the version DOI `10.5281/zenodo.21609654`; the landing, the READMEs and the BibTeX carry the concept DOI `10.5281/zenodo.21609653` | `section_front_matter` |
+| 8 | The manuscript carries the version DOI `10.5281/zenodo.21776041` of the deposit it belongs to; the landing, the READMEs and the BibTeX carry the concept DOI `10.5281/zenodo.21609653`, which always resolves to the newest version | `section_front_matter` |
 | all | The frozen figures appear verbatim in `paper.tex`; no em dashes | `section_paper` |
 | n/a | `ERRATA.md` keeps the shape it declares, and this file table is a complete inventory of the package | `section_errata` |
 | all | Every frozen figure occupies exactly the lines of `paper.tex` it occupies now, and no others; no em dashes | `section_paper` |
@@ -179,7 +179,7 @@ sed 's/"Qian", "Gen", "Kan"/"Qian", "Kan", "Gen"/' verify_paper.py > mutant.py &
 |---|---|---|
 | (a) one flipped bit | `0`, the King Wen ordering is a permutation of 0 to 63 | 12 of the first 43 checks fail, then the run aborts with `KeyError: 63` in Section 4 |
 | (b) duplicated hexagram | `0`, the King Wen ordering is a permutation of 0 to 63 | 12 of the first 43 checks fail, then the run aborts with `KeyError: 0` |
-| (c) Mawangdui family swapped | `3.1`, Mawangdui inversions vs binary | the run completes and reports `252 checks passed, 18 failed, 270 total` |
+| (c) Mawangdui family swapped | `3.1`, Mawangdui inversions vs binary | the run completes and reports `254 checks passed, 18 failed, 272 total` |
 
 Exit status is `1` in all three cases. Note the shape of (a) and (b): a corrupted King Wen
 table is no longer a permutation of the 64 values, Section 0 says so before any statistic is
@@ -220,6 +220,10 @@ its own verification suite.
   suite that runs as a publication gate. Its web interface is in English, Spanish and French;
   every experiment is available in the three. This package and the paper are in English.
 - **Archived version**: [10.5281/zenodo.21609653](https://doi.org/10.5281/zenodo.21609653) (all versions).
+- **This version**: version 3, published 2026-08-03, DOI `10.5281/zenodo.21776041`, archive
+  `kingwen-orderings-replication-main.zip`, 244557 bytes, sha256 `0069259effc1290d4fc2c598ea8bf88dc0e1c1b76fa2523d0521f2c016c48aa5`,
+  tagged `zenodo-v3`. Downloaded back from the record, hashed to that value, extracted
+  into an empty directory and run there: 270 checks, 0 failures.
 
 ## Licenses
 

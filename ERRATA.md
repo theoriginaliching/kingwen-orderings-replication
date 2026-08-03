@@ -2,22 +2,31 @@
 
 Corrections to *Statistical Structure of the Historical Orderings of the I Ching
 Hexagrams: Pair Rule, Family Gradient, and the Limits of Demonstrability*
-(Zenodo, version DOI 10.5281/zenodo.21609654; concept DOI 10.5281/zenodo.21609653).
+(Zenodo, concept DOI 10.5281/zenodo.21609653, which always resolves to the newest
+version; the version this record accompanies is version 3, DOI 10.5281/zenodo.21776041).
 
 This is a living document. It is updated when a defect is found, not when a defect is
 fixed.
 
-**Where it stands, 2026-08-03.** Twenty-two entries: four defects in the paper (E-1 to
-E-4), four in the deposited package (P-1 to P-4), three clarifications for the next version
-(C-1 to C-3), and eleven things examined and found sound (X-1 to X-11). **No figure of
-the paper changes in any entry**, and that is measured and not asserted: every figure
-reproduces in every tree of the package: 192 of 192 in the first deposit, 202 of 202 in
-the second, 246 of 246 on the `main` this branch has now merged, and 259 of 259 at the head
-of this branch after the manuscript changes for version 3, with no failures anywhere. Five
-entries now carry a line naming where they were corrected: P-2, E-3 and P-3 in the suite,
-E-1 and E-2 in the manuscript. None of the entries themselves was rewritten. Two entries, P-2 and the pair E-3 and P-3, have been repaired
-on this branch and remain open in the deposits, which is where they exist; each names the
-commit that repairs it. The defects in the paper are defects of description whose
+**Deposit status.** Version 3 is **PUBLISHED**, deposited on 2026-08-03, version DOI
+`10.5281/zenodo.21776041`, archive `kingwen-orderings-replication-main.zip`, 244557 bytes, sha256
+`0069259effc1290d4fc2c598ea8bf88dc0e1c1b76fa2523d0521f2c016c48aa5`,
+tagged `zenodo-v3` on commit `d6afae20bbefba56728251f34f8e3870c43e2cbd`. It was
+verified after publication by downloading the archive from the record itself, hashing it
+to that value, extracting it into an empty directory and running the suite there: 270
+checks, 0 failures. **Nothing below is waiting for a deposit.**
+
+**Where it stands, 2026-08-03, after the third deposit.** Twenty-two entries: four
+defects in the paper (E-1 to E-4), four in the deposited package (P-1 to P-4), three
+clarifications for the next version (C-1 to C-3), and eleven things examined and found sound
+(X-1 to X-11). **All eight defects are now APPLIED**: every one of them is corrected in the
+object deposited as version 3, and each says where. They keep describing the defect as
+versions 1 and 2 print it, because that is what a reader holding those versions has in
+front of them. **No figure of the paper changes in any entry**, and that is measured and not
+asserted: every figure reproduces in every tree of the package: 192 of 192 in the first
+deposit, 202 of 202 in the second, 246 of 246 on the `main` this branch merged, and 270 of
+270 in the third deposit, verified after publication by downloading it from the record.
+None of the entries themselves was rewritten. The defects in the paper are defects of description whose
 consequences all hold, and one missing assertion; the defects in the package are
 statements it makes about itself.
 
@@ -226,786 +235,13 @@ them; the package does not perform them, and this round does not add a checker t
 
 # Open entries
 
-## E-1. The description of the fourth rung of Appendix A
-
-**Printed text.** Appendix A, page 14, first paragraph, fifth item of the list of
-rungs:
-
-> (P4) pairs permuted within and across the sixteen blocks of four consecutive
-> positions, preserving the block partition
-
-The item continues `; and (P5) ...` in the printed list; the span above is the
-description of P4 in full. Line breaks of the printed column are not reproduced; no
-other character is altered.
-
-Transcribed character for character from the **version 2 deposit**
-(10.5281/zenodo.21628654), file `garcia-hurtado-2026-king-wen-orderings-preprint.pdf`,
-15 pages, 119326 bytes, sha256
-`01c83c3d6d01878050a702b91901b55760218e4c6adcac4d57a9461a64904cfd`. The same sentence,
-character for character, stands in the PDF carried inside the version 1 deposit
-(10.5281/zenodo.21609654), 118955 bytes, sha256
-`77ec0f6953657638ec04157b87de987cb737c8dd5bdef1eb6db2876ba18bb53f`: the two deposits
-differ in the document metadata of the PDF, not in this text. The deposit is named
-because the reader may hold either one, not because the wording differs.
-
-**What it should say.** The blocks of four consecutive positions are permuted among
-themselves, and a pair never leaves its block. Block membership is preserved by the
-sampler; what is randomised is the arrangement of the blocks.
-
-**Evidence.** Three internal witnesses, two of which agree against the third.
-
-1. The replication code permutes the list of blocks. A pair never changes block.
-   `verify_paper.py`, function `sample()` nested inside `section_appendix_a()`, branch
-   `if rung == "P4":`, lines 1034-1043. The line that shows block membership is
-   preserved is line 1035:
-
-   ```python
-   blocks = [kw_pairs[2 * b:2 * b + 2] for b in range(16)]   # line 1035
-   rng.shuffle(blocks)                                       # line 1036
-   ```
-
-   Each block is built once, as two received consecutive pairs, and it is the *list of
-   blocks* that is shuffled. The only freedom inside a block is `block.reverse()`
-   (line 1041), which exchanges the two pairs of the same block. No pair is ever moved
-   between blocks.
-
-   *Which file those line numbers index.* A line range is worthless without the file it
-   counts. The range above indexes `verify_paper.py` **as deposited in version 2**
-   (10.5281/zenodo.21628654), 58910 bytes, sha256
-   `9f835bd1f7e4af5b09de103b48f8fd2b875737553446f47a564a2c0e9f0042a7`, tagged
-   `zenodo-v2` in this repository. That is the copy that sustains this entry, because it
-   is the copy the reader of the deposit holds. Two courtesies, measured rather than
-   assumed: the same lines carry the same code in `verify_paper.py` as deposited in
-   version 1 (52980 bytes, tag `zenodo-v1`, sha256
-   `bb857fffca9276ce2b1c3f13a4798a03978fea843b2385f84a2581176347ade8`) and at the head of
-   this branch (60916 bytes, sha256
-   `8a7085c5cd4d372843038c6a0a342626a1362f362c2b9f2db41997186ef1b957`). Those three files
-   differ in size and in hash; they do not differ in that region, which is why one range
-   serves all three.
-
-   **Other trees exist and these ranges do not index them.** The live `main` of the
-   repository, commit `95437d30f805be447cccabb30ea54ff983741f52`, carries a
-   `verify_paper.py` of 69341 bytes, sha256
-   `72abade176ab5f8826afa4dece160ab46b2641fa2fde8dbeff2d7e6b4d7a3faf`, in which the file
-   has shifted: the line quoted above as 1035 is 1036 there, and the micro theorem comment
-   quoted below as 1077 is 1078. Since the merge of 2026-08-03 the head of this branch has
-   shifted too, and by more: the same two anchors are at **1050** and **1092** there. The
-   deposit ranges are untouched by any of it. The ranges are deliberately **not** re-derived for that
-   tree, because this entry is about what the deposits contain and the deposits are what
-   the reader holds. They are excluded by name rather than by silence. A line range
-   without its tree is the same defect as a count without its subject set, and this file
-   has now made that mistake once, in the paragraph on the count, which is enough. Hashes are written unabbreviated here and everywhere in this file: a
-   truncated hash cannot be checked, and a record whose identifiers cannot be checked is
-   a record that asks to be believed.
-2. The micro theorem printed in the same appendix states that quartets preserve the
-   yang sum and that seven blocks sum to twelve. Under the literal reading of the
-   printed description, a pair could leave its block, block sums would not be preserved,
-   the count of blocks summing to twelve would not be invariant, and the reported
-   constant value at P4 and P5 would not follow. Under that reading the printed theorem
-   is false. Location: Appendix A, page 14, second paragraph (the one opening "Three
-   observations"), the second observation, which reads in the deposit:
-
-   > Second, from P4 upward the yang-balanced groups of four cease to be a statistic
-   > and become a constant: preserving the block partition preserves each block’s yang
-   > sum (in the received sequence the sixteen sums include exactly seven equal to 12),
-   > so this signature is a corollary of block membership
-
-   Line breaks of the printed column are not reproduced; no other character is altered.
-
-   Its counterpart in the replication package is `verify_paper.py`, lines 1077-1086,
-   comment "The micro-theorem". That range indexes the same file as the range above:
-   `verify_paper.py` as deposited in version 2, sha256
-   `9f835bd1f7e4af5b09de103b48f8fd2b875737553446f47a564a2c0e9f0042a7`, tag `zenodo-v2`;
-   it holds unchanged in the version 1 deposit and at the head of this branch. The
-   printed location, page 14 of the deposited PDF, is the one that sustains the entry;
-   the code range is corroboration.
-3. The theorem and the code agree with each other. The dissenting witness is the prose.
-
-**Date found.** 2026-07-31, during the formal verification carried out for the
-follow up paper on the generalised null ladder.
-
-**Figures affected.** None.
-Measurement: the seven constant cells of the frozen table were re-derived from the
-inheritance property and all seven hold, with none refuted. Full re-execution of
-`verify_paper.py`, run on 2026-07-31 against the deposited trees themselves, extracted
-from the zip files of the two deposits and not from a working copy:
-
-| tree run | checks passed | failed | total |
-|---|---|---|---|
-| version 2 deposit, 10.5281/zenodo.21628654 | 202 | 0 | 202 |
-| version 1 deposit, 10.5281/zenodo.21609654 | 192 | 0 | 192 |
-| head of branch `errata`, before the repairs | 211 | 0 | 211 |
-| head of branch `errata`, after the repairs | 212 | 0 | 212 |
-
-No check fails and no figure moves. The two deposits differ in the size of the suite,
-not in any reproduced figure: the suite grew between them.
-
-**Status.** OPEN.
-
-**Cross reference, and what it is not.** The same defect is recorded a second time, as
-`SELF D-2`, in the verification record of the follow up paper on the generalised null
-ladder. That record is where the discrepancy was found. It is not what establishes it,
-and this entry does not lean on it: the two witnesses above, the sampler and the printed
-theorem, are both inside the published replication package, two paragraphs apart in the
-same appendix and a few lines apart in the same script, and a reader holding the deposit
-can check them without knowing that any follow up paper exists. Nothing here is
-transported from that record, which in any case sits in a repository with no public remote
-and could not be cited by URL. Found by that work; established by this package.
-
-**Note for a reader who has only the paper.** The theorem, not the sentence, states what
-the sampler does. A reader who follows the theorem is not misled.
-
-**Corrected in the manuscript for version 3**, on branch `errata`, 2026-08-03. The clause
-now reads:
-
-> (P4) the sixteen blocks of four consecutive positions permuted among themselves, so
-> that a pair never leaves its block, with the two pairs inside a block free to exchange
-> and all orientations free
-
-which says what the sampler does. The test that mattered was not that the new sentence
-reads well but that it leaves the printed theorem two paragraphs below **true under its
-literal reading**, which the old one did not: blocks permuted among themselves, with no
-pair leaving its block, preserve the block partition, so each block's yang sum is
-preserved, so the count of blocks summing to twelve is invariant and the statistic is a
-constant from P4 upward, exactly as the theorem says. The mechanical counterpart of that
-argument is already asserted and passes: `rung P4: yang-balanced groups equal 7 in every
-control sample`. The entry above is unchanged and still describes the deposits.
+`None.` Every defect found so far is corrected in a deposited version and filed under
+**Applied** below, each naming the version that applied it. This part is not deleted when
+it empties: a record whose open section disappears when it is empty cannot be told apart
+from a record that never had one.
 
 ---
 
-## E-2. The ladder described as one of increasing structure
-
-**Printed text.** Appendix A, page 14, opening paragraph, second sentence:
-
-> We re-evaluate the four signatures of Table 2 under a ladder of six nulls of
-> increasing structure, each conceding more of the sequence’s architecture and asking
-> what remains
-
-The apostrophe in `sequence’s` is U+2019 in the artifact and is reproduced as such
-here. Line breaks of the printed column are not reproduced; no other character is
-altered.
-
-Transcribed character for character from the **version 2 deposit**
-(10.5281/zenodo.21628654), sha256
-`01c83c3d6d01878050a702b91901b55760218e4c6adcac4d57a9461a64904cfd`. The same sentence
-stands character for character in the PDF inside the version 1 deposit
-(10.5281/zenodo.21609654), sha256
-`77ec0f6953657638ec04157b87de987cb737c8dd5bdef1eb6db2876ba18bb53f`.
-
-**What it should say.** The six nulls are ordered by containment, and that order is
-partial rather than total. A later rung concedes a different part of the architecture,
-not a larger part of it.
-
-**Characterisation.** A false general statement all of whose particular consequences
-hold. It is false as a general statement: the family is not a chain, so there is no
-sense in which each rung concedes more than the one before it. Measured on the printed
-order itself, two of its five consecutive steps are not steps at all. `(P2, P3)` and
-`(P3, P4)` are incomparable, each refuted in both directions by a witness exhibited
-below; the other three, `(P0, P1)`, `(P1, P2)` and `(P4, P5)`, are strict containments.
-Every particular consequence nonetheless holds, and none is withdrawn: the printed order
-is a valid linear extension of the containment order, since all eleven strict
-containments print the larger group before the smaller, so every statement of the form
-"the statistic varies at this rung and is constant at the next" survives unchanged, and
-no figure in Table A1 moves.
-
-The printed sequence cannot be defended as an ordering by size either, and the
-measurement is recorded rather than passed over: the six sets have exact cardinalities
-`|P0|` = 64!, `|P1|` = 32! x 2^32, `|P2|` = 15! x 17! x 2^32, `|P3|` = 28! x 2^28,
-`|P4|` = 16! x 2^16 x 2^32, `|P5|` = 2^32, and ordering by those gives P0, P1, **P3, P2**,
-P4, P5. `|P3|` is 41 times `|P2|`, so the two rungs print in the opposite order to their
-size. This is consistent with their being incomparable and it is not a contradiction; it
-is simply one defence the printed wording does not have.
-
-**Evidence.** The fifteen pairwise containments between the six rungs were computed
-from predicates derived from the printed definitions. Eleven strict containments, four
-incomparable pairs, zero equalities. Each refutation is accompanied by an exhibited
-witness, that is a concrete permutation lying in one rung and not in the other, checked
-in both directions.
-
-The derivation below is not transported from anywhere, and it does not rest on the follow
-up work in which the question arose. An earlier record of the same result exists in a
-repository with no public remote, which cannot be cited here, and copying its prose would
-be copying a paraphrase; so the predicates were written again from the printed definitions
-of P0 to P5 in the deposit, and the witnesses were produced again. The fifteen containments
-and their witnesses are computable from the definitions the paper itself prints, by anyone
-holding the deposit, which is what establishes the entry. That work is where the question
-came from, and that is all it is.
-
-*What this is, named exactly.* It is not an independent derivation, and calling it one
-would overstate it. The result was already written in this file before the computation
-was run: eleven strict containments, four incomparable pairs, zero equalities, all three
-figures printed in the skeleton of this entry. The work was done again from the printed
-definitions, but with the answer in view, so the correct name is a reproduction with a
-known target. It is worth less than a blind derivation, in which the numbers could not
-be steered toward the expected ones. It is worth more than a transport, for one reason
-that can be checked: a reproduction can fail, and this one did fail. The first
-generating set written for P4 was too small to generate the group, the decision
-procedure returned P4 as contained in P2, and the exhaustive enumeration refuted it. A
-transcription cannot produce that error, because it never computes anything, and cannot
-catch it either. That failure, and not the final agreement with the printed claim, is
-what distinguishes a derivation actually run from a description of one.
-
-*Notation.* In King Wen numbering the received sequence is literally 1, 2, ..., 64, so
-a member of any rung is a permutation of the 64 hexagram numbers. It is written as its
-32 slots, each slot holding one pair in its printed orientation. A witness is given as
-the received order with one named change; every slot not named holds what it holds in
-the received order, which fixes the permutation completely.
-
-*Predicates, each from its printed definition.* (P0) any permutation of the 64.
-(P1) every slot holds a received pair, in either orientation. (P2) P1, and the pairs
-occupying the first fifteen slots are exactly the fifteen pairs of the first canon.
-(P3) P1, and each of the four palindrome pairs (1,2), (27,28), (29,30), (61,62) sits in
-its own slot in its received orientation. (P4) P1, and the two pairs of each received
-block of four consecutive positions are still together in one block. (P5) P1, and the
-pair order is the received one, orientations free.
-
-The reading of P4 used here is the corrected one of E-1, which the printed micro
-theorem forces. Under the literal reading of the printed sentence, in which a pair may
-leave its block, P4 would coincide with P1: the order would then carry one equality and
-ten strict containments, not eleven and zero, and the theorem of the same appendix
-would be false. The defect of E-1 and the shape of this order are the same fact seen
-twice.
-
-*The four incomparable pairs, with witnesses checked in both directions.*
-
-| pair | witness | in | not in |
-|---|---|---|---|
-| P2, P4 | received order with pairs (3,4) and (7,8) transposed: slots 1-4 read (1,2) (7,8) (5,6) (3,4) | P2 | P4 |
-| P2, P4 | received order with pairs (29,30) and (31,32) transposed: slots 14-17 read (27,28) (31,32) (29,30) (33,34) | P4 | P2 |
-| P2, P3 | received order with pairs (1,2) and (3,4) transposed: slots 1-4 read (3,4) (1,2) (5,6) (7,8) | P2 | P3 |
-| P2, P3 | received order with pairs (3,4) and (31,32) transposed: slots 1-3 read (1,2) (31,32) (5,6) | P3 | P2 |
-| P3, P4 | received order with pairs (3,4) and (7,8) transposed: slots 1-4 read (1,2) (7,8) (5,6) (3,4) | P3 | P4 |
-| P3, P4 | received order with the first two blocks transposed: slots 1-5 read (5,6) (7,8) (1,2) (3,4) (9,10) | P4 | P3 |
-| P3, P5 | received order with pairs (3,4) and (5,6) transposed: slots 1-4 read (1,2) (5,6) (3,4) (7,8) | P3 | P5 |
-| P3, P5 | received order with pair (1,2) written 2, 1: slots 1-3 read (2,1) (3,4) (5,6) | P5 | P3 |
-
-Each row was evaluated against both predicates, and each of the eight came out a member
-of the first rung and not of the second. Two rows per pair are given rather than one,
-because incomparability is two refutations and not one: neither rung contains the other.
-
-The witness that separates P4 from P2 is the transversality made concrete. Pairs
-(29,30) and (31,32) are the two halves of the eighth block; exchanging them keeps every
-block intact, so the sequence is a member of P4, and it moves a pair of the second canon
-into a slot of the first, so it is not a member of P2.
-
-The witness that separates P5 from P3 turns on orientation alone: P3 fixes the four
-palindrome pairs in position *and* orientation, while P5 randomises all 32 orientations,
-so the received order with (1,2) written 2, 1 lies in P5 and outside P3.
-
-*Method, and a check on the check.* Each rung factors as a set of pair orders times a
-set of orientation vectors, so containment is decided exactly: on the order part by
-subgroup generators, on the orientation part by which coordinates are forced. That
-decision was cross-checked against a full enumeration of the same construction shrunk to
-eight pairs, four blocks of two, canon split three and five, which keeps the one feature
-that matters, a canon boundary falling strictly inside a block. The cross-check earned
-its keep, in the way recorded above. The corrected computation and the exhaustive
-enumeration then agree: eleven strict, four incomparable, zero equalities.
-
-**Verification record.** `errata-evidence/errata_e2_derivation.py` on branch `errata`. It
-carries the six predicates, the decision procedure, the eight witnesses and the
-exhaustive enumeration on the shrunk model, and it runs on the standard library alone.
-Until it was committed the code existed only outside the repository, and the slot pointed
-at this entry; it now points at the file, which is what a pointer is for. It sits in a
-directory of its own, and not beside `verify_paper.py`, for the reason given in the
-package README: it is not replication code and must not be able to be mistaken for it. The
-prose of the entry first arrived in commit
-`90d4455b140ad9e69fe7ff19c58aa08562a434e6`, on 2026-07-31.
-
-The evidentiary weight, however, does not rest on that file or on any commit. It rests on
-the eight witnesses exhibited above, which a reader checks by hand against the printed
-definitions, with no code and no clone. The commit lives on a branch that is not merged
-and may never be; a reader who has only the deposited paper can still verify every row of
-the table. Code that can disappear must not be the thing an erratum stands on.
-
-The canon division and the block partition are transversal: fifteen and seventeen pairs
-put the boundary between slots fourteen and fifteen, which lie inside the eighth block
-of four positions. This is a property of the object and not of the formalisation.
-
-**Date found.** 2026-07-31, same verification.
-
-**Figures affected.** None.
-Measurement: the printed order of the six rungs is a valid linear extension of the
-partial order, since all eleven strict containments print the larger group before the
-smaller. Every statement of the form "the statistic varies at this rung and is constant
-at the next" therefore survives unchanged.
-
-**Status.** OPEN.
-
-**Corrected in the manuscript for version 3**, on branch `errata`, 2026-08-03. The opening
-sentence now reads:
-
-> under a ladder of six nulls ordered by containment, an order that is partial rather than
-> a chain: each rung concedes some part of the sequence's architecture, not uniformly more
-> than the rung before it, and we ask what remains
-
-The word `increasing` is gone, and it has not been replaced by a second general claim that
-would not hold either. What the new sentence asserts is what was measured: the family is
-ordered by containment, and that order is partial. It does not claim the rungs grow, which
-is false, nor that they are ordered by size, which is also false, since ordering the six
-by cardinality puts P3 before P2 while the paper prints P2 first. The name `ladder` is kept
-because the printed order is a valid linear extension of the containment order, so every
-later reference to rungs, to `from P4 upward` and to the top of the ladder remains true as
-a reference to the printed sequence. The entry above is unchanged and still describes the
-deposits.
-
----
-
-## P-1. The deposited package declares a check count its own suite does not have
-
-The first entry about the package rather than the paper. The distinction is measured and
-not assumed: neither `paper.tex` nor the compiled PDF states the number of checks in this
-package anywhere, so no figure printed in the paper is touched by what follows.
-
-**Printed text.** Four places in the version 2 deposit (10.5281/zenodo.21628654). In
-`README.md` line 35 and `index.html` line 197, inside a sample of the program's own
-output:
-
-> ```
->   192 checks passed, 0 failed, 192 total
-> ```
-
-In `index.html` line 179:
-
-> paper source, compiled PDF, and a self-contained script that reproduces every figure
-> (192 checks, standard library only)
-
-In `README.md` line 115, in the table of what each documented mutation produces:
-
-> the run completes and reports `175 checks passed, 17 failed, 192 total`
-
-**What it should say.** 202 in the first three. In the fourth, `185 checks passed, 17
-failed, 202 total`.
-
-**Evidence.** The suite deposited in the same archive, run against its own tree,
-extracted from the deposited zip and not from a working copy: **202 checks passed, 0
-failed, 202 total**. The documented mutation (c) then run on that tree exactly as its own
-README prescribes: **185 passed, 17 failed, 202 total**, exit status 1, first failing
-check `3.1`, which is the check the table names. The failure count of 17 and the identity
-of the first failing check are correct as printed; the two totals are not.
-
-Where the ten went, measured per section: the front matter section grew from 16 checks to
-19, and a new section asserting the document metadata of the PDF contributed 7. Sixteen
-plus three plus seven is the whole of the difference; no other section moved, and no
-figure of the paper is among them.
-
-The timeline is the explanation, and every instant in it is measured rather than
-inferred:
-
-| instant (UTC) | event |
-|---|---|
-| 2026-07-27T15:40:26Z | commit `61486e35665f0fc42212205ca05b0ead7048e0f6`, the tree later deposited, already carrying the 202-check suite |
-| 2026-07-27T16:16:56Z | the version 2 record is created on Zenodo, 36 minutes later, with the surfaces still saying 192 |
-| 2026-07-27T16:52:01Z | commit `9b4720999e63c5a0ba944ad261b5d6e2aac47031` separates the version DOI from the concept DOI, 35 minutes after the deposit |
-| 2026-07-28T04:36:47Z | commit `73d9a77cdc59ea1410ae815cbb484dc68eb752d1` corrects the count on the surfaces, 192 to 202, twelve hours after the deposit |
-
-**The version 1 deposit is consistent, and this is measured, not assumed.** All four
-strings read 192 there and its tree measures 192; its mutation table reproduces exactly,
-`175 checks passed, 17 failed, 192 total`, the figure it prints. The package did not carry
-this defect from the start and does not carry it chronically. The mismatch is born in the
-version 2 deposit, in a window of twelve hours and thirty-six minutes between a suite that
-had already grown and surfaces that had not yet been updated, and it is corrected the
-following day. One deposit is affected, and it is the current one, which is why the entry
-is open.
-
-**Date found.** 2026-07-31, during a consistency sweep of the two deposited archives.
-
-**Figures affected.** None in the paper, and this is measured rather than asserted: every
-figure of the paper reproduces in both deposits, 192 of 192 in version 1 and 202 of 202 in
-version 2, with no failures in either. What is wrong is the package's statement about its
-own suite, not any statement about the King Wen sequence.
-
-**Status.** OPEN. Corrected in the repository on 2026-07-28 in commit
-`73d9a77cdc59ea1410ae815cbb484dc68eb752d1`; still present in the deposited archive
-10.5281/zenodo.21628654, which is what a reader downloads today; closes with the next
-deposit, which will carry the corrected surfaces and be named here as the version that
-applied it.
-
-**Note for a reader who has the package.** Run it. The program prints its own count, and
-the count it prints is the true one.
-
-**The class is now mechanised, and not by this lane.** While these entries were being
-written, the repository's `main` gained a check of its own, `check_published_counts`, which
-asserts that every check count published in `README.md` and in `index.html` is the number
-the suite actually runs. It arrived in commits `d6669487b51ac141ab779891ab85db2503e08974`
-and `95437d30f805be447cccabb30ea54ff983741f52` of 2026-07-28, without knowledge of this
-log, and it makes the defect recorded above impossible to repeat unnoticed: the surfaces
-and the suite can no longer disagree without the run failing. Since the merge of
-2026-08-03 that check runs on this branch too, and it is what caught the surfaces during
-the merge itself. The entry stays open, because the deposits still carry the defect and a
-gate on `main` does not reach into a frozen archive. See X-7.
-
----
-
-## P-2. The suite prints a value the paper does not print, in the column that claims to quote it
-
-**Printed text.** As it stands in the deposits, which is where the defect exists and
-where it cannot be taken out. `verify_paper.py` of both deposits, line 742, and of the
-live `main`, line 743:
-
-```python
-    check("5.6", "Bonferroni over the nine criteria (0.038 x 9)",
-          round(0.038 * 9, 2), 0.34, ok=close(0.038 * 9, 0.35, 0.02))
-```
-
-The fourth argument is the value the suite attributes to the paper, and the run prints it
-under a column headed `paper:`. A clean run of either deposit, or of the live `main`,
-therefore shows
-
-```
-  [PASS] 5.6   Bonferroni over the nine criteria (0.038 x 9)
-         reproduced: 0.34   paper: 0.34
-```
-
-**What it should say.** `0.35`, which is what the manuscript prints, with the equality
-left to do its work; or, if the tolerance is kept, centred on the same value the column
-declares. The two must not name different numbers.
-
-**Evidence.** The manuscript prints `0.35` and never prints `0.34`. Measured in the
-deposited `paper.tex` of version 2, in its compiled PDF at page 9, and in the same files
-of version 1 and of the live `main`: the string `0.34` does not occur in `paper.tex` in
-any of the four trees, and the sentence at issue reads `With nine tests, 0.038 x 9 ~
-0.35.` The exact product is 0.34199999999999997, whose rounding to two places is 0.34,
-which is what `round(0.038 * 9, 2)` returns and what both columns of the output show. So
-the reader of the output sees `0.34` twice and has no way to learn that the paper says
-something else. The equality that would have caught it is overridden by
-`ok=close(0.038 * 9, 0.35, 0.02)`, whose band is wide enough to swallow the difference
-and which compares against a third value, the printed one, that the column never shows.
-
-**It is a case and not a class, and the difference decides the repair.** Measured over
-every `check()` call: 154 calls in the version 2 deposit, 161 in the live `main`, 164 at
-the head of this branch when this entry was written and 177 now, of which **23 carry an
-`ok=` override in the deposits and in the live `main`, 24 at the head of this branch once
-the assertion of E-3 was added, and 23 again from version 3 on**, because the correction
-recorded in C-2 made the manuscript print the exact product and turned this very check from
-a band into an equality. The assertion added by the repair of E-3 keeps its band, and the
-reason is discussed there. Three of the 23 declare a value different from the one their tolerance tests:
-
-| check | column declares | tolerance tests | the paper prints |
-|---|---|---|---|
-| 5.6, Bonferroni over the nine criteria | 0.34 | 0.35 | 0.35 |
-| 5.1, pair-null percentile, lag-1 autocorrelation | 6.4 | 6.3 | 6.4 |
-| 5.1, pair-null percentile, yang-balanced groups | 89.6 | 89.7 | 89.6 |
-
-Only the first declares a value the paper does not print. The other two declare the
-printed value and merely centre a Monte Carlo band on the value actually measured, which
-is ordinary practice and conceals nothing. One case. Had it been a class, the repair would
-have been a rule, that no check may declare one value and test another, enforced
-mechanically; for a single case the repair is to correct the case and to record that the
-sweep was done, so that nobody has to wonder later whether it was.
-
-**Date found.** 2026-08-03. The discrepancy was found in the course of an audit of this
-repository run by a separate session of the same process. That is where it was found and
-not what establishes it: everything above is internal to the published package, the line
-of code and the sentence of the manuscript sit in the same archive, and a reader with the
-deposit and nothing else can check every claim in this entry. It would stand if the audit
-had never happened.
-
-**Figures affected.** None. Measured: the suite passes in all four trees with the
-override as it stands, and would still pass with the column corrected to 0.35, since
-0.342 is within 0.02 of 0.35. No conclusion of the paper moves either way, because both
-0.34 and 0.35 are far above the 0.05 the sentence is arguing about.
-
-**Status.** OPEN. Present in both deposits and in the live `main`, which is what a
-reader downloads.
-
-**Repaired on this branch**, in commit `10786bdd2e8ff40fb0271dbfa6fd50b259ef0b44`, which
-changes the declared value to 0.35 and leaves the tolerance alone. The same commit changed
-the left column from the two-place rounding to the three-place one, so that the line reads
-`reproduced: 0.342   paper: 0.35` instead of showing 0.34 beside 0.35 on a line marked
-PASS. That was not asked for, so it was measured rather than assumed: the suite has no
-single display precision to break. Across its 165 checks, `round` is called to one place
-19 times, to two places 5 times, to three places 16 times and to four places 4 times, and
-the precision follows the figure being shown. The nearest sibling does exactly what this
-line now does: the Appendix A check of `0.035 x 17 = 0.6` displays the exact product to
-three places against a printed figure rounded to one, with a tolerance carrying the
-difference. So this is not a new convention, it is the existing one, and the measurement
-is recorded here rather than left as a matter of taste. The entry above
-describes the deposits and is not rewritten to match the repair: a reader of a future
-version who finds this entry and then reads the shipped code must be able to tell which
-of the two they are looking at. Nothing in a deposit is altered by that commit, and the
-correction reaches a reader only when a version carrying it is deposited.
-
----
-
-## E-3. The abstract says every numerical claim is asserted, and one is not
-
-**Printed text.** Page 1 of the deposited PDF, the abstract, its last sentence:
-
-> Every numerical claim in this paper is asserted by an automated test suite in a public
-> repository.
-
-Line breaks of the printed column are not reproduced; no other character is altered.
-
-The figure at issue is in Table 2, page 7:
-
-> lag-1 autocorrelation of distances -0.247 4.0 6.4 marginal, not significant
-
-*What was altered in that row, named here rather than left to the policy.* Two glyphs and
-one piece of layout. The compositor draws U+2212 in `-0.247` where the source writes an
-ordinary hyphen-minus, and it is written above as the hyphen-minus. The word `significant`
-carries the ligature U+FB01 for `fi` in the artifact and is written above as two letters.
-And the row is a table row: in the PDF its cells stand on separate lines, `lag-1
-autocorrelation of distances`, `-0.247`, `4.0`, `6.4`, `marginal, not`, `significant`, and
-they are joined above with single spaces. Nothing else in it is altered.
-
-The figure `4.0` is the free-shuffle percentile of the lag-1 statistic.
-
-**What it should say.** Either the sentence admits its exception, or the suite asserts the
-figure. The narrow correction is the second: one assertion for the free-shuffle percentile
-of the lag-1 statistic, and the sentence becomes true as printed.
-
-**Evidence.** Measured over four trees, with the subject set declared: `paper.tex` and
-`verify_paper.py` of the same tree; a figure is a decimal or a fraction in the body of
-`paper.tex` after LaTeX markup is stripped; covered means the decimal appears in
-`verify_paper.py`, or, for a fraction `a/b`, that either `a/b` or the tuple `(a, b)` does.
-The tuple form matters and a literal-only test is wrong: the suite asserts 7/15 as
-`(7, 15)`.
-
-Of 115 figures printed in each deposit and 112 in the live `main`, **eight have no
-counterpart, the same eight in all three of those trees**: 98.2, 0.037, 0.251, 4.0,
-0.000, 1.000, 1/24, 120/32. Three of the eight are Chan's figures rather than
-this paper's, and one of those, 0.251, is quoted only to be compared with our own -0.247.
-Four more are formatting variants of figures the suite does assert: 0.000 and 1.000 are
-Kendall taus printed to three places and asserted as 0.0, 1/24 is printed beside the
-0.042 that is asserted, and 120/32 is printed beside the 3.75 that is asserted. That
-leaves exactly one figure of the paper's own that the suite does not assert in any form:
-**4.0**.
-
-**A reading that was corrected before this entry was written.** The self-referential count
-of verification sections, 61 in the first deposit and 63 in the second, is not asserted by
-this package's suite either: measured, the strings `verification sections`,
-`assertion suite comprises` and `laboratory of` occur zero times in `verify_paper.py` in
-all four trees. It was tempting to add it to this entry and it would have been wrong. The
-sentence says `an automated test suite in a public repository`, indefinite twice over. It
-does not say this suite or this repository, and the laboratory's suite does assert that
-count and is public. The sentence survives the section count. What it does not survive is
-4.0.
-
-**Date found.** 2026-08-03. Found in the course of an audit of this repository run by a
-separate session of the same process, and established here by the measurement above, which
-reads only `paper.tex` and `verify_paper.py` of the four trees and can be repeated by
-anyone holding either deposit. That audit reported thirteen unasserted figures; the
-measurement made here gives eight by the method declared, and where the two disagree this
-one governs. The count came out different, which is the ordinary reason to re-measure a
-lead rather than adopt it.
-
-**Figures affected.** None. The unasserted figure is not a wrong figure: 4.0 is not
-contradicted by anything, it is simply not checked. Measured: every tree passes its full
-suite, 192 in the first deposit, 202 in the second, 246 on the live `main` and 212 at the
-head of this branch after the repair below, none failing anywhere.
-
-**Status.** OPEN. In the deposits and in the live `main`, which are the objects this
-entry is about.
-
-**Repaired on this branch**, in commit `d25149ac4dc1105918f7fadb3ae067314f184cbd`, which
-asserts the figure: the free-shuffle percentile of the lag-1 statistic, band 0.6, the
-width its two neighbours use, because the printed 4.0 comes from the other implementation
-and this one measures 3.8. The assertion was shown able to fail before it was believed:
-moving the declared value to 6.0 fails it alone, and negating the statistic it rests on
-fails it along with its two relatives.
-
-*What that band can see and what it cannot, said plainly.* It catches a gross error: the
-2.0 point move to 6.0 fails it, as does any change to the statistic underneath, which
-shifts the percentile to the other end of the scale. It would not see a drift of 0.3
-points, and it is not meant to: the printed 4.0 comes from a different implementation and
-a different draw, and this one measures 3.8, so a band narrower than the gap between two
-honest implementations of the same quantity would fail for the wrong reason. That is the
-line between a band with a reason and a tolerance that hides something, and it is the same
-line P-2 is about. The reason is written here so that a later reader can judge the band
-instead of trusting it. It also makes the entry's new check the twenty-fourth `ok=`
-override on this branch, which is recorded in the inventory in P-2. The entry above describes the deposits, where the
-figure is still unasserted, and is deliberately not rewritten to match the branch.
-
-**What the repair did to the sentence, which is the reason this entry is an E.** The last
-line of the abstract reads:
-
-> Every numerical claim in this paper is asserted by an automated test suite in a public
-> repository.
-
-That sentence was false, and this entry is what made it false. It is now **true, and not one
-word of the manuscript was changed to make it so.** The repair happened entirely in the
-code: two assertions were added, one for the free-shuffle percentile of the lag-1 statistic
-and one for the degenerate row of Table 1. **This is the only entry in this log where the
-repair restores a claim of the paper instead of correcting it**, and that is precisely why
-it is an **E** and not only a **P**: the defect lived in a promise the manuscript makes, and
-the place to keep the promise was the suite.
-
-*The subject set, declared, and every exclusion named.* Measured over `paper.tex` and
-`verify_paper.py` of the same tree: 112 printed figures, of which **eight had no counterpart
-when this entry was opened and none has one now**. Two were repaired by assertion:
-
-1. **4.0**, the free-shuffle percentile of the lag-1 statistic in Table 2, asserted in
-   commit `d25149ac4dc1105918f7fadb3ae067314f184cbd`.
-2. **1.000**, the Kendall tau of the binary ordering against itself in Table 1, asserted
-   together with the 0 inversions of the same row.
-
-Three are not claims of this paper, and the distinction is not a convenience. They are
-**98.2**, **0.037** and **0.251**: the first two appear inside the report of what Chan
-(2026) found, and the third is printed as "against Chan's -0.251". A figure quoted from
-another author is a claim about what that paper reports, which this suite cannot verify
-without that author's implementation; and this paper's own counterparts to all three, the
-3.349, the 97.9 and the -0.247 it measured for itself, are asserted.
-
-Three are formatting variants of quantities that are asserted, and they do not count
-because the quantity is checked and only its printed precision differs from the literal in
-the code: **0.000** is the three-place rendering of the Kendall taus asserted as `0.0`,
-**1/24** is printed beside the 0.042 that is asserted, and **120/32** is printed beside the
-3.75 that is asserted, with 120 asserted separately.
-
-Eight without a counterpart at the start, **zero at the end**.
-
-*Why the last one was invisible, which is the part worth keeping.* The tau of the binary
-ordering against itself is 1 by definition, and the inversions are 0 by definition. Nothing
-in the suite compares an ordering **with itself**: every check in it was built to compare
-two different orderings, so the degenerate case sat outside the shape of the instrument.
-Its triviality is what hid it, not its difficulty. Swept for others of the same form across
-every table in the paper, Table 1, Table 2, the centers table, the battery, the spectral
-fingerprints and Table A1: **those two cells are the only self-comparisons in the paper, and
-there are no other definitional values left unasserted.** The spectral row for the binary
-ordering looks similar and is not the same thing, since its Walsh energies are computed and
-are asserted with the other four.
-
-**Cross reference.** The same defect on the package's surface is P-3, which follows. One
-defect, two surfaces, one figure, one repair.
-
----
-
-## P-3. The README makes the same promise, in the definite
-
-**Printed text.** As it stands in the deposits. `README.md` of both deposits and of the
-live `main`, in the opening paragraph:
-
-> This repository is the replication package for the paper. It contains the manuscript
-> source, the compiled PDF, and a single self-contained script that reproduces **every
-> numerical claim** made in the paper from first principles.
-
-**What it should say.** The same repair as E-3 makes both sentences true: assert the free
-shuffle percentile of the lag-1 statistic. Failing that, the promise needs the exception
-written into it.
-
-**Evidence.** The measurement is the one recorded in E-3 and is not repeated here. What
-differs is the strength of the claim, and it differs against this surface: the abstract
-says `an automated test suite in a public repository`, indefinite, and survives everything
-except 4.0; the README says `a single self-contained script`, definite and named, and so
-promises that this script asserts every numerical claim of the paper. There is no second
-suite for it to be leaning on. The same single figure falsifies it, and falsifies it more
-plainly.
-
-**Date found.** 2026-08-03, with E-3, and established by the same internal measurement.
-The provenance is the same audit, recorded as where it was found.
-
-**Figures affected.** None, as in E-3.
-
-**Status.** OPEN. In the deposits and in the live `main`.
-
-**Repaired on this branch** by the same commit as E-3,
-`d25149ac4dc1105918f7fadb3ae067314f184cbd`. One assertion makes both sentences true.
-
-**Cross reference.** E-3. The two entries are the same defect on two surfaces and are
-kept apart only because the categories of this file are by surface: the paper's text is
-E, the package is P. They are repaired by one assertion.
-
-
-
----
-
-## E-4. The paper says where the corrections were found and never says where to find it
-
-**Printed text.** What is wrong here is an absence, and an absence cannot be quoted, so
-what is quoted is the place where the reference belongs and is not: the closing sentence of
-Related work, page 11 of the version 2 deposit, which runs straight from the last
-unrelated remark to the end of the section.
-
-> The tradition's own account of the sequence, the Xugua commentary, is narrative and is
-> not treated here as a structural hypothesis, because it provides no formalizable rule.
-
-Line breaks of the printed column are not reproduced; no other character is altered. The
-absence itself is measured rather than described: against the `paper.tex` of the version 2
-deposit, zero occurrences of `uninformative`, of `21750029`, of `order-theoretic` and of
-`stopping criterion`, and a bibliography of fifteen entries, none of them that preprint.
-
-**What it should say.** The errata of this package states, in several entries, that the
-discrepancies were found *in the course of* that work. A reader who reads that sentence
-looks for the work in the references and finds nothing there. The bibliography needs the
-entry, and the body needs to say what that work is, as related work and not as support.
-
-**Evidence.** Internal and immediate: the log makes the claim and the manuscript does not
-carry the reference that would let anyone follow it. It is a defect of the pair, not of
-either alone, and it is the only entry here whose evidence is a relation between two
-documents rather than a measurement inside one.
-
-**Whose failure this was.** Not the manuscript's author acting carelessly and not the
-suite's. The instruction to cite that work was given in a supplement to one round and was
-not carried into the next, so it fell between two rounds of the same process and nothing
-noticed, because nothing checks for a citation that ought to exist. Recorded that way
-because the alternative, leaving it unattributed, would make the log less useful to the
-person most likely to hit the same seam: a process that hands work forward in rounds loses
-what is written only in the margin of a round.
-
-**Date found.** 2026-08-03, before the version 3 deposit.
-
-**Figures affected.** None. Measured: the suite reports 264 checks, 0 failed, before and
-after the citation was added, and no figure of the paper is touched by a bibliography entry
-and two sentences of related work.
-
-**Status.** OPEN. In the deposits, which is where it exists.
-
-**Corrected in the manuscript for version 3**: the bibliography gains the entry in its alphabetical place, between Chan and Hacker, with the
-title and the author string taken from the Zenodo record of that work rather than from the
-instruction, since it is a self-citation and has to match how the work is registered. The
-body cites it twice, in Related work and in Appendix A, whose object that work is, and in
-both places as related work: it is named as giving an order-theoretic reading of the ladder
-and as reporting the verification of the two constructions against their printed sources,
-and **it is not used to support any correction**. Every entry in this log still stands on
-this package alone.
-
----
-
-## P-4. A table of the appendix printed in the middle of the bibliography
-
-**Printed text.** The caption is correct; where it is printed is not. It opens:
-
-> Table A1: Chan's four signatures across the ladder of conditional nulls, in the column
-> order of Table 2: mean transition distance, lag-1 autocorrelation of distances,
-> yang-balanced groups of four, and within/between-pair asymmetry.
-
-Line breaks of the printed column are not reproduced; no other character is altered. In the
-version 2 deposit and in every compile up to this one, that caption and the table it heads
-are printed **on a page of the references**. Measured on the PDF as it stood at commit
-`68089cada56d93f16709a3aa1ac1a3d7b371a164`: the bibliography runs from the `References`
-heading on page 13 to its last entry on page 14, and the Table A1 caption is on page 14.
-
-**What it should say.** The table belongs with the appendix that discusses it, after the
-bibliography ends.
-
-**Evidence.** The source order is correct and that is the point: in `paper.tex` the
-bibliography closes at line 369, `\appendix` opens at line 371, and the table is declared
-at line 382. It is not a mistake of ordering but of float placement, `[t]` sending the
-table to the top of a page LaTeX found convenient, and the page it found convenient was a
-page of references. **Nothing in the package could see it**: the suite reads `paper.tex`,
-where the order is right, and a reader of the source would never notice. Only the compiled
-artifact shows it.
-
-**Date found.** 2026-08-03.
-
-**Figures affected.** None. A float in the wrong place moves no number: the suite reported
-the same figures before and after the fix.
-
-**Status.** OPEN. In the deposits, which is where it exists.
-
-**Corrected in the manuscript for version 3** with a `\clearpage` before `\appendix`, and measured in the compiled PDF rather than in the
-source: the bibliography now ends on page 14 and Table A1 prints on page 15, together with
-the Appendix A heading. The paper gains one page, 15 to 16.
-
-**And the gap it came through is now watched.** `section_pdf_layout` asserts that no table
-caption falls on a page of the bibliography, reading the compiled PDF page by page with the
-standard library. The page segmentation it relies on is an assumption about the producer,
-so it was checked against an independent reader rather than trusted: sixteen text streams
-against sixteen pages, and seven probes placing captions, headings and the author name on
-exactly the same pages. The first of its two checks exists to fail if that assumption ever
-stops holding.
-
----
 
 # Clarifications for the next version
 
@@ -1129,7 +365,8 @@ where it is 0.342. **One of three, so a case and not a class**, and the repair i
 **Date examined.** 2026-08-03.
 
 **Status.** NOTED, FOR THE NEXT VERSION. The clarification is applied in the manuscript of
-version 3, and the entry stays here describing what the deposited versions print.
+version 3, deposited 2026-08-03, and the entry stays here describing what versions 1 and 2
+print.
 
 ---
 
@@ -1177,7 +414,8 @@ references. The three names were then removed from `ORPHAN_FLOATS_DECLARED` in
 **Date examined.** 2026-08-03.
 
 **Status.** NOTED, FOR THE NEXT VERSION. The three pointers are written in the manuscript of
-version 3, and the entry stays here describing what the deposited versions print.
+version 3, deposited 2026-08-03, and the entry stays here describing what versions 1 and 2
+print.
 
 ---
 
@@ -1730,8 +968,826 @@ let a later reader tell what was looked at from what was never looked at.
 
 # Applied
 
-`None yet.` The first deposit carrying corrections will list the entries it applies and
-the version DOI it creates.
+Eight entries, all applied in **version 3**, deposited 2026-08-03, version DOI
+`10.5281/zenodo.21776041`, archive sha256
+`0069259effc1290d4fc2c598ea8bf88dc0e1c1b76fa2523d0521f2c016c48aa5`.
+
+Four defects of the paper (E-1, E-2, E-3, E-4) and four of the package (P-1, P-2, P-3,
+P-4). **They are not rewritten here.** Each goes on describing the defect exactly as
+versions 1 and 2 print it, because that is what a reader holding one of those versions
+has in front of them, and each carries a line naming where it was corrected. The
+placeholder this section used to hold said that the first deposit carrying corrections
+would list the entries it applies and the version DOI it creates. This is that list.
+
+---
+
+## E-1. The description of the fourth rung of Appendix A
+
+**Printed text.** Appendix A, page 14, first paragraph, fifth item of the list of
+rungs:
+
+> (P4) pairs permuted within and across the sixteen blocks of four consecutive
+> positions, preserving the block partition
+
+The item continues `; and (P5) ...` in the printed list; the span above is the
+description of P4 in full. Line breaks of the printed column are not reproduced; no
+other character is altered.
+
+Transcribed character for character from the **version 2 deposit**
+(10.5281/zenodo.21628654), file `garcia-hurtado-2026-king-wen-orderings-preprint.pdf`,
+15 pages, 119326 bytes, sha256
+`01c83c3d6d01878050a702b91901b55760218e4c6adcac4d57a9461a64904cfd`. The same sentence,
+character for character, stands in the PDF carried inside the version 1 deposit
+(10.5281/zenodo.21609654), 118955 bytes, sha256
+`77ec0f6953657638ec04157b87de987cb737c8dd5bdef1eb6db2876ba18bb53f`: the two deposits
+differ in the document metadata of the PDF, not in this text. The deposit is named
+because the reader may hold either one, not because the wording differs.
+
+**What it should say.** The blocks of four consecutive positions are permuted among
+themselves, and a pair never leaves its block. Block membership is preserved by the
+sampler; what is randomised is the arrangement of the blocks.
+
+**Evidence.** Three internal witnesses, two of which agree against the third.
+
+1. The replication code permutes the list of blocks. A pair never changes block.
+   `verify_paper.py`, function `sample()` nested inside `section_appendix_a()`, branch
+   `if rung == "P4":`, lines 1034-1043. The line that shows block membership is
+   preserved is line 1035:
+
+   ```python
+   blocks = [kw_pairs[2 * b:2 * b + 2] for b in range(16)]   # line 1035
+   rng.shuffle(blocks)                                       # line 1036
+   ```
+
+   Each block is built once, as two received consecutive pairs, and it is the *list of
+   blocks* that is shuffled. The only freedom inside a block is `block.reverse()`
+   (line 1041), which exchanges the two pairs of the same block. No pair is ever moved
+   between blocks.
+
+   *Which file those line numbers index.* A line range is worthless without the file it
+   counts. The range above indexes `verify_paper.py` **as deposited in version 2**
+   (10.5281/zenodo.21628654), 58910 bytes, sha256
+   `9f835bd1f7e4af5b09de103b48f8fd2b875737553446f47a564a2c0e9f0042a7`, tagged
+   `zenodo-v2` in this repository. That is the copy that sustains this entry, because it
+   is the copy the reader of the deposit holds. Two courtesies, measured rather than
+   assumed: the same lines carry the same code in `verify_paper.py` as deposited in
+   version 1 (52980 bytes, tag `zenodo-v1`, sha256
+   `bb857fffca9276ce2b1c3f13a4798a03978fea843b2385f84a2581176347ade8`) and at the head of
+   this branch (60916 bytes, sha256
+   `8a7085c5cd4d372843038c6a0a342626a1362f362c2b9f2db41997186ef1b957`). Those three files
+   differ in size and in hash; they do not differ in that region, which is why one range
+   serves all three.
+
+   **Other trees exist and these ranges do not index them.** The live `main` of the
+   repository, commit `95437d30f805be447cccabb30ea54ff983741f52`, carries a
+   `verify_paper.py` of 69341 bytes, sha256
+   `72abade176ab5f8826afa4dece160ab46b2641fa2fde8dbeff2d7e6b4d7a3faf`, in which the file
+   has shifted: the line quoted above as 1035 is 1036 there, and the micro theorem comment
+   quoted below as 1077 is 1078. Since the merge of 2026-08-03 the head of this branch has
+   shifted too, and by more: the same two anchors are at **1050** and **1092** there. The
+   deposit ranges are untouched by any of it. The ranges are deliberately **not** re-derived for that
+   tree, because this entry is about what the deposits contain and the deposits are what
+   the reader holds. They are excluded by name rather than by silence. A line range
+   without its tree is the same defect as a count without its subject set, and this file
+   has now made that mistake once, in the paragraph on the count, which is enough. Hashes are written unabbreviated here and everywhere in this file: a
+   truncated hash cannot be checked, and a record whose identifiers cannot be checked is
+   a record that asks to be believed.
+2. The micro theorem printed in the same appendix states that quartets preserve the
+   yang sum and that seven blocks sum to twelve. Under the literal reading of the
+   printed description, a pair could leave its block, block sums would not be preserved,
+   the count of blocks summing to twelve would not be invariant, and the reported
+   constant value at P4 and P5 would not follow. Under that reading the printed theorem
+   is false. Location: Appendix A, page 14, second paragraph (the one opening "Three
+   observations"), the second observation, which reads in the deposit:
+
+   > Second, from P4 upward the yang-balanced groups of four cease to be a statistic
+   > and become a constant: preserving the block partition preserves each block’s yang
+   > sum (in the received sequence the sixteen sums include exactly seven equal to 12),
+   > so this signature is a corollary of block membership
+
+   Line breaks of the printed column are not reproduced; no other character is altered.
+
+   Its counterpart in the replication package is `verify_paper.py`, lines 1077-1086,
+   comment "The micro-theorem". That range indexes the same file as the range above:
+   `verify_paper.py` as deposited in version 2, sha256
+   `9f835bd1f7e4af5b09de103b48f8fd2b875737553446f47a564a2c0e9f0042a7`, tag `zenodo-v2`;
+   it holds unchanged in the version 1 deposit and at the head of this branch. The
+   printed location, page 14 of the deposited PDF, is the one that sustains the entry;
+   the code range is corroboration.
+3. The theorem and the code agree with each other. The dissenting witness is the prose.
+
+**Date found.** 2026-07-31, during the formal verification carried out for the
+follow up paper on the generalised null ladder.
+
+**Figures affected.** None.
+Measurement: the seven constant cells of the frozen table were re-derived from the
+inheritance property and all seven hold, with none refuted. Full re-execution of
+`verify_paper.py`, run on 2026-07-31 against the deposited trees themselves, extracted
+from the zip files of the two deposits and not from a working copy:
+
+| tree run | checks passed | failed | total |
+|---|---|---|---|
+| version 2 deposit, 10.5281/zenodo.21628654 | 202 | 0 | 202 |
+| version 1 deposit, 10.5281/zenodo.21609654 | 192 | 0 | 192 |
+| head of branch `errata`, before the repairs | 211 | 0 | 211 |
+| head of branch `errata`, after the repairs | 212 | 0 | 212 |
+
+No check fails and no figure moves. The two deposits differ in the size of the suite,
+not in any reproduced figure: the suite grew between them.
+
+**Status.** APPLIED. Version 3, deposited 2026-08-03, DOI
+`10.5281/zenodo.21776041`.
+The two page pointers are printed in the manuscript of that deposit. The entry
+goes on describing versions 1 and 2, where the pointers are absent.
+
+**Cross reference, and what it is not.** The same defect is recorded a second time, as
+`SELF D-2`, in the verification record of the follow up paper on the generalised null
+ladder. That record is where the discrepancy was found. It is not what establishes it,
+and this entry does not lean on it: the two witnesses above, the sampler and the printed
+theorem, are both inside the published replication package, two paragraphs apart in the
+same appendix and a few lines apart in the same script, and a reader holding the deposit
+can check them without knowing that any follow up paper exists. Nothing here is
+transported from that record, which in any case sits in a repository with no public remote
+and could not be cited by URL. Found by that work; established by this package.
+
+**Note for a reader who has only the paper.** The theorem, not the sentence, states what
+the sampler does. A reader who follows the theorem is not misled.
+
+**Corrected in the manuscript for version 3**, on branch `errata`, 2026-08-03. The clause
+now reads:
+
+> (P4) the sixteen blocks of four consecutive positions permuted among themselves, so
+> that a pair never leaves its block, with the two pairs inside a block free to exchange
+> and all orientations free
+
+which says what the sampler does. The test that mattered was not that the new sentence
+reads well but that it leaves the printed theorem two paragraphs below **true under its
+literal reading**, which the old one did not: blocks permuted among themselves, with no
+pair leaving its block, preserve the block partition, so each block's yang sum is
+preserved, so the count of blocks summing to twelve is invariant and the statistic is a
+constant from P4 upward, exactly as the theorem says. The mechanical counterpart of that
+argument is already asserted and passes: `rung P4: yang-balanced groups equal 7 in every
+control sample`. The entry above is unchanged and still describes the deposits.
+
+---
+
+---
+
+## E-2. The ladder described as one of increasing structure
+
+**Printed text.** Appendix A, page 14, opening paragraph, second sentence:
+
+> We re-evaluate the four signatures of Table 2 under a ladder of six nulls of
+> increasing structure, each conceding more of the sequence’s architecture and asking
+> what remains
+
+The apostrophe in `sequence’s` is U+2019 in the artifact and is reproduced as such
+here. Line breaks of the printed column are not reproduced; no other character is
+altered.
+
+Transcribed character for character from the **version 2 deposit**
+(10.5281/zenodo.21628654), sha256
+`01c83c3d6d01878050a702b91901b55760218e4c6adcac4d57a9461a64904cfd`. The same sentence
+stands character for character in the PDF inside the version 1 deposit
+(10.5281/zenodo.21609654), sha256
+`77ec0f6953657638ec04157b87de987cb737c8dd5bdef1eb6db2876ba18bb53f`.
+
+**What it should say.** The six nulls are ordered by containment, and that order is
+partial rather than total. A later rung concedes a different part of the architecture,
+not a larger part of it.
+
+**Characterisation.** A false general statement all of whose particular consequences
+hold. It is false as a general statement: the family is not a chain, so there is no
+sense in which each rung concedes more than the one before it. Measured on the printed
+order itself, two of its five consecutive steps are not steps at all. `(P2, P3)` and
+`(P3, P4)` are incomparable, each refuted in both directions by a witness exhibited
+below; the other three, `(P0, P1)`, `(P1, P2)` and `(P4, P5)`, are strict containments.
+Every particular consequence nonetheless holds, and none is withdrawn: the printed order
+is a valid linear extension of the containment order, since all eleven strict
+containments print the larger group before the smaller, so every statement of the form
+"the statistic varies at this rung and is constant at the next" survives unchanged, and
+no figure in Table A1 moves.
+
+The printed sequence cannot be defended as an ordering by size either, and the
+measurement is recorded rather than passed over: the six sets have exact cardinalities
+`|P0|` = 64!, `|P1|` = 32! x 2^32, `|P2|` = 15! x 17! x 2^32, `|P3|` = 28! x 2^28,
+`|P4|` = 16! x 2^16 x 2^32, `|P5|` = 2^32, and ordering by those gives P0, P1, **P3, P2**,
+P4, P5. `|P3|` is 41 times `|P2|`, so the two rungs print in the opposite order to their
+size. This is consistent with their being incomparable and it is not a contradiction; it
+is simply one defence the printed wording does not have.
+
+**Evidence.** The fifteen pairwise containments between the six rungs were computed
+from predicates derived from the printed definitions. Eleven strict containments, four
+incomparable pairs, zero equalities. Each refutation is accompanied by an exhibited
+witness, that is a concrete permutation lying in one rung and not in the other, checked
+in both directions.
+
+The derivation below is not transported from anywhere, and it does not rest on the follow
+up work in which the question arose. An earlier record of the same result exists in a
+repository with no public remote, which cannot be cited here, and copying its prose would
+be copying a paraphrase; so the predicates were written again from the printed definitions
+of P0 to P5 in the deposit, and the witnesses were produced again. The fifteen containments
+and their witnesses are computable from the definitions the paper itself prints, by anyone
+holding the deposit, which is what establishes the entry. That work is where the question
+came from, and that is all it is.
+
+*What this is, named exactly.* It is not an independent derivation, and calling it one
+would overstate it. The result was already written in this file before the computation
+was run: eleven strict containments, four incomparable pairs, zero equalities, all three
+figures printed in the skeleton of this entry. The work was done again from the printed
+definitions, but with the answer in view, so the correct name is a reproduction with a
+known target. It is worth less than a blind derivation, in which the numbers could not
+be steered toward the expected ones. It is worth more than a transport, for one reason
+that can be checked: a reproduction can fail, and this one did fail. The first
+generating set written for P4 was too small to generate the group, the decision
+procedure returned P4 as contained in P2, and the exhaustive enumeration refuted it. A
+transcription cannot produce that error, because it never computes anything, and cannot
+catch it either. That failure, and not the final agreement with the printed claim, is
+what distinguishes a derivation actually run from a description of one.
+
+*Notation.* In King Wen numbering the received sequence is literally 1, 2, ..., 64, so
+a member of any rung is a permutation of the 64 hexagram numbers. It is written as its
+32 slots, each slot holding one pair in its printed orientation. A witness is given as
+the received order with one named change; every slot not named holds what it holds in
+the received order, which fixes the permutation completely.
+
+*Predicates, each from its printed definition.* (P0) any permutation of the 64.
+(P1) every slot holds a received pair, in either orientation. (P2) P1, and the pairs
+occupying the first fifteen slots are exactly the fifteen pairs of the first canon.
+(P3) P1, and each of the four palindrome pairs (1,2), (27,28), (29,30), (61,62) sits in
+its own slot in its received orientation. (P4) P1, and the two pairs of each received
+block of four consecutive positions are still together in one block. (P5) P1, and the
+pair order is the received one, orientations free.
+
+The reading of P4 used here is the corrected one of E-1, which the printed micro
+theorem forces. Under the literal reading of the printed sentence, in which a pair may
+leave its block, P4 would coincide with P1: the order would then carry one equality and
+ten strict containments, not eleven and zero, and the theorem of the same appendix
+would be false. The defect of E-1 and the shape of this order are the same fact seen
+twice.
+
+*The four incomparable pairs, with witnesses checked in both directions.*
+
+| pair | witness | in | not in |
+|---|---|---|---|
+| P2, P4 | received order with pairs (3,4) and (7,8) transposed: slots 1-4 read (1,2) (7,8) (5,6) (3,4) | P2 | P4 |
+| P2, P4 | received order with pairs (29,30) and (31,32) transposed: slots 14-17 read (27,28) (31,32) (29,30) (33,34) | P4 | P2 |
+| P2, P3 | received order with pairs (1,2) and (3,4) transposed: slots 1-4 read (3,4) (1,2) (5,6) (7,8) | P2 | P3 |
+| P2, P3 | received order with pairs (3,4) and (31,32) transposed: slots 1-3 read (1,2) (31,32) (5,6) | P3 | P2 |
+| P3, P4 | received order with pairs (3,4) and (7,8) transposed: slots 1-4 read (1,2) (7,8) (5,6) (3,4) | P3 | P4 |
+| P3, P4 | received order with the first two blocks transposed: slots 1-5 read (5,6) (7,8) (1,2) (3,4) (9,10) | P4 | P3 |
+| P3, P5 | received order with pairs (3,4) and (5,6) transposed: slots 1-4 read (1,2) (5,6) (3,4) (7,8) | P3 | P5 |
+| P3, P5 | received order with pair (1,2) written 2, 1: slots 1-3 read (2,1) (3,4) (5,6) | P5 | P3 |
+
+Each row was evaluated against both predicates, and each of the eight came out a member
+of the first rung and not of the second. Two rows per pair are given rather than one,
+because incomparability is two refutations and not one: neither rung contains the other.
+
+The witness that separates P4 from P2 is the transversality made concrete. Pairs
+(29,30) and (31,32) are the two halves of the eighth block; exchanging them keeps every
+block intact, so the sequence is a member of P4, and it moves a pair of the second canon
+into a slot of the first, so it is not a member of P2.
+
+The witness that separates P5 from P3 turns on orientation alone: P3 fixes the four
+palindrome pairs in position *and* orientation, while P5 randomises all 32 orientations,
+so the received order with (1,2) written 2, 1 lies in P5 and outside P3.
+
+*Method, and a check on the check.* Each rung factors as a set of pair orders times a
+set of orientation vectors, so containment is decided exactly: on the order part by
+subgroup generators, on the orientation part by which coordinates are forced. That
+decision was cross-checked against a full enumeration of the same construction shrunk to
+eight pairs, four blocks of two, canon split three and five, which keeps the one feature
+that matters, a canon boundary falling strictly inside a block. The cross-check earned
+its keep, in the way recorded above. The corrected computation and the exhaustive
+enumeration then agree: eleven strict, four incomparable, zero equalities.
+
+**Verification record.** `errata-evidence/errata_e2_derivation.py` on branch `errata`. It
+carries the six predicates, the decision procedure, the eight witnesses and the
+exhaustive enumeration on the shrunk model, and it runs on the standard library alone.
+Until it was committed the code existed only outside the repository, and the slot pointed
+at this entry; it now points at the file, which is what a pointer is for. It sits in a
+directory of its own, and not beside `verify_paper.py`, for the reason given in the
+package README: it is not replication code and must not be able to be mistaken for it. The
+prose of the entry first arrived in commit
+`90d4455b140ad9e69fe7ff19c58aa08562a434e6`, on 2026-07-31.
+
+The evidentiary weight, however, does not rest on that file or on any commit. It rests on
+the eight witnesses exhibited above, which a reader checks by hand against the printed
+definitions, with no code and no clone. The commit lives on a branch that is not merged
+and may never be; a reader who has only the deposited paper can still verify every row of
+the table. Code that can disappear must not be the thing an erratum stands on.
+
+The canon division and the block partition are transversal: fifteen and seventeen pairs
+put the boundary between slots fourteen and fifteen, which lie inside the eighth block
+of four positions. This is a property of the object and not of the formalisation.
+
+**Date found.** 2026-07-31, same verification.
+
+**Figures affected.** None.
+Measurement: the printed order of the six rungs is a valid linear extension of the
+partial order, since all eleven strict containments print the larger group before the
+smaller. Every statement of the form "the statistic varies at this rung and is constant
+at the next" therefore survives unchanged.
+
+**Status.** APPLIED. Version 3, deposited 2026-08-03, DOI
+`10.5281/zenodo.21776041`.
+
+**Corrected in the manuscript for version 3**, on branch `errata`, 2026-08-03. The opening
+sentence now reads:
+
+> under a ladder of six nulls ordered by containment, an order that is partial rather than
+> a chain: each rung concedes some part of the sequence's architecture, not uniformly more
+> than the rung before it, and we ask what remains
+
+The word `increasing` is gone, and it has not been replaced by a second general claim that
+would not hold either. What the new sentence asserts is what was measured: the family is
+ordered by containment, and that order is partial. It does not claim the rungs grow, which
+is false, nor that they are ordered by size, which is also false, since ordering the six
+by cardinality puts P3 before P2 while the paper prints P2 first. The name `ladder` is kept
+because the printed order is a valid linear extension of the containment order, so every
+later reference to rungs, to `from P4 upward` and to the top of the ladder remains true as
+a reference to the printed sequence. The entry above is unchanged and still describes the
+deposits.
+
+---
+
+---
+
+## P-1. The deposited package declares a check count its own suite does not have
+
+The first entry about the package rather than the paper. The distinction is measured and
+not assumed: neither `paper.tex` nor the compiled PDF states the number of checks in this
+package anywhere, so no figure printed in the paper is touched by what follows.
+
+**Printed text.** Four places in the version 2 deposit (10.5281/zenodo.21628654). In
+`README.md` line 35 and `index.html` line 197, inside a sample of the program's own
+output:
+
+> ```
+>   192 checks passed, 0 failed, 192 total
+> ```
+
+In `index.html` line 179:
+
+> paper source, compiled PDF, and a self-contained script that reproduces every figure
+> (192 checks, standard library only)
+
+In `README.md` line 115, in the table of what each documented mutation produces:
+
+> the run completes and reports `175 checks passed, 17 failed, 192 total`
+
+**What it should say.** 202 in the first three. In the fourth, `185 checks passed, 17
+failed, 202 total`.
+
+**Evidence.** The suite deposited in the same archive, run against its own tree,
+extracted from the deposited zip and not from a working copy: **202 checks passed, 0
+failed, 202 total**. The documented mutation (c) then run on that tree exactly as its own
+README prescribes: **185 passed, 17 failed, 202 total**, exit status 1, first failing
+check `3.1`, which is the check the table names. The failure count of 17 and the identity
+of the first failing check are correct as printed; the two totals are not.
+
+Where the ten went, measured per section: the front matter section grew from 16 checks to
+19, and a new section asserting the document metadata of the PDF contributed 7. Sixteen
+plus three plus seven is the whole of the difference; no other section moved, and no
+figure of the paper is among them.
+
+The timeline is the explanation, and every instant in it is measured rather than
+inferred:
+
+| instant (UTC) | event |
+|---|---|
+| 2026-07-27T15:40:26Z | commit `61486e35665f0fc42212205ca05b0ead7048e0f6`, the tree later deposited, already carrying the 202-check suite |
+| 2026-07-27T16:16:56Z | the version 2 record is created on Zenodo, 36 minutes later, with the surfaces still saying 192 |
+| 2026-07-27T16:52:01Z | commit `9b4720999e63c5a0ba944ad261b5d6e2aac47031` separates the version DOI from the concept DOI, 35 minutes after the deposit |
+| 2026-07-28T04:36:47Z | commit `73d9a77cdc59ea1410ae815cbb484dc68eb752d1` corrects the count on the surfaces, 192 to 202, twelve hours after the deposit |
+
+**The version 1 deposit is consistent, and this is measured, not assumed.** All four
+strings read 192 there and its tree measures 192; its mutation table reproduces exactly,
+`175 checks passed, 17 failed, 192 total`, the figure it prints. The package did not carry
+this defect from the start and does not carry it chronically. The mismatch is born in the
+version 2 deposit, in a window of twelve hours and thirty-six minutes between a suite that
+had already grown and surfaces that had not yet been updated, and it is corrected the
+following day. One deposit is affected, and it is the current one, which is why the entry
+is open.
+
+**Date found.** 2026-07-31, during a consistency sweep of the two deposited archives.
+
+**Figures affected.** None in the paper, and this is measured rather than asserted: every
+figure of the paper reproduces in both deposits, 192 of 192 in version 1 and 202 of 202 in
+version 2, with no failures in either. What is wrong is the package's statement about its
+own suite, not any statement about the King Wen sequence.
+
+**Status.** APPLIED. Version 3, deposited 2026-08-03, DOI
+`10.5281/zenodo.21776041`.
+Corrected in the repository on 2026-07-28 in commit
+`73d9a77cdc59ea1410ae815cbb484dc68eb752d1`, and that correction is in the deposited
+archive of version 3, which is what a reader downloads today. It remains present in
+10.5281/zenodo.21628654, which is version 2. This entry said it would close with the
+next deposit and name the version that applied it; that version is named here.
+
+**Note for a reader who has the package.** Run it. The program prints its own count, and
+the count it prints is the true one.
+
+**The class is now mechanised, and not by this lane.** While these entries were being
+written, the repository's `main` gained a check of its own, `check_published_counts`, which
+asserts that every check count published in `README.md` and in `index.html` is the number
+the suite actually runs. It arrived in commits `d6669487b51ac141ab779891ab85db2503e08974`
+and `95437d30f805be447cccabb30ea54ff983741f52` of 2026-07-28, without knowledge of this
+log, and it makes the defect recorded above impossible to repeat unnoticed: the surfaces
+and the suite can no longer disagree without the run failing. Since the merge of
+2026-08-03 that check runs on this branch too, and it is what caught the surfaces during
+the merge itself. The entry stays open, because the deposits still carry the defect and a
+gate on `main` does not reach into a frozen archive. See X-7.
+
+---
+
+---
+
+## P-2. The suite prints a value the paper does not print, in the column that claims to quote it
+
+**Printed text.** As it stands in the deposits, which is where the defect exists and
+where it cannot be taken out. `verify_paper.py` of both deposits, line 742, and of the
+live `main`, line 743:
+
+```python
+    check("5.6", "Bonferroni over the nine criteria (0.038 x 9)",
+          round(0.038 * 9, 2), 0.34, ok=close(0.038 * 9, 0.35, 0.02))
+```
+
+The fourth argument is the value the suite attributes to the paper, and the run prints it
+under a column headed `paper:`. A clean run of either deposit, or of the live `main`,
+therefore shows
+
+```
+  [PASS] 5.6   Bonferroni over the nine criteria (0.038 x 9)
+         reproduced: 0.34   paper: 0.34
+```
+
+**What it should say.** `0.35`, which is what the manuscript prints, with the equality
+left to do its work; or, if the tolerance is kept, centred on the same value the column
+declares. The two must not name different numbers.
+
+**Evidence.** The manuscript prints `0.35` and never prints `0.34`. Measured in the
+deposited `paper.tex` of version 2, in its compiled PDF at page 9, and in the same files
+of version 1 and of the live `main`: the string `0.34` does not occur in `paper.tex` in
+any of the four trees, and the sentence at issue reads `With nine tests, 0.038 x 9 ~
+0.35.` The exact product is 0.34199999999999997, whose rounding to two places is 0.34,
+which is what `round(0.038 * 9, 2)` returns and what both columns of the output show. So
+the reader of the output sees `0.34` twice and has no way to learn that the paper says
+something else. The equality that would have caught it is overridden by
+`ok=close(0.038 * 9, 0.35, 0.02)`, whose band is wide enough to swallow the difference
+and which compares against a third value, the printed one, that the column never shows.
+
+**It is a case and not a class, and the difference decides the repair.** Measured over
+every `check()` call: 154 calls in the version 2 deposit, 161 in the live `main`, 164 at
+the head of this branch when this entry was written and 177 now, of which **23 carry an
+`ok=` override in the deposits and in the live `main`, 24 at the head of this branch once
+the assertion of E-3 was added, and 23 again from version 3 on**, because the correction
+recorded in C-2 made the manuscript print the exact product and turned this very check from
+a band into an equality. The assertion added by the repair of E-3 keeps its band, and the
+reason is discussed there. Three of the 23 declare a value different from the one their tolerance tests:
+
+| check | column declares | tolerance tests | the paper prints |
+|---|---|---|---|
+| 5.6, Bonferroni over the nine criteria | 0.34 | 0.35 | 0.35 |
+| 5.1, pair-null percentile, lag-1 autocorrelation | 6.4 | 6.3 | 6.4 |
+| 5.1, pair-null percentile, yang-balanced groups | 89.6 | 89.7 | 89.6 |
+
+Only the first declares a value the paper does not print. The other two declare the
+printed value and merely centre a Monte Carlo band on the value actually measured, which
+is ordinary practice and conceals nothing. One case. Had it been a class, the repair would
+have been a rule, that no check may declare one value and test another, enforced
+mechanically; for a single case the repair is to correct the case and to record that the
+sweep was done, so that nobody has to wonder later whether it was.
+
+**Date found.** 2026-08-03. The discrepancy was found in the course of an audit of this
+repository run by a separate session of the same process. That is where it was found and
+not what establishes it: everything above is internal to the published package, the line
+of code and the sentence of the manuscript sit in the same archive, and a reader with the
+deposit and nothing else can check every claim in this entry. It would stand if the audit
+had never happened.
+
+**Figures affected.** None. Measured: the suite passes in all four trees with the
+override as it stands, and would still pass with the column corrected to 0.35, since
+0.342 is within 0.02 of 0.35. No conclusion of the paper moves either way, because both
+0.34 and 0.35 are far above the 0.05 the sentence is arguing about.
+
+**Status.** APPLIED. Version 3, deposited 2026-08-03, DOI
+`10.5281/zenodo.21776041`.
+Present in versions 1 and 2, which is what a reader of those versions downloads.
+
+**Repaired on this branch**, in commit `10786bdd2e8ff40fb0271dbfa6fd50b259ef0b44`, which
+changes the declared value to 0.35 and leaves the tolerance alone. The same commit changed
+the left column from the two-place rounding to the three-place one, so that the line reads
+`reproduced: 0.342   paper: 0.35` instead of showing 0.34 beside 0.35 on a line marked
+PASS. That was not asked for, so it was measured rather than assumed: the suite has no
+single display precision to break. Across its 165 checks, `round` is called to one place
+19 times, to two places 5 times, to three places 16 times and to four places 4 times, and
+the precision follows the figure being shown. The nearest sibling does exactly what this
+line now does: the Appendix A check of `0.035 x 17 = 0.6` displays the exact product to
+three places against a printed figure rounded to one, with a tolerance carrying the
+difference. So this is not a new convention, it is the existing one, and the measurement
+is recorded here rather than left as a matter of taste. The entry above
+describes the deposits and is not rewritten to match the repair: a reader of a future
+version who finds this entry and then reads the shipped code must be able to tell which
+of the two they are looking at. Nothing in a deposit is altered by that commit, and the
+correction reaches a reader only when a version carrying it is deposited.
+
+---
+
+---
+
+## E-3. The abstract says every numerical claim is asserted, and one is not
+
+**Printed text.** Page 1 of the deposited PDF, the abstract, its last sentence:
+
+> Every numerical claim in this paper is asserted by an automated test suite in a public
+> repository.
+
+Line breaks of the printed column are not reproduced; no other character is altered.
+
+The figure at issue is in Table 2, page 7:
+
+> lag-1 autocorrelation of distances -0.247 4.0 6.4 marginal, not significant
+
+*What was altered in that row, named here rather than left to the policy.* Two glyphs and
+one piece of layout. The compositor draws U+2212 in `-0.247` where the source writes an
+ordinary hyphen-minus, and it is written above as the hyphen-minus. The word `significant`
+carries the ligature U+FB01 for `fi` in the artifact and is written above as two letters.
+And the row is a table row: in the PDF its cells stand on separate lines, `lag-1
+autocorrelation of distances`, `-0.247`, `4.0`, `6.4`, `marginal, not`, `significant`, and
+they are joined above with single spaces. Nothing else in it is altered.
+
+The figure `4.0` is the free-shuffle percentile of the lag-1 statistic.
+
+**What it should say.** Either the sentence admits its exception, or the suite asserts the
+figure. The narrow correction is the second: one assertion for the free-shuffle percentile
+of the lag-1 statistic, and the sentence becomes true as printed.
+
+**Evidence.** Measured over four trees, with the subject set declared: `paper.tex` and
+`verify_paper.py` of the same tree; a figure is a decimal or a fraction in the body of
+`paper.tex` after LaTeX markup is stripped; covered means the decimal appears in
+`verify_paper.py`, or, for a fraction `a/b`, that either `a/b` or the tuple `(a, b)` does.
+The tuple form matters and a literal-only test is wrong: the suite asserts 7/15 as
+`(7, 15)`.
+
+Of 115 figures printed in each deposit and 112 in the live `main`, **eight have no
+counterpart, the same eight in all three of those trees**: 98.2, 0.037, 0.251, 4.0,
+0.000, 1.000, 1/24, 120/32. Three of the eight are Chan's figures rather than
+this paper's, and one of those, 0.251, is quoted only to be compared with our own -0.247.
+Four more are formatting variants of figures the suite does assert: 0.000 and 1.000 are
+Kendall taus printed to three places and asserted as 0.0, 1/24 is printed beside the
+0.042 that is asserted, and 120/32 is printed beside the 3.75 that is asserted. That
+leaves exactly one figure of the paper's own that the suite does not assert in any form:
+**4.0**.
+
+**A reading that was corrected before this entry was written.** The self-referential count
+of verification sections, 61 in the first deposit and 63 in the second, is not asserted by
+this package's suite either: measured, the strings `verification sections`,
+`assertion suite comprises` and `laboratory of` occur zero times in `verify_paper.py` in
+all four trees. It was tempting to add it to this entry and it would have been wrong. The
+sentence says `an automated test suite in a public repository`, indefinite twice over. It
+does not say this suite or this repository, and the laboratory's suite does assert that
+count and is public. The sentence survives the section count. What it does not survive is
+4.0.
+
+**Date found.** 2026-08-03. Found in the course of an audit of this repository run by a
+separate session of the same process, and established here by the measurement above, which
+reads only `paper.tex` and `verify_paper.py` of the four trees and can be repeated by
+anyone holding either deposit. That audit reported thirteen unasserted figures; the
+measurement made here gives eight by the method declared, and where the two disagree this
+one governs. The count came out different, which is the ordinary reason to re-measure a
+lead rather than adopt it.
+
+**Figures affected.** None. The unasserted figure is not a wrong figure: 4.0 is not
+contradicted by anything, it is simply not checked. Measured: every tree passes its full
+suite, 192 in the first deposit, 202 in the second, 246 on the live `main` and 212 at the
+head of this branch after the repair below, none failing anywhere.
+
+**Status.** APPLIED. Version 3, deposited 2026-08-03, DOI
+`10.5281/zenodo.21776041`.
+Present in versions 1 and 2, which are the objects this entry describes.
+
+**Repaired on this branch**, in commit `d25149ac4dc1105918f7fadb3ae067314f184cbd`, which
+asserts the figure: the free-shuffle percentile of the lag-1 statistic, band 0.6, the
+width its two neighbours use, because the printed 4.0 comes from the other implementation
+and this one measures 3.8. The assertion was shown able to fail before it was believed:
+moving the declared value to 6.0 fails it alone, and negating the statistic it rests on
+fails it along with its two relatives.
+
+*What that band can see and what it cannot, said plainly.* It catches a gross error: the
+2.0 point move to 6.0 fails it, as does any change to the statistic underneath, which
+shifts the percentile to the other end of the scale. It would not see a drift of 0.3
+points, and it is not meant to: the printed 4.0 comes from a different implementation and
+a different draw, and this one measures 3.8, so a band narrower than the gap between two
+honest implementations of the same quantity would fail for the wrong reason. That is the
+line between a band with a reason and a tolerance that hides something, and it is the same
+line P-2 is about. The reason is written here so that a later reader can judge the band
+instead of trusting it. It also makes the entry's new check the twenty-fourth `ok=`
+override on this branch, which is recorded in the inventory in P-2. The entry above describes the deposits, where the
+figure is still unasserted, and is deliberately not rewritten to match the branch.
+
+**What the repair did to the sentence, which is the reason this entry is an E.** The last
+line of the abstract reads:
+
+> Every numerical claim in this paper is asserted by an automated test suite in a public
+> repository.
+
+That sentence was false, and this entry is what made it false. It is now **true, and not one
+word of the manuscript was changed to make it so.** The repair happened entirely in the
+code: two assertions were added, one for the free-shuffle percentile of the lag-1 statistic
+and one for the degenerate row of Table 1. **This is the only entry in this log where the
+repair restores a claim of the paper instead of correcting it**, and that is precisely why
+it is an **E** and not only a **P**: the defect lived in a promise the manuscript makes, and
+the place to keep the promise was the suite.
+
+*The subject set, declared, and every exclusion named.* Measured over `paper.tex` and
+`verify_paper.py` of the same tree: 112 printed figures, of which **eight had no counterpart
+when this entry was opened and none has one now**. Two were repaired by assertion:
+
+1. **4.0**, the free-shuffle percentile of the lag-1 statistic in Table 2, asserted in
+   commit `d25149ac4dc1105918f7fadb3ae067314f184cbd`.
+2. **1.000**, the Kendall tau of the binary ordering against itself in Table 1, asserted
+   together with the 0 inversions of the same row.
+
+Three are not claims of this paper, and the distinction is not a convenience. They are
+**98.2**, **0.037** and **0.251**: the first two appear inside the report of what Chan
+(2026) found, and the third is printed as "against Chan's -0.251". A figure quoted from
+another author is a claim about what that paper reports, which this suite cannot verify
+without that author's implementation; and this paper's own counterparts to all three, the
+3.349, the 97.9 and the -0.247 it measured for itself, are asserted.
+
+Three are formatting variants of quantities that are asserted, and they do not count
+because the quantity is checked and only its printed precision differs from the literal in
+the code: **0.000** is the three-place rendering of the Kendall taus asserted as `0.0`,
+**1/24** is printed beside the 0.042 that is asserted, and **120/32** is printed beside the
+3.75 that is asserted, with 120 asserted separately.
+
+Eight without a counterpart at the start, **zero at the end**.
+
+*Why the last one was invisible, which is the part worth keeping.* The tau of the binary
+ordering against itself is 1 by definition, and the inversions are 0 by definition. Nothing
+in the suite compares an ordering **with itself**: every check in it was built to compare
+two different orderings, so the degenerate case sat outside the shape of the instrument.
+Its triviality is what hid it, not its difficulty. Swept for others of the same form across
+every table in the paper, Table 1, Table 2, the centers table, the battery, the spectral
+fingerprints and Table A1: **those two cells are the only self-comparisons in the paper, and
+there are no other definitional values left unasserted.** The spectral row for the binary
+ordering looks similar and is not the same thing, since its Walsh energies are computed and
+are asserted with the other four.
+
+**Cross reference.** The same defect on the package's surface is P-3, which follows. One
+defect, two surfaces, one figure, one repair.
+
+---
+
+---
+
+## P-3. The README makes the same promise, in the definite
+
+**Printed text.** As it stands in the deposits. `README.md` of both deposits and of the
+live `main`, in the opening paragraph:
+
+> This repository is the replication package for the paper. It contains the manuscript
+> source, the compiled PDF, and a single self-contained script that reproduces **every
+> numerical claim** made in the paper from first principles.
+
+**What it should say.** The same repair as E-3 makes both sentences true: assert the free
+shuffle percentile of the lag-1 statistic. Failing that, the promise needs the exception
+written into it.
+
+**Evidence.** The measurement is the one recorded in E-3 and is not repeated here. What
+differs is the strength of the claim, and it differs against this surface: the abstract
+says `an automated test suite in a public repository`, indefinite, and survives everything
+except 4.0; the README says `a single self-contained script`, definite and named, and so
+promises that this script asserts every numerical claim of the paper. There is no second
+suite for it to be leaning on. The same single figure falsifies it, and falsifies it more
+plainly.
+
+**Date found.** 2026-08-03, with E-3, and established by the same internal measurement.
+The provenance is the same audit, recorded as where it was found.
+
+**Figures affected.** None, as in E-3.
+
+**Status.** APPLIED. Version 3, deposited 2026-08-03, DOI
+`10.5281/zenodo.21776041`.
+Present in versions 1 and 2.
+
+**Repaired on this branch** by the same commit as E-3,
+`d25149ac4dc1105918f7fadb3ae067314f184cbd`. One assertion makes both sentences true.
+
+**Cross reference.** E-3. The two entries are the same defect on two surfaces and are
+kept apart only because the categories of this file are by surface: the paper's text is
+E, the package is P. They are repaired by one assertion.
+
+
+---
+
+---
+
+## E-4. The paper says where the corrections were found and never says where to find it
+
+**Printed text.** What is wrong here is an absence, and an absence cannot be quoted, so
+what is quoted is the place where the reference belongs and is not: the closing sentence of
+Related work, page 11 of the version 2 deposit, which runs straight from the last
+unrelated remark to the end of the section.
+
+> The tradition's own account of the sequence, the Xugua commentary, is narrative and is
+> not treated here as a structural hypothesis, because it provides no formalizable rule.
+
+Line breaks of the printed column are not reproduced; no other character is altered. The
+absence itself is measured rather than described: against the `paper.tex` of the version 2
+deposit, zero occurrences of `uninformative`, of `21750029`, of `order-theoretic` and of
+`stopping criterion`, and a bibliography of fifteen entries, none of them that preprint.
+
+**What it should say.** The errata of this package states, in several entries, that the
+discrepancies were found *in the course of* that work. A reader who reads that sentence
+looks for the work in the references and finds nothing there. The bibliography needs the
+entry, and the body needs to say what that work is, as related work and not as support.
+
+**Evidence.** Internal and immediate: the log makes the claim and the manuscript does not
+carry the reference that would let anyone follow it. It is a defect of the pair, not of
+either alone, and it is the only entry here whose evidence is a relation between two
+documents rather than a measurement inside one.
+
+**Whose failure this was.** Not the manuscript's author acting carelessly and not the
+suite's. The instruction to cite that work was given in a supplement to one round and was
+not carried into the next, so it fell between two rounds of the same process and nothing
+noticed, because nothing checks for a citation that ought to exist. Recorded that way
+because the alternative, leaving it unattributed, would make the log less useful to the
+person most likely to hit the same seam: a process that hands work forward in rounds loses
+what is written only in the margin of a round.
+
+**Date found.** 2026-08-03, before the version 3 deposit.
+
+**Figures affected.** None. Measured: the suite reports 264 checks, 0 failed, before and
+after the citation was added, and no figure of the paper is touched by a bibliography entry
+and two sentences of related work.
+
+**Status.** APPLIED. Version 3, deposited 2026-08-03, DOI
+`10.5281/zenodo.21776041`.
+Present in versions 1 and 2, which is where it exists.
+
+**Corrected in the manuscript for version 3**: the bibliography gains the entry in its alphabetical place, between Chan and Hacker, with the
+title and the author string taken from the Zenodo record of that work rather than from the
+instruction, since it is a self-citation and has to match how the work is registered. The
+body cites it twice, in Related work and in Appendix A, whose object that work is, and in
+both places as related work: it is named as giving an order-theoretic reading of the ladder
+and as reporting the verification of the two constructions against their printed sources,
+and **it is not used to support any correction**. Every entry in this log still stands on
+this package alone.
+
+---
+
+---
+
+## P-4. A table of the appendix printed in the middle of the bibliography
+
+**Printed text.** The caption is correct; where it is printed is not. It opens:
+
+> Table A1: Chan's four signatures across the ladder of conditional nulls, in the column
+> order of Table 2: mean transition distance, lag-1 autocorrelation of distances,
+> yang-balanced groups of four, and within/between-pair asymmetry.
+
+Line breaks of the printed column are not reproduced; no other character is altered. In the
+version 2 deposit and in every compile up to this one, that caption and the table it heads
+are printed **on a page of the references**. Measured on the PDF as it stood at commit
+`68089cada56d93f16709a3aa1ac1a3d7b371a164`: the bibliography runs from the `References`
+heading on page 13 to its last entry on page 14, and the Table A1 caption is on page 14.
+
+**What it should say.** The table belongs with the appendix that discusses it, after the
+bibliography ends.
+
+**Evidence.** The source order is correct and that is the point: in `paper.tex` the
+bibliography closes at line 369, `\appendix` opens at line 371, and the table is declared
+at line 382. It is not a mistake of ordering but of float placement, `[t]` sending the
+table to the top of a page LaTeX found convenient, and the page it found convenient was a
+page of references. **Nothing in the package could see it**: the suite reads `paper.tex`,
+where the order is right, and a reader of the source would never notice. Only the compiled
+artifact shows it.
+
+**Date found.** 2026-08-03.
+
+**Figures affected.** None. A float in the wrong place moves no number: the suite reported
+the same figures before and after the fix.
+
+**Status.** APPLIED. Version 3, deposited 2026-08-03, DOI
+`10.5281/zenodo.21776041`.
+Present in versions 1 and 2, which is where it exists.
+
+**Corrected in the manuscript for version 3** with a `\clearpage` before `\appendix`, and measured in the compiled PDF rather than in the
+source: the bibliography now ends on page 14 and Table A1 prints on page 15, together with
+the Appendix A heading. The paper gains one page, 15 to 16.
+
+**And the gap it came through is now watched.** `section_pdf_layout` asserts that no table
+caption falls on a page of the bibliography, reading the compiled PDF page by page with the
+standard library. The page segmentation it relies on is an assumption about the producer,
+so it was checked against an independent reader rather than trusted: sixteen text streams
+against sixteen pages, and seven probes placing captions, headings and the author name on
+exactly the same pages. The first of its two checks exists to fail if that assumption ever
+stops holding.
+
+---
 
 ---
 
@@ -1851,6 +1907,17 @@ paper now carries the concept DOI and a named gap where its version DOI goes, an
 asserts both of those and the absence of the superseded version DOI. The surfaces were swept
 in the same commit and the remote's check reported them until they were, twice, first at
 256 against 259 and then on the mutation line alone.
+
+From there to the deposit it moved four more times, each in the commit that caused it and
+each with the surfaces swept in the same act: **259 to 267** with the bibliographic gate
+and the second-order sweep, **267 to 269** with the orphan-float gate, **269 to 270** with
+the assertion of the four signatures of Table 2, and **270 to 272** in this closing round,
+which added the two identifier counts that the published version DOI made checkable.
+**The deposited archive of version 3 carries 270**, and that number is now fixed forever,
+because the archive it belongs to cannot change: it was downloaded back from the record
+after publication and run, 270 of 270. The counts above this line describe a moving object
+and the 270 describes a frozen one, which is the whole difference between a repository and
+a deposit.
 
 **Three mirror problems in two rounds, and the class is architectural.** Worth recording
 together, because each was fixed locally and the pattern is not local. First the direction
