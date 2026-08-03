@@ -101,8 +101,15 @@ anything else.
 One rule, governing every verbatim in this file, so that it is stated once rather than
 argued in each entry.
 
-**Artefacts of composition are normalised, and named where they occurred. Characters of
-the text are preserved.**
+**Artefacts of composition are normalised, and named beside the quotation that carries
+them. Characters of the text are preserved.**
+
+Named beside, not named only here. A policy section is where a reader looks after they
+have been surprised, and by then the damage is done: a substitution that appears only in
+the policy is a silent substitution at the place it matters, which is the shape of defect
+this file catches in others. Every entry that quotes an altered span says which characters
+were altered, in that entry, next to that quotation. Measured on this file: four
+quotations carry an altered character, and each carries its own note.
 
 The line between the two is not a matter of taste. A compositor decides where a line
 breaks, whether `fi` is drawn as one glyph or two, and whether a word is split with a
@@ -631,10 +638,15 @@ The figure at issue is in Table 2, page 7:
 
 > lag-1 autocorrelation of distances -0.247 4.0 6.4 marginal, not significant
 
-The typographic minus U+2212 that the compositor draws in `-0.247` is written above as an
-ordinary hyphen-minus, which is what the source writes; the ligature and spacing rules of
-the transcription note apply as usual. The figure `4.0` is the free-shuffle percentile of
-the lag-1 statistic.
+*What was altered in that row, named here rather than left to the policy.* Two glyphs and
+one piece of layout. The compositor draws U+2212 in `-0.247` where the source writes an
+ordinary hyphen-minus, and it is written above as the hyphen-minus. The word `significant`
+carries the ligature U+FB01 for `fi` in the artifact and is written above as two letters.
+And the row is a table row: in the PDF its cells stand on separate lines, `lag-1
+autocorrelation of distances`, `-0.247`, `4.0`, `6.4`, `marginal, not`, `significant`, and
+they are joined above with single spaces. Nothing else in it is altered.
+
+The figure `4.0` is the free-shuffle percentile of the lag-1 statistic.
 
 **What it should say.** Either the sentence admits its exception, or the suite asserts the
 figure. The narrow correction is the second: one assertion for the free-shuffle percentile
@@ -792,12 +804,16 @@ place. Naming the repository, once, would close that.
 **What was examined.** The sentence on page 9 of the deposited PDF, in the paragraph on
 the battery of nine criteria:
 
-> With nine tests, 0.038 x 9 ~ 0.35.
+> With nine tests, 0.038 x 9 ~0.35.
 
-The multiplication sign is U+00D7 in the artifact and the approximation sign is U+2248;
-both are the compositor's rendering of the source's `\times` and `\approx`, and are
-written here as `x` and `~` so that the sentence can be searched for in a plain terminal.
-No digit is altered.
+*What was altered, named here.* The multiplication sign is U+00D7 in the artifact and
+the approximation sign is U+2248; both are the compositor's rendering of the source's
+`\times` and `\approx`, and are written above as `x` and `~`. The missing space after
+the `~` is not a slip and is not mine: the text layer of the artifact reads `~0.35` with
+no space, because the gap LaTeX sets around a relation is drawn and not encoded. An
+earlier version of this entry inserted one, and a reader searching the artifact for the
+quotation would have failed to find it, by exactly the failure the transcription rule
+exists to prevent. No digit is altered.
 
 **Measurement.** The exact product is 0.34199999999999997. Its rounding to two decimal
 places is 0.34, not 0.35, and the package's own suite computes exactly that:
