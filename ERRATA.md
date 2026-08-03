@@ -7,9 +7,9 @@ Hexagrams: Pair Rule, Family Gradient, and the Limits of Demonstrability*
 This is a living document. It is updated when a defect is found, not when a defect is
 fixed.
 
-**Where it stands, 2026-08-03.** Fifteen entries: three defects in the paper (E-1, E-2,
-E-3), three in the deposited package (P-1, P-2, P-3), two clarifications for the next
-version (C-1, C-2), and seven things examined and found sound (X-1 to X-7). **No figure of
+**Where it stands, 2026-08-03.** Seventeen entries: four defects in the paper (E-1 to
+E-4), four in the deposited package (P-1 to P-4), two clarifications for the next version
+(C-1, C-2), and seven things examined and found sound (X-1 to X-7). **No figure of
 the paper changes in any entry**, and that is measured and not asserted: every figure
 reproduces in every tree of the package: 192 of 192 in the first deposit, 202 of 202 in
 the second, 246 of 246 on the `main` this branch has now merged, and 259 of 259 at the head
@@ -905,6 +905,105 @@ The provenance is the same audit, recorded as where it was found.
 kept apart only because the categories of this file are by surface: the paper's text is
 E, the package is P. They are repaired by one assertion.
 
+
+
+---
+
+## E-4. The paper says where the corrections were found and never says where to find it
+
+**Printed text.** What is wrong here is an absence, and an absence cannot be quoted, so
+what is quoted is the place where the reference belongs and is not: the closing sentence of
+Related work, page 11 of the version 2 deposit, which runs straight from the last
+unrelated remark to the end of the section.
+
+> The tradition's own account of the sequence, the Xugua commentary, is narrative and is
+> not treated here as a structural hypothesis, because it provides no formalizable rule.
+
+Line breaks of the printed column are not reproduced; no other character is altered. The
+absence itself is measured rather than described: against the `paper.tex` of the version 2
+deposit, zero occurrences of `uninformative`, of `21750029`, of `order-theoretic` and of
+`stopping criterion`, and a bibliography of fifteen entries, none of them that preprint.
+
+**What it should say.** The errata of this package states, in several entries, that the
+discrepancies were found *in the course of* that work. A reader who reads that sentence
+looks for the work in the references and finds nothing there. The bibliography needs the
+entry, and the body needs to say what that work is, as related work and not as support.
+
+**Evidence.** Internal and immediate: the log makes the claim and the manuscript does not
+carry the reference that would let anyone follow it. It is a defect of the pair, not of
+either alone, and it is the only entry here whose evidence is a relation between two
+documents rather than a measurement inside one.
+
+**Whose failure this was.** Not the manuscript's author acting carelessly and not the
+suite's. The instruction to cite that work was given in a supplement to one round and was
+not carried into the next, so it fell between two rounds of the same process and nothing
+noticed, because nothing checks for a citation that ought to exist. Recorded that way
+because the alternative, leaving it unattributed, would make the log less useful to the
+person most likely to hit the same seam: a process that hands work forward in rounds loses
+what is written only in the margin of a round.
+
+**Date found.** 2026-08-03, before the version 3 deposit.
+
+**Figures affected.** None. Measured: the suite reports 264 checks, 0 failed, before and
+after the citation was added, and no figure of the paper is touched by a bibliography entry
+and two sentences of related work.
+
+**Status.** OPEN. In the deposits, which is where it exists.
+
+**Corrected in the manuscript for version 3**: the bibliography gains the entry in its alphabetical place, between Chan and Hacker, with the
+title and the author string taken from the Zenodo record of that work rather than from the
+instruction, since it is a self-citation and has to match how the work is registered. The
+body cites it twice, in Related work and in Appendix A, whose object that work is, and in
+both places as related work: it is named as giving an order-theoretic reading of the ladder
+and as reporting the verification of the two constructions against their printed sources,
+and **it is not used to support any correction**. Every entry in this log still stands on
+this package alone.
+
+---
+
+## P-4. A table of the appendix printed in the middle of the bibliography
+
+**Printed text.** The caption is correct; where it is printed is not. It opens:
+
+> Table A1: Chan's four signatures across the ladder of conditional nulls, in the column
+> order of Table 2: mean transition distance, lag-1 autocorrelation of distances,
+> yang-balanced groups of four, and within/between-pair asymmetry.
+
+Line breaks of the printed column are not reproduced; no other character is altered. In the
+version 2 deposit and in every compile up to this one, that caption and the table it heads
+are printed **on a page of the references**. Measured on the PDF as it stood at commit
+`68089cada56d93f16709a3aa1ac1a3d7b371a164`: the bibliography runs from the `References`
+heading on page 13 to its last entry on page 14, and the Table A1 caption is on page 14.
+
+**What it should say.** The table belongs with the appendix that discusses it, after the
+bibliography ends.
+
+**Evidence.** The source order is correct and that is the point: in `paper.tex` the
+bibliography closes at line 369, `\appendix` opens at line 371, and the table is declared
+at line 382. It is not a mistake of ordering but of float placement, `[t]` sending the
+table to the top of a page LaTeX found convenient, and the page it found convenient was a
+page of references. **Nothing in the package could see it**: the suite reads `paper.tex`,
+where the order is right, and a reader of the source would never notice. Only the compiled
+artifact shows it.
+
+**Date found.** 2026-08-03.
+
+**Figures affected.** None. A float in the wrong place moves no number: the suite reported
+the same figures before and after the fix.
+
+**Status.** OPEN. In the deposits, which is where it exists.
+
+**Corrected in the manuscript for version 3** with a `\clearpage` before `\appendix`, and measured in the compiled PDF rather than in the
+source: the bibliography now ends on page 14 and Table A1 prints on page 15, together with
+the Appendix A heading. The paper gains one page, 15 to 16.
+
+**And the gap it came through is now watched.** `section_pdf_layout` asserts that no table
+caption falls on a page of the bibliography, reading the compiled PDF page by page with the
+standard library. The page segmentation it relies on is an assumption about the producer,
+so it was checked against an independent reader rather than trusted: sixteen text streams
+against sixteen pages, and seven probes placing captions, headings and the author name on
+exactly the same pages. The first of its two checks exists to fail if that assumption ever
+stops holding.
 
 ---
 

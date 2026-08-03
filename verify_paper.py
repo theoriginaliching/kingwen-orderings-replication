@@ -1362,26 +1362,23 @@ FROZEN_FIGURES = (
     ("74.5", ((72, 1), (257, 1), (278, 1), (284, 1), (288, 1))),
     ("95/224", ((129, 1),)),
     ("664/1792", ((129, 1),)),
-    # The second occurrence is not the figure: it is the digits 776 inside the version
-    # DOI 10.5281/zenodo.21776041 on the archive line. A check that pins positions is
-    # what makes a collision like this visible instead of silently loosening the count.
     ("776", ((133, 2), (306, 1))),
     ("18.0", ((131, 1),)),
     ("26.6", ((131, 1),)),
-    ("31.9", ((131, 1), (393, 1))),
+    ("31.9", ((131, 1), (396, 1))),
     ("43.0", ((131, 1),)),
     ("0.619", ((131, 1),)),
     ("0.0575", ((131, 1),)),
     ("192", ((177, 1),)),
     ("2016", ((89, 1), (294, 2))),
     ("86.3", ((82, 1), (89, 1))),
-    ("17.6", ((396, 1),)),
-    ("3.5", ((68, 1), (173, 2), (396, 1), (401, 2))),
-    ("33.2", ((394, 1),)),
-    ("29.9", ((395, 1),)),
-    ("87.7", ((393, 1),)),
-    ("90.4", ((394, 1),)),
-    ("constant = 7", ((395, 1), (396, 1))),
+    ("17.6", ((399, 1),)),
+    ("3.5", ((68, 1), (173, 2), (399, 1), (404, 2))),
+    ("33.2", ((397, 1),)),
+    ("29.9", ((398, 1),)),
+    ("87.7", ((396, 1),)),
+    ("90.4", ((397, 1),)),
+    ("constant = 7", ((398, 1), (399, 1))),
 )
 
 
@@ -1564,6 +1561,84 @@ def _pdf_text(data):
 def _squeeze(s):
     return "".join(s.split()).lower()
 
+
+def _pdf_pages(data):
+    """The text of each page, squeezed, one entry per page, in page order.
+
+    The same reader as _pdf_text, stopping one step earlier: each text-bearing stream
+    is a page here. That is an assumption about the producer, not a law of the format,
+    so it was checked rather than trusted: on the compiled paper this reader finds 16
+    text streams against 16 pages, and it places `Table A1:`, `References`,
+    `Appendix A: Robustness`, `Yu Haoliang`, `Table 1:`, `Table 5:` and the author name
+    on exactly the pages an independent PDF reader places them, seven probes out of
+    seven. If a future producer emits one stream per column or splits a page, the two
+    counts stop agreeing, and the first check below is what says so."""
+    import re
+    import zlib
+    pages = []
+    for m in re.finditer(rb"stream\r?\n", data):
+        start = m.end()
+        end = data.find(b"endstream", start)
+        if end < 0:
+            continue
+        try:
+            blob = zlib.decompress(data[start:end])
+        except Exception:
+            continue
+        if b"Tj" not in blob and b"TJ" not in blob:
+            continue
+        out = []
+        for literal in re.findall(rb"\((?:[^()\\]|\\.)*\)", blob):
+            s = literal[1:-1]
+            s = re.sub(rb"\\([()\\])", rb"\1", s)
+            s = re.sub(rb"\\(\d{1,3})",
+                       lambda mm: bytes([int(mm.group(1), 8) & 0xFF]), s)
+            out.append("".join(_OT1_LIGATURES.get(b, chr(b)) for b in s))
+        pages.append(_squeeze("".join(out)))
+    return pages
+
+
+def section_pdf_layout():
+    """No table of the paper may be printed on a page of the bibliography.
+
+    LaTeX places a [t] float at the top of a page it finds convenient, and the page it
+    found convenient for Table A1 was a page of references: the table of the appendix
+    printed in the middle of the bibliography, three deposits running, and nothing saw
+    it. The suite reads paper.tex, where the order is correct, and a reader of the
+    source would never notice. Only the compiled artifact shows it, so only a check that
+    reads the compiled artifact can catch it."""
+    head("Layout of the compiled PDF: no table printed among the references")
+
+    import os
+    import re
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "paper.pdf")
+    if not os.path.exists(path):
+        check("pdf", "paper.pdf is present next to this script", False, True)
+        check("pdf", "no table caption falls on a page of the bibliography", None, [])
+        return
+    pages = _pdf_pages(open(path, "rb").read())
+
+    # Where the bibliography runs: from the References heading to the page before the
+    # appendix opens. Both markers must exist, and in that order, or the span below
+    # would be meaningless and the second check would pass by accident.
+    heading = [i for i, p in enumerate(pages) if _squeeze("References") in p]
+    appendix = [i for i, p in enumerate(pages) if _squeeze("Appendix A: Robustness") in p]
+    ordered = bool(heading) and bool(appendix) and heading[0] < appendix[0]
+    check("pdf", "the bibliography opens before the appendix, and both are found",
+          ordered, True)
+    if not ordered:
+        check("pdf", "no table caption falls on a page of the bibliography", None, [])
+        return
+
+    bibliography = set(range(heading[0], appendix[0]))
+    offenders = []
+    for i, page in enumerate(pages):
+        if i not in bibliography:
+            continue
+        for caption in re.findall(r"table(a?\d+):", page):
+            offenders.append(f"Table {caption.upper()} on page {i + 1}, "
+                             f"which is a page of the bibliography")
+    check("pdf", "no table caption falls on a page of the bibliography", offenders, [])
 
 def section_pdf_text():
     """The compiled PDF is the paper.tex beside it, and not an older compile of it.
@@ -1820,6 +1895,7 @@ def main():
     section_front_matter()
     section_pdf_metadata()
     section_pdf_text()
+    section_pdf_layout()
     section_paper()
     section_errata()
     section_surfaces()
