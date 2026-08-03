@@ -7,9 +7,9 @@ Hexagrams: Pair Rule, Family Gradient, and the Limits of Demonstrability*
 This is a living document. It is updated when a defect is found, not when a defect is
 fixed.
 
-**Where it stands, 2026-08-03.** Twenty-one entries: four defects in the paper (E-1 to
+**Where it stands, 2026-08-03.** Twenty-two entries: four defects in the paper (E-1 to
 E-4), four in the deposited package (P-1 to P-4), three clarifications for the next version
-(C-1 to C-3), and ten things examined and found sound (X-1 to X-10). **No figure of
+(C-1 to C-3), and eleven things examined and found sound (X-1 to X-11). **No figure of
 the paper changes in any entry**, and that is measured and not asserted: every figure
 reproduces in every tree of the package: 192 of 192 in the first deposit, 202 of 202 in
 the second, 246 of 246 on the `main` this branch has now merged, and 259 of 259 at the head
@@ -1667,6 +1667,54 @@ survived the sweep that found the first one because that sweep compares whole pa
 this repetition sits inside one. Removed. The sweep is not widened to sentences: the entry
 records where its resolution ends, which is the honest repair when the alternative is a
 check that would report every deliberate repetition in a log that quotes itself.
+
+**Date examined.** 2026-08-03.
+
+**Status.** EXAMINED, NOT AN ERRATUM.
+
+---
+
+## X-11. A deposit checklist carrying hashes from a round that had already been superseded
+
+**What was examined.** The author stopped a deposit because both files failed their hashes:
+the archive and the compiled PDF each measured something other than what the checklist said,
+and the checklist also said the PDF had not been recompiled while the PDF plainly had
+changed. Two files wrong and a contradiction in the same document is the shape of a
+corrupted package, so the deposit was halted, which was the correct call on the evidence
+available.
+
+**Measurement.** Nothing was corrupted. The expected values were real, and they were old.
+
+| what the checklist expected | what it actually was |
+|---|---|
+| archive `13166d5f460d950f4e64e74863cd363d6e58b2c9f92372947d0a213ce5e2a4df` | the archive of commit `279b58c6`, rebuilt from that commit and matching to the bit |
+| `paper.pdf` `55dedd04feccd7a335e0557f85232f5a306ed98b9f3c6d29169d771148e963a0` | the PDF committed at `279b58c6` and unchanged at `b3f97672` |
+
+Two commits followed that state, both of them work that had been asked for and reported:
+`b3f97672`, the manuscript audit, which changed no `.tex` and therefore recompiled no PDF,
+which is why the PDF hash still held there; and `6dc361a0`, the three decisions, which
+changed the manuscript and recompiled the PDF exactly once, which is where both hashes moved.
+The archive on disk is byte for byte the tree of `6dc361a0` across all 14 files, and the
+`paper.pdf` inside it is identical to the loose one. **Every number the author measured was
+right, and so was every number in each report at the time it was written. What was wrong was
+using the numbers from one round as the checklist for another.**
+
+**What made the diagnosis possible, and it is worth keeping.** The archive is built with
+`core.autocrlf=false` and `core.eol=lf` precisely so that it is a function of the commit and
+nothing else. That is what turned an unexplained hash into an answered question: rebuilding
+the archive from each candidate commit reproduced the expected value exactly, which
+identifies the round a file came from instead of guessing at it. A checklist that cannot be
+re-derived from a commit cannot be audited, only believed.
+
+**The lesson, which is the reason this entry exists.** This is the stale-status defect of
+P-1 turned on the deposit procedure itself: a set of true figures, published where a reader
+takes them to describe the current state. Every earlier instance was about a document
+carrying a number that had moved underneath it; this one was about a handover carrying
+hashes that had moved underneath it. **A deposit block is built from the final state,
+measured at the moment of handover, and never copied forward from the last report read.**
+The rule now has a mechanical shape: measure the artefacts, then name the commit they came
+from by rebuilding the archive from it, and only then write the block. It costs one command
+and it is the difference between a halted deposit and a deposited wrong file.
 
 **Date examined.** 2026-08-03.
 
