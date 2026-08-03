@@ -7,13 +7,13 @@ Hexagrams: Pair Rule, Family Gradient, and the Limits of Demonstrability*
 This is a living document. It is updated when a defect is found, not when a defect is
 fixed.
 
-**Where it stands, 2026-08-03.** Fourteen entries: three defects in the paper (E-1, E-2,
+**Where it stands, 2026-08-03.** Fifteen entries: three defects in the paper (E-1, E-2,
 E-3), three in the deposited package (P-1, P-2, P-3), two clarifications for the next
-version (C-1, C-2), and six things examined and found sound (X-1 to X-6). **No figure of
+version (C-1, C-2), and seven things examined and found sound (X-1 to X-7). **No figure of
 the paper changes in any entry**, and that is measured and not asserted: every figure
 reproduces in every tree of the package: 192 of 192 in the first deposit, 202 of 202 in
-the second, 246 of 246 on the live `main`, and 212 of 212 at the head of this branch,
-with no failures anywhere. Two entries, P-2 and the pair E-3 and P-3, have been repaired
+the second, 246 of 246 on the `main` this branch has now merged, and 256 of 256 at the head
+of this branch after that merge, with no failures anywhere. Two entries, P-2 and the pair E-3 and P-3, have been repaired
 on this branch and remain open in the deposits, which is where they exist; each names the
 commit that repairs it. The defects in the paper are defects of description whose
 consequences all hold, and one missing assertion; the defects in the package are
@@ -254,12 +254,14 @@ sampler; what is randomised is the arrangement of the blocks.
    differ in size and in hash; they do not differ in that region, which is why one range
    serves all three.
 
-   **A fourth tree exists and these ranges do not index it.** The live `main` of the
+   **Other trees exist and these ranges do not index them.** The live `main` of the
    repository, commit `95437d30f805be447cccabb30ea54ff983741f52`, carries a
    `verify_paper.py` of 69341 bytes, sha256
    `72abade176ab5f8826afa4dece160ab46b2641fa2fde8dbeff2d7e6b4d7a3faf`, in which the file
    has shifted: the line quoted above as 1035 is 1036 there, and the micro theorem comment
-   quoted below as 1077 is 1078. The ranges are deliberately **not** re-derived for that
+   quoted below as 1077 is 1078. Since the merge of 2026-08-03 the head of this branch has
+   shifted too, and by more: the same two anchors are at **1050** and **1092** there. The
+   deposit ranges are untouched by any of it. The ranges are deliberately **not** re-derived for that
    tree, because this entry is about what the deposits contain and the deposits are what
    the reader holds. They are excluded by name rather than by silence. A line range
    without its tree is the same defect as a count without its subject set, and this file
@@ -558,6 +560,17 @@ applied it.
 
 **Note for a reader who has the package.** Run it. The program prints its own count, and
 the count it prints is the true one.
+
+**The class is now mechanised, and not by this lane.** While these entries were being
+written, the repository's `main` gained a check of its own, `check_published_counts`, which
+asserts that every check count published in `README.md` and in `index.html` is the number
+the suite actually runs. It arrived in commits `d6669487b51ac141ab779891ab85db2503e08974`
+and `95437d30f805be447cccabb30ea54ff983741f52` of 2026-07-28, without knowledge of this
+log, and it makes the defect recorded above impossible to repeat unnoticed: the surfaces
+and the suite can no longer disagree without the run failing. Since the merge of
+2026-08-03 that check runs on this branch too, and it is what caught the surfaces during
+the merge itself. The entry stays open, because the deposits still carry the defect and a
+gate on `main` does not reach into a frozen archive. See X-7.
 
 ---
 
@@ -1170,6 +1183,44 @@ they index and name the one they do not.
 
 ---
 
+## X-7. The same lesson arriving twice, from two places that did not know about each other
+
+**What was examined.** Whether the defect recorded in P-1, a package declaring a check
+count its own suite does not have, was still only a written rule in this file or had become
+something a machine enforces.
+
+**Measurement.** It had become a machine, and not here. The repository's `main` gained
+`section_surfaces` and `check_published_counts` in commits
+`d6669487b51ac141ab779891ab85db2503e08974` and
+`95437d30f805be447cccabb30ea54ff983741f52`, both of 2026-07-28. The second asserts that
+every count published on a surface equals the total the suite runs. Measured on the merged
+tree of 2026-08-03: with the surfaces still saying 212 and the suite running 256, the run
+fails with two checks named `count`, each reporting `reproduced: [212]   paper: [256]`;
+with the surfaces swept, 256 of 256 pass. This lane, over the same days and without
+knowing of that work, wrote P-1, which records the same defect in the deposited archive,
+with the timeline that produced it.
+
+**Why it is kept, and it is the reason rather than the coincidence that matters.** A
+written rule and a mechanism are not two ways of saying the same thing. This file already
+carried the rule: the count must move together with the surfaces that quote it, in one act.
+The rule was written because the rule had been broken, and it was broken again during this
+very merge, when the surfaces sat at 212 while the suite ran 256. The difference is what
+happened next. A rule that is violated produces a defect that somebody may notice later; a
+mechanism that is violated produces a failing run before the commit is made. **A written
+rule gets broken and a mechanism does not**, and the merge of this branch could not be left
+half done and green precisely because the other side had turned the rule into a gate.
+
+Two independent responses to one defect, arriving from two directions in the same week: a
+record of it here, a gate against it there. Neither is redundant. The record explains what
+went wrong in an archive that cannot be changed; the gate stops it happening again in one
+that can.
+
+**Date examined.** 2026-08-03.
+
+**Status.** EXAMINED, NOT AN ERRATUM.
+
+---
+
 Entries appear here when something is checked and found correct. They are kept for
 the same reason the entries above are kept: a list that records only its hits does not
 let a later reader tell what was looked at from what was never looked at.
@@ -1285,7 +1336,13 @@ On 2026-07-31, on branch `errata`, the suite went from **202 checks to 211**: th
 `section_errata`, no others. On 2026-08-03 it went from **211 to 212**, one assertion, the
 repair of E-3 and P-3 recorded in commit `d25149ac4dc1105918f7fadb3ae067314f184cbd`. The
 repair of P-2, commit `10786bdd2e8ff40fb0271dbfa6fd50b259ef0b44`, changed a declared
-value and no count. The count is declared in surfaces that a reader reads, and
+value and no count. On 2026-08-03 it went from **212 to 256**, by merging the remote's
+history into this branch: the remote had added a section of surface checks and a check on
+the published counts, and the merged suite runs both sides. Two figures were measured that
+day rather than one, and both are reported: **254 passed with 2 failed out of 256**
+immediately after the merge, before the surfaces were swept, and **256 of 256** after. The
+total does not change between them. What changes is whether the package agrees with itself,
+and the two failures were the remote's own check saying it did not. The count is declared in surfaces that a reader reads, and
 this is exactly the shape of P-1, so it is declared here rather than left to be discovered.
 
 Every live declaration of the count was swept in the same commit that moved it, and each
@@ -1361,6 +1418,7 @@ out because a count without one is not a measurement:
 | head of branch `errata`, before the repairs | `a6ed004b0bf5094265e2f29c00070287db351679` | 211 |
 | live `main` on GitHub | `95437d30f805be447cccabb30ea54ff983741f52` | 246 |
 | head of branch `errata`, from `d25149ac4dc1105918f7fadb3ae067314f184cbd` onward | 212 |
+| head of branch `errata`, after merging `origin/main` into it | 256 |
 
 The first two are frozen and their figures are unchanged. The third and the fifth are this
 branch, before and after the repairs of P-2 and E-3, which added one assertion and moved
@@ -1368,7 +1426,10 @@ the count by one. The fifth row names the commit the figure starts at and not th
 the branch, deliberately: the head moves every time this file is edited, and a row that
 named it would be stale before the commit that wrote it finished. Every commit from
 `d25149ac4dc1105918f7fadb3ae067314f184cbd` onward measures 212, because none of them
-touches the suite. A count that names one commit while the head is another is the same
+touches the suite, up to the merge that brought the remote's history in. The sixth row is
+that merge: 256 checks, which is 212 plus the remote's 246 minus the 202 the two histories
+share. It is measured and not computed, and the figure was read from a run before it was
+written anywhere. A count that names one commit while the head is another is the same
 defect as a count without its subject set, in miniature. **The fourth is the tree this lane did not have.** Five rows is not a
 problem to be tidied away: it is what the table is for, since each row is a different
 object and a reader has to be able to tell which one a figure belongs to. An earlier version of this paragraph said
