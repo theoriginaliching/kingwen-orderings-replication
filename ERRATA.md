@@ -30,6 +30,24 @@ deposits, where it exists and cannot be taken out, and a separate line names whe
 corrected. A reader holding any version can therefore tell which of the two they are
 looking at.
 
+**One rule was inverted to make these corrections, and it is recorded rather than
+smoothed over.** The standing rule of this project is that a change to the text is born in
+the laboratory repository, where `paper.tex` is canonical, and is mirrored into this
+package; never the other way round. The two corrections above were born here, in the
+package, because they came out of the errata work and the errata work lives here. The
+result is that for a time the mirror ran backwards.
+
+The state can be made consistent again by applying the same change to the canonical copy,
+and it must be, before this branch reaches `main`. But leaving it consistent without saying
+that the direction was reversed once would hide the one thing a later reader would want to
+know: that the two files diverged, and in which direction. **What would have prevented it
+is not vigilance but sequence.** Step (c) of the plan for version 3 said the changes start
+in the laboratory and are mirrored here, and then the work was done in the order the errata
+made convenient rather than in the order the plan prescribed. The plan itself did not say
+where to begin, only where the canonical copy lives, so it has been corrected to name the
+laboratory as the first move of that step. A rule that is not attached to a step is a rule
+that gets read after the fact.
+
 **What holds an entry up.** No entry here depends on the follow up paper being correct.
 Each states the evidence available in this package, or in printed sources anyone can
 consult, and can be checked from those alone. Where an entry names that work, it is
@@ -1395,13 +1413,33 @@ asserts both of those and the absence of the superseded version DOI. The surface
 in the same commit and the remote's check reported them until they were, twice, first at
 256 against 259 and then on the mutation line alone.
 
-**The published mutation triple is self-referential, and it was iterated rather than
-guessed.** The line in the README that records what the documented mutation produces is
-itself a published count, so the check reads it, so changing it changes the run that
-measures it. Setting it from a stale copy gave `240 checks passed, 19 failed`; measured
-against the tree that contained the correction it is `241 checks passed, 18 failed, 259
-total`, and a second run against that reproduced it exactly. The figure written is the
-fixed point, reached by measuring twice, not the first number that appeared. The count is declared in surfaces that a reader reads, and
+**A self-referential figure is not measured once. It is iterated to a fixed point, and
+the number of iterations is reported.** This is a rule and not an anecdote of one round.
+
+A published figure is self-referential when the run that produces it also reads it. The
+mutation triple in the package README is the case at hand: it records what the documented
+mutation produces, and it is itself a published count, so `check_published_counts` reads
+it, so a wrong value adds a failure to the very run whose failures the triple reports.
+Measuring once gives a number that is only correct if it was already correct. The
+procedure is to write the measured value, measure again against the tree that now contains
+it, and repeat until two consecutive runs agree.
+
+Done here: a first reading taken from a copy made before the README was corrected gave
+`240 checks passed, 19 failed`, which was wrong and would have been published as measured.
+The iteration then gave `241 checks passed, 18 failed, 259 total`, and a second run against
+that tree reproduced it exactly. **Two iterations to reach the fixed point**, and the second
+is not ceremony: it is the one that distinguishes a fixed point from a guess.
+
+*Swept, for other figures of the same shape.* Measured across the package: the two
+published-count patterns match twice in `README.md` and twice in `index.html`, all four
+reading 259, and those are the figures the check reads. They are not self-referential in
+the sense above, because publishing a wrong check count adds a failure without changing the
+total, so one measurement settles them. The patterns also match eight times in `ERRATA.md`,
+at 192, 211 and 246, and **those are deliberately not scanned**: they are quotations of what
+other trees print, including P-1's quotation of a deposit's own output, and a check that
+read them would fail on a sentence describing a result rather than on a result. `V3-PLAN.md`
+matches none. So the mutation triple is the only figure in the package that has to be
+iterated, and it is now marked as such where it is written. The count is declared in surfaces that a reader reads, and
 this is exactly the shape of P-1, so it is declared here rather than left to be discovered.
 
 Every live declaration of the count was swept in the same commit that moved it, and each

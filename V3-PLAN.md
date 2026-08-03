@@ -142,7 +142,11 @@ false.
 - `ERRATA.md`, the count table, which gains a row for the merged head;
 - `ERRATA.md`, the header summary;
 - `ERRATA.md`, E-1's line pointers, re-measured for the branch column only;
-- `ERRATA.md`, the section on the count moving, which gains the new move.
+- `ERRATA.md`, the section on the count moving, which gains the new move;
+- and the mutation triple is **iterated to a fixed point**, not measured once: it is itself
+  a published count, so the run that measures it reads it. Write the measured value, measure
+  again against the tree that contains it, repeat until two runs agree, and report how many
+  iterations it took.
 
 **What can go wrong.** A figure that quotes the count and is not on this list. The list was
 built by measurement in an earlier round, but a merge brings a file this branch has never
@@ -151,10 +155,25 @@ the merged tree for the old counts, 211, 212 and 246, before declaring the sweep
 
 ## (c) The changes to the paper for v3
 
-**Needs.** `paper.tex` here is a byte-for-byte mirror; the canonical copy lives in the
-laboratory repository, whose own suite asserts that identity and asserts that the section
-count printed in the manuscript equals the number of sections it executes. **Every text
-change starts there and is mirrored here, never the other way round.**
+**Needs.** `paper.tex` here mirrors the canonical copy in the laboratory repository, whose
+own suite asserts that identity and asserts that the section count printed in the manuscript
+equals the number of sections it executes. **Every text change starts there and is mirrored
+here, never the other way round.**
+
+**The first move of this step is therefore in the laboratory, not here.** Edit
+`paper/paper.tex` in `iching-experiments`, run its gate, and only then copy the result into
+this package. This sentence was missing when the step was first written, which said where
+the canonical copy lives but not where to begin, and on 2026-08-03 the work was done in
+the order the errata made convenient: the corrections were written here first and the
+mirror ran backwards until the canonical copy caught up. Recorded in `ERRATA.md`.
+
+**Compare the mirror on content, not on raw bytes.** Measured on 2026-08-03: this checkout
+stores `paper.tex` with LF endings and the laboratory checkout stores it with CRLF, so the
+same text hashes differently on disk, 53552 bytes against 53955, which is exactly one byte
+per line. An earlier check in this lane compared the raw bytes of the two working trees and
+read "identical" while they were, and later read "different" for a change of line endings
+alone. Compare the git blobs, or normalise the endings before hashing, and state which was
+done.
 
 **What goes in.**
 
