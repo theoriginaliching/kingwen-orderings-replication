@@ -16,10 +16,10 @@ verified after publication by downloading the archive from the record itself, ha
 to that value, extracting it into an empty directory and running the suite there: 270
 checks, 0 failures. **Nothing below is waiting for a deposit.**
 
-**Where it stands, 2026-08-03, after the third deposit.** Twenty-five entries: four
+**Where it stands, 2026-08-03, after the third deposit.** Twenty-six entries: four
 defects in the paper (E-1 to E-4), four in the deposited package (P-1 to P-4), three
-clarifications for the next version (C-1 to C-3), and fourteen things examined and found
-sound (X-1 to X-14). **All eight defects are now APPLIED**: every one of them is corrected in the
+clarifications for the next version (C-1 to C-3), and fifteen things examined and found
+sound (X-1 to X-15). **All eight defects are now APPLIED**: every one of them is corrected in the
 object deposited as version 3, and each says where. They keep describing the defect as
 versions 1 and 2 print it, because that is what a reader holding those versions has in
 front of them. **No figure of the paper changes in any entry**, and that is measured and not
@@ -1070,6 +1070,56 @@ So the repair is forward and not backward: the identity is corrected, the next c
 carries it, and the deployment that was blocked runs on that commit. **The addresses on
 the historical commits stay wrong and stay recorded here**, which is the same choice this
 log makes everywhere else: the deposits keep their defects and the record names them.
+
+**Date examined.** 2026-08-03.
+
+**Status.** EXAMINED, NOT AN ERRATUM.
+
+---
+
+## X-15. The site becomes an index with subpages, and where the second paper's home is
+
+**What was examined.** How to publish a second paper on the same site without either work
+losing its identity, and what this package may hold of a work whose home is elsewhere.
+
+**The form, and why not the other one.** An index with a subpage per paper, not a selector
+on a single URL. A selector is the tempting form because it is one page, and it is the
+wrong one for exactly that reason: `canonical`, JSON-LD and Open Graph each describe **one**
+document, so two works behind one URL means one of them is described by tags that name the
+other, and a shared link shows the wrong title. The subpages carry their own canonical,
+their own `ScholarlyArticle` and their own social card; the index carries a `Collection`
+that links both by their `@id` and describes neither.
+
+**The old links keep resolving.** Everything published so far, including the address
+printed inside the deposited manuscript and the one in the Zenodo record, points at the
+root, and the root is the index: it answers, and it names both works. Nothing 404s and no
+redirect was needed. The first paper's page keeps `/paper.pdf` at the same path it has
+always had, because that path is printed in the deposited README.
+
+**Where the second paper lives, and what is not here.** Its canonical home is
+`github.com/Probatorium/null-ladder` plus its Zenodo deposit, `10.5281/zenodo.21750029`,
+whose deposited state is the tag `zenodo-10.5281-zenodo.21750029`. **This site references
+and serves; it does not host.** The only file of that work in this package is the PDF the
+deposit itself publishes, taken from the record and not recompiled: 444350 bytes, sha256
+`77043504f28adf89ef3d8b18cbe70f652f5077481daf2a394ab524a7d5986439`, verified before being
+served and asserted afterwards. A check enumerates the names its source would arrive under,
+`PASSAGES.md` and the bundle among them, and fails if any appears.
+
+**Measurement.** The landing checks now run over both papers: each page's abstract against
+the deposited text, word for word, and each served PDF against the deposited hash. The
+first paper's abstract is compared against `paper.tex`, which is here because this
+repository is its home; the second's against the text of its Zenodo record, pinned in the
+suite as a constant, because this repository is not. Seven mutations were run and all seven
+were caught: a paraphrase and a dropped paragraph in the second abstract, a flipped byte
+and an added byte in its PDF, an index pointing at an `@id` that is not one of the two, an
+index declaring itself canonical for a paper, and a source file of the second work
+appearing in the package.
+
+*One of the seven found a defect in the check itself before it found anything else.* The
+intruder check first asked `os.path.exists("PAPER.tex")`, and on a case-insensitive
+filesystem that answers yes to the `paper.tex` of the first paper. It now compares against
+the real directory listing. A check that reports the paper it is protecting as an intruder
+would have been read as noise and disabled.
 
 **Date examined.** 2026-08-03.
 

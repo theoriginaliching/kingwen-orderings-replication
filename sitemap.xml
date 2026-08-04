@@ -5,4 +5,14 @@
     <changefreq>yearly</changefreq>
     <priority>1.0</priority>
   </url>
+  <url>
+    <loc>https://paper.theoriginaliching.com/kingwen-orderings</loc>
+    <changefreq>yearly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://paper.theoriginaliching.com/uninformative-rungs</loc>
+    <changefreq>yearly</changefreq>
+    <priority>1.0</priority>
+  </url>
 </urlset>

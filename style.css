@@ -1,0 +1,114 @@
+/* Identidad de tinta de The Original I Ching. Una sola hoja para las tres
+   paginas: el indice y las dos subpaginas de paper. Vivia dentro de index.html
+   cuando habia una sola pagina; con tres, duplicarla era garantizar que se
+   separaran. */
+/* Identidad de tinta de The Original I Ching. Superficie unica, sin tema claro. */
+:root {
+  --bg: #0d0b0b;
+  --bg-deep: #080606;
+  --card: #0f0d0c;
+  --line: rgba(255,255,255,0.07);
+  --text: #efe8dc;
+  --text-strong: #f5efe3;
+  --soft: #b0a494;
+  --muted: #a5988a;
+  --dim: #6b5f52;
+  --gold: #c9a24b;
+  --gold-dim: #8a7a5c;
+  --red: #c53d2e;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.7 "Noto Serif", Georgia, serif;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--gold); text-decoration: none; border-bottom: 1px solid transparent; }
+a:hover { border-bottom-color: var(--gold); }
+.bar {
+  border-bottom: 1px solid var(--line);
+  background: rgba(13,11,11,0.85);
+  backdrop-filter: blur(14px);
+  position: sticky; top: 0; z-index: 10;
+}
+.bar-in {
+  max-width: 46rem; margin: 0 auto; padding: 0.8rem 1.25rem;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+}
+.brand { display: inline-flex; align-items: center; gap: 0.6rem; border: 0; }
+.brand img { width: 30px; height: 30px; border-radius: 50%; display: block; }
+.brand .name {
+  font-family: "Cinzel", Georgia, serif; font-size: 0.78rem;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--soft);
+  white-space: nowrap;
+}
+.brand:hover .name { color: var(--text-strong); }
+.bar nav { font-family: "Inter", system-ui, sans-serif; font-size: 0.78rem; }
+.bar nav a { color: var(--muted); }
+main { max-width: 46rem; margin: 0 auto; padding: 3rem 1.25rem 4.5rem; }
+.kicker {
+  font-family: "Inter", system-ui, sans-serif; font-size: 10.5px;
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim);
+  margin-bottom: 1.3rem;
+}
+h1 {
+  font-family: "Cinzel", Georgia, serif; font-weight: 500;
+  font-size: 1.9rem; line-height: 1.25; margin: 0 0 0.5rem; color: var(--text-strong);
+}
+h1 .sub {
+  display: block; font-family: "Noto Serif", Georgia, serif; font-weight: 400;
+  font-size: 1.05rem; color: var(--soft); margin-top: 0.6rem;
+}
+.author { margin: 1.3rem 0 2.4rem; font-size: 0.92rem; color: var(--muted); line-height: 1.8; }
+h2 {
+  font-family: "Inter", system-ui, sans-serif; font-size: 10.5px; font-weight: 500;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--dim);
+  margin: 2.8rem 0 0.9rem;
+}
+.abstract {
+  background: var(--card); border: 1px solid var(--line); border-radius: 8px;
+  padding: 1.4rem 1.5rem; font-size: 0.94rem; text-align: justify;
+}
+.abstract p { margin: 0; }
+.actions { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1.8rem; }
+.btn {
+  display: inline-block; padding: 0.62rem 1.2rem; border-radius: 5px;
+  font: 500 0.88rem/1.2 "Inter", system-ui, sans-serif;
+  border: 1px solid var(--gold-dim); color: var(--gold); background: transparent;
+}
+.btn:hover { border-color: var(--gold); }
+.btn.primary { background: var(--gold); border-color: var(--gold); color: #14100c; }
+ul.links { list-style: none; padding: 0; margin: 0; }
+ul.links li { padding: 0.7rem 0; border-bottom: 1px solid var(--line); font-size: 0.93rem; }
+ul.links li:last-child { border-bottom: 0; }
+ul.links .note { color: var(--muted); }
+.findings { font-size: 0.93rem; color: var(--soft); }
+pre {
+  background: var(--card); border: 1px solid var(--line); border-radius: 8px;
+  padding: 1rem 1.1rem; overflow-x: auto; color: var(--text);
+  font: 12.5px/1.6 ui-monospace, "SF Mono", Menlo, monospace;
+}
+.copywrap { position: relative; }
+.copywrap pre { margin: 0; padding-right: 4.8rem; }
+/* El BibTeX vive en una sola linea para que se copie exacto; se parte solo al mostrarlo,
+   que es cosa del render y no del texto que va al portapapeles. */
+#bibtex { white-space: pre-wrap; }
+.copy {
+  position: absolute; top: 0.55rem; right: 0.55rem; cursor: pointer;
+  padding: 0.3rem 0.62rem; border-radius: 4px;
+  font: 500 10.5px/1.2 "Inter", system-ui, sans-serif;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  border: 1px solid var(--line); background: rgba(13,11,11,0.72); color: var(--dim);
+}
+.copy:hover { border-color: var(--gold-dim); color: var(--gold); }
+.copy:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.copy.done { border-color: var(--gold-dim); color: var(--gold); }
+footer {
+  border-top: 1px solid var(--line); background: var(--bg-deep);
+  font-family: "Inter", system-ui, sans-serif; font-size: 0.8rem; color: var(--dim);
+}
+.footer-in { max-width: 46rem; margin: 0 auto; padding: 1.6rem 1.25rem; }
+footer a { color: var(--muted); }

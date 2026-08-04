@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
 Allow: /paper.pdf
+Allow: /uninformative-rungs.pdf
 
 Sitemap: https://paper.theoriginaliching.com/sitemap.xml

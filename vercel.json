@@ -8,6 +8,13 @@
         { "key": "Content-Type", "value": "application/pdf" },
         { "key": "Content-Disposition", "value": "inline; filename=\"kingwen-orderings.pdf\"" }
       ]
+    },
+    {
+      "source": "/uninformative-rungs.pdf",
+      "headers": [
+        { "key": "Content-Type", "value": "application/pdf" },
+        { "key": "Content-Disposition", "value": "inline; filename=\"uninformative-rungs.pdf\"" }
+      ]
     }
   ]
 }

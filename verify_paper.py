@@ -1162,7 +1162,7 @@ def section_front_matter():
     check("front", "canonical author, read from paper.tex",
           author, "Alexis García Hurtado")
 
-    for name in ("README.md", "index.html"):
+    for name in ("README.md", "kingwen-orderings.html"):
         surface = read_text(os.path.join(here, name))
         if surface is None:
             check("front", f"{name} is present next to this script", False, True)
@@ -1172,7 +1172,7 @@ def section_front_matter():
 
     # The BibTeX entry is what a reader copies into their own bibliography, so its title
     # field has to match the manuscript character for character, subtitle included.
-    for name in ("README.md", "index.html"):
+    for name in ("README.md", "kingwen-orderings.html"):
         surface = read_text(os.path.join(here, name))
         if surface is None:
             continue
@@ -1181,7 +1181,7 @@ def section_front_matter():
               found.group(1) if found else None, f"{title}: {subtitle}")
 
     # The social card is the form a shared link shows, and it is typed by hand like the rest.
-    page = read_text(os.path.join(here, "index.html"))
+    page = read_text(os.path.join(here, "kingwen-orderings.html"))
     if page is not None:
         card = re.search(r'<meta property="og:title" content="([^"]+)">', page)
         check("front", "og:title on the landing carries title and subtitle",
@@ -1211,7 +1211,7 @@ def section_front_matter():
           doi_concept in tex, True)
     check("front", "paper.tex carries the version DOI of the deposit it belongs to",
           doi_v3 in tex, True)
-    for name in ("README.md", "index.html"):
+    for name in ("README.md", "kingwen-orderings.html"):
         surface = read_text(os.path.join(here, name))
         if surface is None:
             continue
@@ -1932,12 +1932,12 @@ SURFACE_LOCATIONS = (
     ("README.md", "the bold title line", r"^\*\*(.+?)\*\*$", re.M, "title"),
     ("README.md", "the italic subtitle line", r"^\*([^*].*?)\*$", re.M, "subtitle"),
     ("README.md", "the BibTeX author field", r"author\s*=\s*\{(.+?)\}", 0, "bibtex_author"),
-    ("index.html", "the <title> element", r"<title>(.*?)</title>", re.S, "title"),
-    ("index.html", "the og:title meta tag", r'og:title"\s+content="(.*?)"', 0, "title_subtitle"),
-    ("index.html", "the display heading", r'<h1>\s*(.*?)\s*<span class="sub">', re.S, "title"),
-    ("index.html", "the display subtitle", r'<span class="sub">(.*?)</span>', re.S, "subtitle"),
-    ("index.html", "the byline", r"^\s*(.+?) &middot; Independent Researcher", re.M, "author"),
-    ("index.html", "the BibTeX author field", r"author\s*=\s*\{(.+?)\}", 0, "bibtex_author"),
+    ("kingwen-orderings.html", "the <title> element", r"<title>(.*?)</title>", re.S, "title"),
+    ("kingwen-orderings.html", "the og:title meta tag", r'og:title"\s+content="(.*?)"', 0, "title_subtitle"),
+    ("kingwen-orderings.html", "the display heading", r'<h1>\s*(.*?)\s*<span class="sub">', re.S, "title"),
+    ("kingwen-orderings.html", "the display subtitle", r'<span class="sub">(.*?)</span>', re.S, "subtitle"),
+    ("kingwen-orderings.html", "the byline", r"^\s*(.+?) &middot; Independent Researcher", re.M, "author"),
+    ("kingwen-orderings.html", "the BibTeX author field", r"author\s*=\s*\{(.+?)\}", 0, "bibtex_author"),
 )
 
 #: How many times each identifier must occur on each surface. A count of zero is
@@ -1950,15 +1950,21 @@ IDENTIFIER_COUNTS = (
     ("README.md", "10.5281/zenodo.21609653", 4, "the concept DOI"),
     ("README.md", "10.5281/zenodo.21609654", 0, "no superseded version DOI anywhere"),
     ("README.md", "10.5281/zenodo.21776041", 2, "the deposited version DOI, in the claim map and in the deposit block"),
-    ("index.html", "10.5281/zenodo.21609653", 3, "the concept DOI"),
-    ("index.html", "10.5281/zenodo.21609654", 0, "no version DOI at all"),
+    ("kingwen-orderings.html", "10.5281/zenodo.21609653", 4, "the concept DOI: the archived link, the BibTeX, the claim in the prose and the JSON-LD identifier"),
+    ("index.html", "10.5281/zenodo.21609653", 1, "the concept DOI of the first paper, in its card: an index points at works and not at runs"),
+    ("index.html", "10.5281/zenodo.21609654", 0, "no superseded version DOI"),
+    ("index.html", "10.5281/zenodo.21776041", 0, "no version DOI of the first paper: that belongs on its page, beside the run it names"),
+    ("index.html", "10.5281/zenodo.21750029", 1, "the version DOI of the second paper, which is the one it is cited by"),
+    ("uninformative-rungs.html", "10.5281/zenodo.21750029", 5, "its own version DOI: the archived link twice, the JSON-LD identifier and sameAs, and the BibTeX"),
+    ("uninformative-rungs.html", "10.5281/zenodo.21609653", 0, "not the concept DOI of the other paper: the link to the worked case is a path and not a DOI"),
+    ("kingwen-orderings.html", "10.5281/zenodo.21609654", 0, "no version DOI at all"),
     # The landing carried NO version DOI at all until the verification block began
     # naming the tree its run comes from. Naming a tree and not saying which deposit it
     # is would be the same defect one level down, so the version DOI appears exactly
     # once, in that block and nowhere else: the citation and the archived-version link
     # keep the concept DOI, which never ages, and the run keeps the DOI of the archive
     # it is a run of.
-    ("index.html", "10.5281/zenodo.21776041", 2, "the deposited version DOI, in the block that shows its run: once as the link target and once as the visible text, which is one pointer a reader can also read"),
+    ("kingwen-orderings.html", "10.5281/zenodo.21776041", 3, "the deposited version DOI: the link target and the visible text of the block that shows its run, which is one pointer a reader can also read, and the JSON-LD sameAs"),
 )
 
 
@@ -2038,9 +2044,37 @@ DEPOSITED_V3 = {
 #: gets, and the live count named as the live count, one line apart and each labelled.
 PUBLISHED_COUNT_PATTERNS = (
     ("README.md", "live", r"\d+ checks passed, \d+ failed, (\d+) total"),
-    ("index.html", "deposit", r"(\d+) checks passed, 0 failed, \d+ total"),
-    ("index.html", "deposit", r"\((\d+) checks in the deposited version 3, standard library only\)"),
-    ("index.html", "live", r"runs <strong>(\d+) checks</strong> on branch"),
+    ("kingwen-orderings.html", "deposit", r"(\d+) checks passed, 0 failed, \d+ total"),
+    ("kingwen-orderings.html", "deposit", r"\((\d+) checks in the deposited version 3, standard library only\)"),
+    ("kingwen-orderings.html", "live", r"runs <strong>(\d+) checks</strong> on branch"),
+)
+
+
+#: The second paper. This repository is NOT its home: its source lives in
+#: github.com/Probatorium/null-ladder, deposited at Zenodo, and what this landing
+#: does is reference it and serve the deposited PDF. Nothing of that work is copied
+#: here beyond the PDF the deposit itself publishes, which is why there is a hash
+#: below and not a source tree.
+DEPOSITED_RUNGS = {
+    "doi": "10.5281/zenodo.21750029",
+    "date": "2026-08-02",
+    "mirror": "https://github.com/Probatorium/null-ladder",
+    "tag": "zenodo-10.5281-zenodo.21750029",
+    "pdf_sha256": "77043504f28adf89ef3d8b18cbe70f652f5077481daf2a394ab524a7d5986439",
+    "pdf_bytes": 444350,
+}
+
+#: Its abstract, as the Zenodo record prints it, paragraph by paragraph. It is here
+#: for the same reason paper.tex is here for the first one: a landing may reference
+#: a work it does not host, but it may not paraphrase it.
+DEPOSITED_RUNGS_ABSTRACT = (
+    "When an object cannot be resampled and no generating process is available, a null hypothesis has to be built by declaring what may be permuted and what must be held fixed. The declaration is not unique, so the natural response is to report a family of nulls rather than one. A family with no principle behind it can be enumerated and cannot be terminated.",
+    "We give an order-theoretic stopping criterion. Rungs of such a family are partially ordered by containment of their reference sets, and for a fixed statistic the rungs on which that statistic is uninformative, meaning constant on the reference set, form a down set in that order. Descending past such a rung therefore produces arithmetic and not evidence, and the family can be truncated there along that path. The result assumes no group, no model, no alternative and no level, and it is proved in one line from set containment. We use uninformative throughout in this sense; it is not the Bayesian term of art, which describes a prior. A rung is a reference set with a position in that order, and a null is the hypothesis a rung carries; both words are in the title and both are demarcated in section 1.",
+    "We do not offer localisation as a contribution. Reading where a signal sits from the rung at which it stops surviving is stated and exercised in Theiler et al. (1992), and section 2 says where. What is new is the criterion for stopping and the separation that fixes its scope, not the reading.",
+    "We also give the reason a family is reported entire rather than reduced to one rung: the three grounds the literature offers for selecting a single conditioning each require something a unique object with no generating process does not supply, and section 2.8 sets them out.",
+    "We separate four reasons a rung can fail to reject and show that the two which are conditions on the reference set descend under containment while the two which are conditions on where the observed value falls do not. The scope of the criterion is therefore located by that separation rather than confessed. Where the rungs are orbits of subgroups the order is computable, which is a corollary and not the result; the exact-sampling property such rungs carry is a published result of others and is cited as theirs.",
+    "The framework is instantiated on a worked case: the King Wen sequence, the received ordering of the sixty four hexagrams of the I Ching, and a published family of six rungs over it. The six were presented as a sequence of increasing structure; four of their fifteen pairwise relations are incomparable, so they are a partial order and not a chain, established by exhibited witnesses. A preregistered experiment, committed before computation, refutes the chain reading at four ordered pairs. Two of the four are evidence about the object and rest on a statistic nobody built for this purpose; the other two are demonstrations that the control behaves, and one of those two was not predicted.",
+    "Which rungs are orbits of subgroups is itself decided, by a second theorem with its own proof, and the case exercises one side of the boundary that theorem draws and cites the other. One of its two statistics could not have rejected at any rung whatever the data, for a reason computable before a draw, and we report that rather than omit it. Nothing here is a claim about the King Wen sequence: the statistics were chosen for their behaviour under the nulls, no reported percentile is extreme, and none is offered as a finding about the object.",
 )
 
 
@@ -2067,44 +2101,106 @@ def _tex_abstract(tex):
 
 
 def section_landing():
-    """The landing page is the face of the paper, and it may not paraphrase it.
+    """The landing pages are the face of the papers, and they may not paraphrase them.
 
-    Two things about the landing cannot be checked by looking at the landing: whether
-    its abstract is the abstract of the deposited paper, and whether the PDF it serves
-    is the deposited PDF. Both were wrong or at risk in public. The abstract had been
-    edited into a shorter form, `p = 0.038 uncorrected` where the deposit prints
-    `uncorrected one-tailed p = 0.038; two-sided 0.077`, which drops the sidedness and
-    the two-sided figure from the one claim of the paper a sceptical reader checks
-    first. The PDF was right, and nothing kept it right.
+    Two papers now, one page each, and an index above them. The form is an index with
+    subpages and not a selector on one URL, because a selector would put two works under
+    one canonical URL and canonical, JSON-LD and Open Graph can each describe exactly one.
 
-    The PDF check is pinned to the DEPOSITED hash and not to the file beside it, which
-    means it FAILS the moment the manuscript is recompiled and stays failing until a new
-    deposit exists to pin it to. That is the intended behaviour and not a nuisance: a
-    landing that carries a citable DOI must serve the bytes that DOI resolves to, and a
-    working PDF that quietly replaces them is exactly the drift this suite exists to
-    catch. The repair when it fails is to deposit, not to edit the constant."""
-    head("The landing page: the deposited abstract, and the deposited PDF")
+    What is checked is the same for both and is not about looks: that the abstract on the
+    page is the deposited abstract word for word, and that the PDF the page serves hashes
+    to the deposited bytes. The first paper's abstract is compared against paper.tex, which
+    is in this repository because this repository IS its home. The second paper's is
+    compared against the text of its Zenodo record, pinned here as a constant, because this
+    repository is NOT its home: the landing references that work and serves the PDF the
+    deposit publishes, and hosts none of its source.
+
+    Both PDF checks are pinned to DEPOSITED hashes and not to the files beside them, so
+    each FAILS the moment its manuscript is recompiled and stays failing until a new
+    deposit exists to pin it to. That is the intended behaviour: a page carrying a citable
+    DOI must serve the bytes that DOI resolves to. The repair is to deposit, not to edit
+    the constant."""
+    head("The landing pages: two papers, each deposited abstract and each deposited PDF")
 
     import hashlib
     import os
     here = os.path.dirname(os.path.abspath(__file__))
-    html = read_text(os.path.join(here, "index.html"))
+
+    def served(name):
+        try:
+            return hashlib.sha256(open(os.path.join(here, name), "rb").read()).hexdigest()
+        except OSError:
+            return None
+
+    # --- paper 1, whose home this is: compared against the manuscript itself
+    page = read_text(os.path.join(here, "kingwen-orderings.html"))
     tex = read_text(os.path.join(here, "paper.tex"))
-    if html is None or tex is None:
-        check("landing", "index.html and paper.tex are present", False, True)
-        check("landing", "the landing serves the deposited PDF", None, True)
-        return
+    if page is None or tex is None:
+        check("landing", "the first paper's page and manuscript are present", False, True)
+    else:
+        check("landing", "the King Wen page prints the abstract of its paper, word for word",
+              _landing_abstract(page), _tex_abstract(tex))
+    check("landing", "the PDF the King Wen page serves is the one deposited as version 3",
+          served("paper.pdf"), DEPOSITED_V3["pdf_sha256"])
 
-    landing, deposited = _landing_abstract(html), _tex_abstract(tex)
-    check("landing", "the landing abstract is the abstract of the paper, word for word",
-          landing, deposited)
-
+    # --- paper 2, whose home this is NOT: compared against its Zenodo record
+    page2 = read_text(os.path.join(here, "uninformative-rungs.html"))
+    if page2 is None:
+        check("landing", "the second paper's page is present", False, True)
+    else:
+        check("landing", "the rungs page prints the abstract of its deposit, word for word",
+              _landing_abstract(page2), " ".join(DEPOSITED_RUNGS_ABSTRACT))
+    check("landing", "the PDF the rungs page serves is the one deposited at Zenodo",
+          served("uninformative-rungs.pdf"), DEPOSITED_RUNGS["pdf_sha256"])
     try:
-        served = hashlib.sha256(open(os.path.join(here, "paper.pdf"), "rb").read()).hexdigest()
+        size = os.path.getsize(os.path.join(here, "uninformative-rungs.pdf"))
     except OSError:
-        served = None
-    check("landing", "the PDF the landing serves is the PDF deposited as version 3",
-          served, DEPOSITED_V3["pdf_sha256"])
+        size = None
+    check("landing", "and it is the deposited length", size, DEPOSITED_RUNGS["pdf_bytes"])
+
+    # --- the second paper's home is named on its own page, and its source is not here
+    if page2 is not None:
+        named = all(s in page2 for s in (DEPOSITED_RUNGS["mirror"], DEPOSITED_RUNGS["tag"],
+                                         DEPOSITED_RUNGS["doi"]))
+        check("landing", "the rungs page names its mirror, its deposited tag and its DOI",
+              named, True)
+    # Compared against the real listing and not with os.path.exists, which on a
+    # case-insensitive filesystem answers yes to PAPER.tex when what is there is
+    # paper.tex, and would report the first paper as an intruder from the second.
+    listing = set(os.listdir(here))
+    intruders = sorted({"PASSAGES.md", "assemble.py", "verify_paper2.py",
+                        "mutate_verify.py", "PAPER.tex", "PAPER.md", "PAPER.pdf",
+                        "null-ladder-history.bundle"} & listing)
+    check("landing", "no source of the second paper has crept into this package",
+          intruders, [])
+
+    # --- the index describes the collection and points at both works by their own @id
+    root = read_text(os.path.join(here, "index.html"))
+    linked = []
+    if root is not None:
+        block = re.search(r'<script type="application/ld\+json">(.*?)</script>', root, re.S)
+        if block:
+            try:
+                import json as _json
+                data = _json.loads(block.group(1))
+                linked = sorted(p.get("@id", "") for p in data.get("hasPart", []))
+            except ValueError:
+                linked = ["unparseable"]
+    check("landing", "the index describes the collection and links both works by @id",
+          linked, ["https://paper.theoriginaliching.com/kingwen-orderings",
+                   "https://paper.theoriginaliching.com/uninformative-rungs"])
+
+    # --- one canonical per page, each its own: this is the whole reason for subpages
+    canon = []
+    for name in ("index.html", "kingwen-orderings.html", "uninformative-rungs.html"):
+        text = read_text(os.path.join(here, name))
+        found = re.findall(r'<link rel="canonical" href="([^"]+)">', text or "")
+        canon.append((name, found))
+    check("landing", "each page carries exactly one canonical, and it is its own",
+          canon,
+          [("index.html", ["https://paper.theoriginaliching.com/"]),
+           ("kingwen-orderings.html", ["https://paper.theoriginaliching.com/kingwen-orderings"]),
+           ("uninformative-rungs.html", ["https://paper.theoriginaliching.com/uninformative-rungs"])])
 
 
 def check_published_counts(total):
@@ -2113,7 +2209,7 @@ def check_published_counts(total):
     import os
     here = os.path.dirname(os.path.abspath(__file__))
     wanted = {"live": total, "deposit": DEPOSITED_V3["checks"]}
-    for surface in ("README.md", "index.html"):
+    for surface in ("README.md", "kingwen-orderings.html"):
         text = read_text(os.path.join(here, surface))
         for tree in ("live", "deposit"):
             patterns = [p for s, t, p in PUBLISHED_COUNT_PATTERNS

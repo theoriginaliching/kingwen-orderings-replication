@@ -29,11 +29,15 @@ that the archive and the site are the same object.
 
 | File | Role |
 |---|---|
-| `index.html` | Landing page. Also read by the suite, which checks that it repeats the paper's front matter exactly |
+| `index.html` | The index: one card per paper, and a JSON-LD collection linking both by their own `@id` |
+| `kingwen-orderings.html` | The page of this paper. Read by the suite, which checks that it repeats the front matter exactly and prints the deposited abstract word for word |
+| `uninformative-rungs.html` | The page of the companion paper, whose source is **not** here: this site references it and serves the PDF its Zenodo deposit publishes |
+| `uninformative-rungs.pdf` | That deposited PDF, byte for byte from the record. The suite pins its sha256 |
+| `style.css` | One stylesheet for the three pages. It lived inside the landing when there was one page; with three, duplicating it was a guarantee that they would drift |
 | `logo-128.webp` | Site logotype, 128 by 128 |
-| `vercel.json` | Deployment configuration: content type and inline disposition for the PDF |
+| `vercel.json` | Deployment configuration: content type and inline disposition for the two PDFs |
 | `robots.txt` | Crawler directives; points at the sitemap |
-| `sitemap.xml` | One URL, the landing page |
+| `sitemap.xml` | Three URLs: the index and the two papers |
 
 **Record and evidence.** What documents the package rather than running it.
 
@@ -87,7 +91,7 @@ the landing page quotes a total the suite no longer produces, and it names both 
 
 ```
 ==================================================================
-  275 checks passed, 0 failed, 275 total
+  288 checks passed, 0 failed, 288 total
 ==================================================================
   REPLICATION COMPLETE: every figure in the paper reproduces.
 ```
@@ -179,7 +183,7 @@ sed 's/"Qian", "Gen", "Kan"/"Qian", "Kan", "Gen"/' verify_paper.py > mutant.py &
 |---|---|---|
 | (a) one flipped bit | `0`, the King Wen ordering is a permutation of 0 to 63 | 12 of the first 43 checks fail, then the run aborts with `KeyError: 63` in Section 4 |
 | (b) duplicated hexagram | `0`, the King Wen ordering is a permutation of 0 to 63 | 12 of the first 43 checks fail, then the run aborts with `KeyError: 0` |
-| (c) Mawangdui family swapped | `3.1`, Mawangdui inversions vs binary | the run completes and reports `257 checks passed, 18 failed, 275 total` |
+| (c) Mawangdui family swapped | `3.1`, Mawangdui inversions vs binary | the run completes and reports `270 checks passed, 18 failed, 288 total` |
 
 Exit status is `1` in all three cases. Note the shape of (a) and (b): a corrupted King Wen
 table is no longer a permutation of the 64 values, Section 0 says so before any statistic is

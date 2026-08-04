@@ -3,129 +3,43 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Statistical Structure of the Historical Orderings of the I Ching Hexagrams</title>
-<meta name="description" content="Statistical comparison of the three historical orderings of the I Ching hexagrams (King Wen, Mawangdui, Jing Fang) against the binary ordering and against one another. Paper, replication package and verification script.">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Statistical Structure of the Historical Orderings of the I Ching Hexagrams: Pair Rule, Family Gradient, and the Limits of Demonstrability">
-<meta property="og:description" content="Statistical comparison of the three historical orderings of the I Ching hexagrams (King Wen, Mawangdui, Jing Fang) against the binary ordering and against one another. Paper, replication package and verification script.">
+<title>The Original I Ching: papers</title>
+<meta name="description" content="Two papers: a statistical study of the historical orderings of the I Ching hexagrams, and the order-theoretic stopping criterion for families of nulls that grew out of it.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="The Original I Ching: papers">
+<meta property="og:description" content="Two papers: a statistical study of the historical orderings of the I Ching hexagrams, and the order-theoretic stopping criterion for families of nulls that grew out of it.">
 <meta property="og:url" content="https://paper.theoriginaliching.com/">
 <meta property="og:image" content="https://paper.theoriginaliching.com/logo-128.webp">
 <meta name="twitter:card" content="summary">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Inter:wght@400;500&family=Noto+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
-<style>
-  /* Identidad de tinta de The Original I Ching. Superficie unica, sin tema claro. */
-  :root {
-    --bg: #0d0b0b;
-    --bg-deep: #080606;
-    --card: #0f0d0c;
-    --line: rgba(255,255,255,0.07);
-    --text: #efe8dc;
-    --text-strong: #f5efe3;
-    --soft: #b0a494;
-    --muted: #a5988a;
-    --dim: #6b5f52;
-    --gold: #c9a24b;
-    --gold-dim: #8a7a5c;
-    --red: #c53d2e;
-    color-scheme: dark;
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font: 16px/1.7 "Noto Serif", Georgia, serif;
-    -webkit-font-smoothing: antialiased;
-  }
-  a { color: var(--gold); text-decoration: none; border-bottom: 1px solid transparent; }
-  a:hover { border-bottom-color: var(--gold); }
-  .bar {
-    border-bottom: 1px solid var(--line);
-    background: rgba(13,11,11,0.85);
-    backdrop-filter: blur(14px);
-    position: sticky; top: 0; z-index: 10;
-  }
-  .bar-in {
-    max-width: 46rem; margin: 0 auto; padding: 0.8rem 1.25rem;
-    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-  }
-  .brand { display: inline-flex; align-items: center; gap: 0.6rem; border: 0; }
-  .brand img { width: 30px; height: 30px; border-radius: 50%; display: block; }
-  .brand .name {
-    font-family: "Cinzel", Georgia, serif; font-size: 0.78rem;
-    letter-spacing: 0.18em; text-transform: uppercase; color: var(--soft);
-    white-space: nowrap;
-  }
-  .brand:hover .name { color: var(--text-strong); }
-  .bar nav { font-family: "Inter", system-ui, sans-serif; font-size: 0.78rem; }
-  .bar nav a { color: var(--muted); }
-  main { max-width: 46rem; margin: 0 auto; padding: 3rem 1.25rem 4.5rem; }
-  .kicker {
-    font-family: "Inter", system-ui, sans-serif; font-size: 10.5px;
-    letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim);
-    margin-bottom: 1.3rem;
-  }
-  h1 {
-    font-family: "Cinzel", Georgia, serif; font-weight: 500;
-    font-size: 1.9rem; line-height: 1.25; margin: 0 0 0.5rem; color: var(--text-strong);
-  }
-  h1 .sub {
-    display: block; font-family: "Noto Serif", Georgia, serif; font-weight: 400;
-    font-size: 1.05rem; color: var(--soft); margin-top: 0.6rem;
-  }
-  .author { margin: 1.3rem 0 2.4rem; font-size: 0.92rem; color: var(--muted); line-height: 1.8; }
-  h2 {
-    font-family: "Inter", system-ui, sans-serif; font-size: 10.5px; font-weight: 500;
-    letter-spacing: 0.18em; text-transform: uppercase; color: var(--dim);
-    margin: 2.8rem 0 0.9rem;
-  }
-  .abstract {
-    background: var(--card); border: 1px solid var(--line); border-radius: 8px;
-    padding: 1.4rem 1.5rem; font-size: 0.94rem; text-align: justify;
-  }
-  .abstract p { margin: 0; }
-  .actions { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1.8rem; }
-  .btn {
-    display: inline-block; padding: 0.62rem 1.2rem; border-radius: 5px;
-    font: 500 0.88rem/1.2 "Inter", system-ui, sans-serif;
-    border: 1px solid var(--gold-dim); color: var(--gold); background: transparent;
-  }
-  .btn:hover { border-color: var(--gold); }
-  .btn.primary { background: var(--gold); border-color: var(--gold); color: #14100c; }
-  ul.links { list-style: none; padding: 0; margin: 0; }
-  ul.links li { padding: 0.7rem 0; border-bottom: 1px solid var(--line); font-size: 0.93rem; }
-  ul.links li:last-child { border-bottom: 0; }
-  ul.links .note { color: var(--muted); }
-  .findings { font-size: 0.93rem; color: var(--soft); }
-  pre {
-    background: var(--card); border: 1px solid var(--line); border-radius: 8px;
-    padding: 1rem 1.1rem; overflow-x: auto; color: var(--text);
-    font: 12.5px/1.6 ui-monospace, "SF Mono", Menlo, monospace;
-  }
-  .copywrap { position: relative; }
-  .copywrap pre { margin: 0; padding-right: 4.8rem; }
-  /* El BibTeX vive en una sola linea para que se copie exacto; se parte solo al mostrarlo,
-     que es cosa del render y no del texto que va al portapapeles. */
-  #bibtex { white-space: pre-wrap; }
-  .copy {
-    position: absolute; top: 0.55rem; right: 0.55rem; cursor: pointer;
-    padding: 0.3rem 0.62rem; border-radius: 4px;
-    font: 500 10.5px/1.2 "Inter", system-ui, sans-serif;
-    letter-spacing: 0.14em; text-transform: uppercase;
-    border: 1px solid var(--line); background: rgba(13,11,11,0.72); color: var(--dim);
-  }
-  .copy:hover { border-color: var(--gold-dim); color: var(--gold); }
-  .copy:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
-  .copy.done { border-color: var(--gold-dim); color: var(--gold); }
-  footer {
-    border-top: 1px solid var(--line); background: var(--bg-deep);
-    font-family: "Inter", system-ui, sans-serif; font-size: 0.8rem; color: var(--dim);
-  }
-  .footer-in { max-width: 46rem; margin: 0 auto; padding: 1.6rem 1.25rem; }
-  footer a { color: var(--muted); }
-</style>
+<link rel="stylesheet" href="style.css">
+<link rel="canonical" href="https://paper.theoriginaliching.com/">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Collection",
+  "@id": "https://paper.theoriginaliching.com/",
+  "name": "The Original I Ching: papers",
+  "url": "https://paper.theoriginaliching.com/",
+  "author": {
+    "@type": "Person",
+    "name": "Alexis García Hurtado",
+    "identifier": "https://orcid.org/0009-0003-4636-8206"
+  },
+  "hasPart": [
+    {
+      "@type": "ScholarlyArticle",
+      "@id": "https://paper.theoriginaliching.com/kingwen-orderings"
+    },
+    {
+      "@type": "ScholarlyArticle",
+      "@id": "https://paper.theoriginaliching.com/uninformative-rungs"
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -135,83 +49,34 @@
       <img src="logo-128.webp" alt="" width="128" height="128">
       <span class="name">The Original I Ching</span>
     </a>
-    <nav><a href="https://experiments.theoriginaliching.com/en">Laboratory</a></nav>
+    <nav><a href="/">Papers</a> <a href="https://experiments.theoriginaliching.com/en">Laboratory</a></nav>
   </div>
 </div>
 
 <main>
 
-  <div class="kicker">Preprint &middot; replication package</div>
+  <div class="kicker">Papers</div>
 
   <h1>
-    Statistical Structure of the Historical Orderings of the I Ching Hexagrams
-    <span class="sub">Pair Rule, Family Gradient, and the Limits of Demonstrability</span>
+    Two papers
+    <span class="sub">One about an object, one about the method the object forced</span>
   </h1>
 
   <div class="author">
-    Alexis García Hurtado &middot; Independent Researcher, Gatineau, Québec, Canada
+    Alexis Garc&iacute;a Hurtado &middot; Independent Researcher, Gatineau, Qu&eacute;bec, Canada
     &middot; <a href="https://orcid.org/0009-0003-4636-8206">ORCID 0009-0003-4636-8206</a>
   </div>
 
-  <div class="abstract">
-    <p>The King Wen sequence orders the 64 hexagrams of the I Ching in an arrangement that has resisted explanation for three millennia. We present a statistical comparison of the three historical orderings (King Wen, Mawangdui, Jing Fang) against the binary ordering and against one another. Our central findings are the following. (1) All three historical orderings sit at the random-expected Kendall distance from the binary order (1013, 1008 and 1008 inversions, where the expectation is n(n&minus;1)/4 = 1008): none is rank-correlated with binary counting, and two of the three achieve Kendall tau exactly zero. (2) Yet King Wen and Mawangdui are significantly correlated with each other (759 inversions, z = &minus;2.89, Monte Carlo p = 0.0034, Bonferroni-surviving), and we identify the mechanism: a shared gradient of upper-trigram families, explicit in Mawangdui's octets and implicit in King Wen. (3) Re-analyzing recent Monte Carlo results (Chan, 2026) under a pair-preserving null shows three of the four reported signatures to be corollaries of the pair rule; we also report a small numerical correction, triangulated against a Lean-verified theorem (Radisic, 2026). (4) For the open question of within-pair orientation, the strongest admissible criterion is the classical doctrine of correct centers (12/16, uncorrected one-tailed p = 0.038; two-sided 0.077), and we show that no orientation rule of this strength can reach significance over 28 fixed pairs: a measurable limit of demonstrability. Every numerical claim in this paper is asserted by an automated test suite in a public repository.</p>
-  </div>
-
-  <h2>What the paper rests on</h2>
-  <p class="findings">
-    Four sealed findings of the accompanying laboratory support this paper: the tie with binary
-    counting, the kinship of the two oldest orderings and its mechanism, the question of
-    within-pair orientation and its limit of demonstrability, and the spectral confirmation of
-    the pair rule. Each carries a dated originality note and is asserted by the verification
-    suite; they are listed at
-    <a href="https://experiments.theoriginaliching.com/en/hallazgos">experiments.theoriginaliching.com/en/hallazgos</a>.
-  </p>
-
-  <div class="actions">
-    <a class="btn primary" href="paper.pdf">Download PDF</a>
-    <a class="btn" href="https://github.com/theoriginaliching/kingwen-orderings-replication">Replication package</a>
-  </div>
-
-  <h2>Resources</h2>
   <ul class="links">
     <li>
-      <a href="https://github.com/theoriginaliching/kingwen-orderings-replication">Replication repository</a>
-      <span class="note">&middot; paper source, compiled PDF, and a self-contained script that reproduces every figure (270 checks in the deposited version 3, standard library only)</span>
+      <a href="/kingwen-orderings">Statistical Structure of the Historical Orderings of the I Ching Hexagrams</a>
+      <span class="note">&middot; Pair Rule, Family Gradient, and the Limits of Demonstrability &middot; DOI 10.5281/zenodo.21609653, which always resolves to the newest version &middot; paper, replication package and a verification suite that reproduces every figure</span>
     </li>
     <li>
-      <a href="https://experiments.theoriginaliching.com/en">Interactive laboratory</a>
-      <span class="note">&middot; 45 experiments on the same material, each backed by its own assertions in a verification suite, in English, Spanish and French</span>
-    </li>
-    <li>
-      <a href="https://doi.org/10.5281/zenodo.21609653">Archived version</a>
-      <span class="note">&middot; 10.5281/zenodo.21609653 &middot; all versions &middot; version 3 published 2026-08-03</span>
+      <a href="/uninformative-rungs">Uninformative rungs: an order-theoretic stopping criterion for nested reference sets</a>
+      <span class="note">&middot; DOI 10.5281/zenodo.21750029 &middot; the method that grew out of the King Wen work, with that paper as its worked case</span>
     </li>
   </ul>
-
-  <h2>Verification</h2>
-  <p class="findings">This is the run of <strong>version 3 as deposited</strong>, <a href="https://doi.org/10.5281/zenodo.21776041">10.5281/zenodo.21776041</a>: what you get by downloading that archive and running it, with nothing but the Python standard library.</p>
-  <div class="copywrap">
-    <button class="copy" type="button" aria-live="polite"
-            aria-label="Copy the verification command" data-copy-text="python3 verify_paper.py">Copy</button>
-    <pre>python3 verify_paper.py
-
-  270 checks passed, 0 failed, 270 total
-  REPLICATION COMPLETE: every figure in the paper reproduces.</pre>
-  </div>
-  <p class="findings">The <a href="https://github.com/theoriginaliching/kingwen-orderings-replication">live repository</a> is ahead of that deposit and runs <strong>275 checks</strong> on branch <code>main</code> today. Every figure of the paper reproduces in both; the difference is checks added after the deposit, never a figure that changed. Each number above names the tree it came from, which is a rule this page broke once and now enforces mechanically.</p>
-
-  <h2>Citation</h2>
-  <div class="copywrap">
-    <button class="copy" type="button" aria-live="polite"
-            aria-label="Copy the BibTeX entry" data-copy-target="bibtex">Copy</button>
-    <pre id="bibtex">@misc{kingwen-orderings,
-  title  = {Statistical Structure of the Historical Orderings of the I Ching Hexagrams: Pair Rule, Family Gradient, and the Limits of Demonstrability},
-  author = {García Hurtado, Alexis},
-  year   = {2026},
-  doi    = {10.5281/zenodo.21609653},
-  note   = {Replication package}
-}</pre>
-  </div>
 
 </main>
 

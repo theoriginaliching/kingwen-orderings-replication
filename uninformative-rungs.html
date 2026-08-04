@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Uninformative rungs: an order-theoretic stopping criterion for nested reference sets</title>
+<meta name="description" content="An order-theoretic stopping criterion for families of nulls over an object that cannot be resampled: the rungs on which a statistic is uninformative form a down set, so the family can be truncated there. Instantiated on the King Wen sequence.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Uninformative rungs: an order-theoretic stopping criterion for nested reference sets">
+<meta property="og:description" content="An order-theoretic stopping criterion for families of nulls over an object that cannot be resampled: the rungs on which a statistic is uninformative form a down set, so the family can be truncated there. Instantiated on the King Wen sequence.">
+<meta property="og:url" content="https://paper.theoriginaliching.com/uninformative-rungs">
+<meta property="og:image" content="https://paper.theoriginaliching.com/logo-128.webp">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Inter:wght@400;500&family=Noto+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="canonical" href="https://paper.theoriginaliching.com/uninformative-rungs">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  "@id": "https://paper.theoriginaliching.com/uninformative-rungs",
+  "headline": "Uninformative rungs: an order-theoretic stopping criterion for nested reference sets",
+  "author": {
+    "@type": "Person",
+    "name": "Alexis García Hurtado",
+    "identifier": "https://orcid.org/0009-0003-4636-8206"
+  },
+  "datePublished": "2026-08-02",
+  "identifier": "https://doi.org/10.5281/zenodo.21750029",
+  "sameAs": [
+    "https://doi.org/10.5281/zenodo.21750029",
+    "https://github.com/Probatorium/null-ladder"
+  ],
+  "url": "https://paper.theoriginaliching.com/uninformative-rungs",
+  "inLanguage": "en"
+}
+</script>
+</head>
+<body>
+
+<div class="bar">
+  <div class="bar-in">
+    <a class="brand" href="https://theoriginaliching.com">
+      <img src="logo-128.webp" alt="" width="128" height="128">
+      <span class="name">The Original I Ching</span>
+    </a>
+    <nav><a href="/">Papers</a> <a href="https://experiments.theoriginaliching.com/en">Laboratory</a></nav>
+  </div>
+</div>
+
+<main>
+
+  <div class="kicker">Preprint &middot; method</div>
+
+  <h1>
+    Uninformative rungs
+    <span class="sub">An order-theoretic stopping criterion for nested reference sets</span>
+  </h1>
+
+  <div class="author">
+    Alexis Garc&iacute;a Hurtado &middot; Independent Researcher, Gatineau, Qu&eacute;bec, Canada
+    &middot; <a href="https://orcid.org/0009-0003-4636-8206">ORCID 0009-0003-4636-8206</a>
+  </div>
+
+  <div class="abstract">
+    <p>When an object cannot be resampled and no generating process is available, a null hypothesis has to be built by declaring what may be permuted and what must be held fixed. The declaration is not unique, so the natural response is to report a family of nulls rather than one. A family with no principle behind it can be enumerated and cannot be terminated.</p>
+    <p>We give an order-theoretic stopping criterion. Rungs of such a family are partially ordered by containment of their reference sets, and for a fixed statistic the rungs on which that statistic is uninformative, meaning constant on the reference set, form a down set in that order. Descending past such a rung therefore produces arithmetic and not evidence, and the family can be truncated there along that path. The result assumes no group, no model, no alternative and no level, and it is proved in one line from set containment. We use uninformative throughout in this sense; it is not the Bayesian term of art, which describes a prior. A rung is a reference set with a position in that order, and a null is the hypothesis a rung carries; both words are in the title and both are demarcated in section 1.</p>
+    <p>We do not offer localisation as a contribution. Reading where a signal sits from the rung at which it stops surviving is stated and exercised in Theiler et al. (1992), and section 2 says where. What is new is the criterion for stopping and the separation that fixes its scope, not the reading.</p>
+    <p>We also give the reason a family is reported entire rather than reduced to one rung: the three grounds the literature offers for selecting a single conditioning each require something a unique object with no generating process does not supply, and section 2.8 sets them out.</p>
+    <p>We separate four reasons a rung can fail to reject and show that the two which are conditions on the reference set descend under containment while the two which are conditions on where the observed value falls do not. The scope of the criterion is therefore located by that separation rather than confessed. Where the rungs are orbits of subgroups the order is computable, which is a corollary and not the result; the exact-sampling property such rungs carry is a published result of others and is cited as theirs.</p>
+    <p>The framework is instantiated on a worked case: the King Wen sequence, the received ordering of the sixty four hexagrams of the I Ching, and a published family of six rungs over it. The six were presented as a sequence of increasing structure; four of their fifteen pairwise relations are incomparable, so they are a partial order and not a chain, established by exhibited witnesses. A preregistered experiment, committed before computation, refutes the chain reading at four ordered pairs. Two of the four are evidence about the object and rest on a statistic nobody built for this purpose; the other two are demonstrations that the control behaves, and one of those two was not predicted.</p>
+    <p>Which rungs are orbits of subgroups is itself decided, by a second theorem with its own proof, and the case exercises one side of the boundary that theorem draws and cites the other. One of its two statistics could not have rejected at any rung whatever the data, for a reason computable before a draw, and we report that rather than omit it. Nothing here is a claim about the King Wen sequence: the statistics were chosen for their behaviour under the nulls, no reported percentile is extreme, and none is offered as a finding about the object.</p>
+  </div>
+
+  <h2>Where this comes from</h2>
+  <p class="findings">
+    This is the method that grew out of the King Wen work, with
+    <a href="/kingwen-orderings">that paper</a> as its worked case.
+  </p>
+
+  <div class="actions">
+    <a class="btn primary" href="uninformative-rungs.pdf">Download PDF</a>
+    <a class="btn" href="https://github.com/Probatorium/null-ladder">Working repository</a>
+  </div>
+
+  <h2>Resources</h2>
+  <ul class="links">
+    <li>
+      <a href="https://doi.org/10.5281/zenodo.21750029">Archived version</a>
+      <span class="note">&middot; 10.5281/zenodo.21750029 &middot; deposited 2026-08-02 &middot; the version this page serves and the one to cite</span>
+    </li>
+    <li>
+      <a href="https://github.com/Probatorium/null-ladder">Working repository and full commit history</a>
+      <span class="note">&middot; instruments, assertions and mutations &middot; the deposited state is the tag <code>zenodo-10.5281-zenodo.21750029</code></span>
+    </li>
+    <li>
+      <a href="/kingwen-orderings">The worked case</a>
+      <span class="note">&middot; the King Wen paper, its replication package and its own verification suite</span>
+    </li>
+  </ul>
+
+  <h2>Verification</h2>
+  <p class="findings">Clone the working repository at the tag above and run it. The first command rebuilds the paper from its parts and asserts every claim; the second kills each assertion in turn and requires each mutant to be caught.</p>
+  <div class="copywrap">
+    <button class="copy" type="button" aria-live="polite"
+            aria-label="Copy the verification commands" data-copy-text="python assemble.py &amp;&amp; python verify_paper2.py">Copy</button>
+    <pre>python assemble.py &amp;&amp; python verify_paper2.py
+
+  30 assertions, 0 failures
+
+python mutate_verify.py
+
+  30 mutants, 30 killed</pre>
+  </div>
+
+  <h2>Citation</h2>
+  <div class="copywrap">
+    <button class="copy" type="button" aria-live="polite"
+            aria-label="Copy the BibTeX entry" data-copy-target="bibtex">Copy</button>
+    <pre id="bibtex">@misc{uninformative-rungs,
+  title  = {Uninformative rungs: an order-theoretic stopping criterion for nested reference sets},
+  author = {Garc\'ia Hurtado, Alexis},
+  year   = {2026},
+  doi    = {10.5281/zenodo.21750029},
+  note   = {Preprint}
+}</pre>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-in">
+    Part of <a href="https://theoriginaliching.com">The Original I Ching</a>. Code under the
+    MIT License; paper text and figures under
+    <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+  </div>
+</footer>
+<script>
+// Botones de copia: sin dependencias, con vuelta a execCommand donde no haya
+// clipboard API (o donde el navegador la niegue por permisos).
+(function () {
+  function fallback(text) {
+    var area = document.createElement("textarea");
+    area.value = text;
+    area.setAttribute("readonly", "");
+    area.style.position = "fixed";
+    area.style.top = "-1000px";
+    area.style.opacity = "0";
+    document.body.appendChild(area);
+    area.select();
+    try { document.execCommand("copy"); } catch (e) {}
+    document.body.removeChild(area);
+  }
+  function flash(button) {
+    button.textContent = "Copied";
+    button.classList.add("done");
+    window.setTimeout(function () {
+      button.textContent = "Copy";
+      button.classList.remove("done");
+    }, 1500);
+  }
+  var buttons = document.querySelectorAll("button.copy");
+  for (var i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener("click", function () {
+      var button = this;
+      var text = button.getAttribute("data-copy-text");
+      if (text === null) {
+        var target = document.getElementById(button.getAttribute("data-copy-target"));
+        text = target ? target.textContent : "";
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(
+          function () { flash(button); },
+          function () { fallback(text); flash(button); }
+        );
+      } else {
+        fallback(text);
+        flash(button);
+      }
+    });
+  }
+})();
+</script>
+</body>
+</html>
