@@ -34,7 +34,10 @@ that the archive and the site are the same object.
 | `uninformative-rungs.html` | The page of the companion paper, whose source is **not** here: this site references it and serves the PDF its Zenodo deposit publishes |
 | `uninformative-rungs.pdf` | That deposited PDF, byte for byte from the record. The suite pins its sha256 |
 | `style.css` | One stylesheet for the three pages. It lived inside the landing when there was one page; with three, duplicating it was a guarantee that they would drift |
-| `logo-128.webp` | Site logotype, 128 by 128 |
+| `logo-128.webp` | Site logotype, 128 by 128, used by the social card |
+| `favicon.ico` | The tab icon. The same file the other two properties of the project serve, not a re-encoding: an icon that differs between subdomains reads as a different site |
+| `icon.png` | The same mark at 512 by 512, for the browsers that prefer PNG |
+| `apple-icon.png` | The same mark at 180 by 180, for the iOS home screen |
 | `vercel.json` | Deployment configuration: content type and inline disposition for the two PDFs |
 | `robots.txt` | Crawler directives; points at the sitemap |
 | `sitemap.xml` | Three URLs: the index and the two papers |
