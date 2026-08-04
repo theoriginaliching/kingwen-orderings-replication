@@ -16,10 +16,10 @@ verified after publication by downloading the archive from the record itself, ha
 to that value, extracting it into an empty directory and running the suite there: 270
 checks, 0 failures. **Nothing below is waiting for a deposit.**
 
-**Where it stands, 2026-08-03, after the third deposit.** Twenty-four entries: four
+**Where it stands, 2026-08-03, after the third deposit.** Twenty-five entries: four
 defects in the paper (E-1 to E-4), four in the deposited package (P-1 to P-4), three
-clarifications for the next version (C-1 to C-3), and thirteen things examined and found
-sound (X-1 to X-13). **All eight defects are now APPLIED**: every one of them is corrected in the
+clarifications for the next version (C-1 to C-3), and fourteen things examined and found
+sound (X-1 to X-14). **All eight defects are now APPLIED**: every one of them is corrected in the
 object deposited as version 3, and each says where. They keep describing the defect as
 versions 1 and 2 print it, because that is what a reader holding those versions has in
 front of them. **No figure of the paper changes in any entry**, and that is measured and not
@@ -1031,6 +1031,45 @@ checks the manifest against the named commit instead of comparing bytes it no lo
 and every page that linked a local copy links this repository, the landing or Zenodo
 instead. **The drift is not made legible, it is removed**: with one copy there is nothing
 left to fall out of step.
+
+**Date examined.** 2026-08-03.
+
+**Status.** EXAMINED, NOT AN ERRATUM.
+
+---
+
+## X-14. The commits of this phase carry an author address that is not the account's
+
+**What was examined.** A deployment was blocked with `the commit email
+research@theoriginaliching.com could not be matched to a GitHub account`. The question is
+what to do about the commits already pushed, which is a question about hashes and not
+about mail.
+
+**Measurement.** Both repositories carried a **local** git identity,
+`The Original I Ching Research <research@theoriginaliching.com>`, overriding the account
+identity in the global configuration, `alexcat84 <alexcat84@users.noreply.github.com>`. It
+signs 69 commits here and 108 in the laboratory. Two commits of this repository, `d666948`
+and `95437d3` of 2026-07-28, carry the account address, which is what a
+`users.noreply.github.com` address is: bound to that account by construction. The local
+override is removed in both repositories, so both now inherit the account identity, and
+every commit from here on is attributable.
+
+**The history is NOT rewritten, and this is the reason.** Changing an author address
+rewrites every commit that carries it, and a commit hash is a function of its metadata as
+well as its tree. The rewrite would leave every tree byte for byte identical and change
+every identifier that names one. What names them: the tag `zenodo-v3` and its message; the
+commit `d6afae20` recorded in this file, in the README, in `V3-PLAN.md` and in the
+laboratory's manifest; and the deposited archive itself, whose whole method of
+identification is that rebuilding it from the named commit reproduces its sha256 to the
+bit. **The archive would still rebuild**, since the tree does not move, but the commit it
+is attributed to would no longer exist, and X-11 exists precisely because that
+identification was worth having. Rewriting to fix an address would trade a working method
+of proof for a cosmetic uniformity of authorship.
+
+So the repair is forward and not backward: the identity is corrected, the next commit
+carries it, and the deployment that was blocked runs on that commit. **The addresses on
+the historical commits stay wrong and stay recorded here**, which is the same choice this
+log makes everywhere else: the deposits keep their defects and the record names them.
 
 **Date examined.** 2026-08-03.
 
