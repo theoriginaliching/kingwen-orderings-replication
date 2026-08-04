@@ -16,10 +16,10 @@ verified after publication by downloading the archive from the record itself, ha
 to that value, extracting it into an empty directory and running the suite there: 270
 checks, 0 failures. **Nothing below is waiting for a deposit.**
 
-**Where it stands, 2026-08-03, after the third deposit.** Twenty-two entries: four
+**Where it stands, 2026-08-03, after the third deposit.** Twenty-four entries: four
 defects in the paper (E-1 to E-4), four in the deposited package (P-1 to P-4), three
-clarifications for the next version (C-1 to C-3), and eleven things examined and found sound
-(X-1 to X-11). **All eight defects are now APPLIED**: every one of them is corrected in the
+clarifications for the next version (C-1 to C-3), and thirteen things examined and found
+sound (X-1 to X-13). **All eight defects are now APPLIED**: every one of them is corrected in the
 object deposited as version 3, and each says where. They keep describing the defect as
 versions 1 and 2 print it, because that is what a reader holding those versions has in
 front of them. **No figure of the paper changes in any entry**, and that is measured and not
@@ -953,6 +953,84 @@ measured at the moment of handover, and never copied forward from the last repor
 The rule now has a mechanical shape: measure the artefacts, then name the commit they came
 from by rebuilding the archive from it, and only then write the block. It costs one command
 and it is the difference between a halted deposit and a deposited wrong file.
+
+**Date examined.** 2026-08-03.
+
+**Status.** EXAMINED, NOT AN ERRATUM.
+
+---
+
+## X-12. The landing page printed a count from a tree it did not name
+
+**What was examined.** The public landing page, `paper.theoriginaliching.com`, against the
+deposit it links to. A post sending sceptical readers to that URL was about to be written,
+which is the moment a surface stops being internal.
+
+**Measurement.** The landing printed **272 checks** in two places, its verification block
+and its resources row, and the deposited version 3 runs **270**. Both figures were true of
+something. Neither said of what. Measured: the live page is byte for byte `index.html` at
+commit `00dfec64`, so it was current, not stale; the two extra checks entered in that same
+commit and are the two identifier counts that the published version DOI made checkable.
+**A reader who followed the link, downloaded the archive and ran it would have got 270 and
+concluded the page was wrong about its own package.**
+
+*And the abstract was not the deposited abstract.* Item (4) read `(12/16, p = 0.038
+uncorrected)` where the deposit prints `(12/16, uncorrected one-tailed p = 0.038;
+two-sided 0.077)`. The paraphrase drops the sidedness and the two-sided figure from the
+single number a sceptic checks first, and 0.077 is the one that does not clear 0.05. The
+landing is the face of the paper and may not paraphrase it. Restored word for word.
+
+**The rule, now mechanical.** Every figure printed on a public surface names the tree it
+came from, and there are exactly two: the **live repository**, whose count is measured
+against the run in progress, and the **deposit**, whose count is a constant pinned to the
+archive and never derived from the live one. `check_published_counts` reads them
+separately, so a live number sitting where a deposit number belongs fails rather than
+passing quietly. The landing now shows the deposited run of 270 labelled as version 3 with
+its version DOI, and the live count on its own line labelled as the live repository.
+
+**And the PDF is pinned by hash.** `section_landing` asserts that the `paper.pdf` the
+landing serves hashes to `80b1648d2ce040c4cd33a84e4e1027b03c55a648c41798ce5a71ba2966a7b3d3`,
+the bytes deposited as version 3, rather than to the file next to it. **It will fail the
+moment the manuscript is recompiled, and stay failing until a new deposit exists**, which
+is the intended behaviour and not an inconvenience: a page carrying a citable DOI must
+serve the bytes that DOI resolves to. The repair when it fails is to deposit, not to edit
+the constant. All three checks proved able to fail: a paraphrased abstract and a dropped
+sentence each report the differing text, and one flipped byte in the PDF reports
+`4b60659c...` against the deposited hash.
+
+**Date examined.** 2026-08-03.
+
+**Status.** EXAMINED, NOT AN ERRATUM.
+
+---
+
+## X-13. Where the source of the paper lives, decided rather than inherited
+
+**What was examined.** Which repository is the canonical home of the manuscript. The
+question had never been decided in writing, and the three mirror problems recorded earlier
+in this log all grew from the answer being ambiguous: the same content lived in two
+repositories with no mechanical link, so every property that ought to follow from being one
+thing had to be re-established by somebody remembering.
+
+**Measurement.** The old working rule was that changes are born in the laboratory,
+`iching-experiments`, and travel to this package. **During version 3 that rule was inverted
+in fact**: every manuscript change of this phase was made here, compiled here, deposited
+from here and tagged here, and the laboratory's copy was updated afterwards to match. The
+laboratory's copies were a snapshot refreshed by hand, going stale on every commit here,
+with nothing to notice.
+
+**The decision.** The canonical home of the paper source is **this repository**, which is
+the one that is deposited, tagged and archived. The reason is not preference: this is the
+only copy that has a DOI, a tag naming the exact commit, and an archive whose bytes are
+fixed. A canonical copy has to be the one a stranger can cite.
+
+**What follows in the laboratory**, applied in the same round: its `paper/` stops being a
+source and keeps only a pointer to this repository and to the tag `zenodo-v3`; its
+`replication/` stops being a copy and keeps only the provenance manifest, so its gate
+checks the manifest against the named commit instead of comparing bytes it no longer holds;
+and every page that linked a local copy links this repository, the landing or Zenodo
+instead. **The drift is not made legible, it is removed**: with one copy there is nothing
+left to fall out of step.
 
 **Date examined.** 2026-08-03.
 

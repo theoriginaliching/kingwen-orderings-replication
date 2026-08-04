@@ -1952,7 +1952,13 @@ IDENTIFIER_COUNTS = (
     ("README.md", "10.5281/zenodo.21776041", 2, "the deposited version DOI, in the claim map and in the deposit block"),
     ("index.html", "10.5281/zenodo.21609653", 3, "the concept DOI"),
     ("index.html", "10.5281/zenodo.21609654", 0, "no version DOI at all"),
-    ("index.html", "10.5281/zenodo.21776041", 0, "not even the current one: the landing carries the concept DOI, which never ages"),
+    # The landing carried NO version DOI at all until the verification block began
+    # naming the tree its run comes from. Naming a tree and not saying which deposit it
+    # is would be the same defect one level down, so the version DOI appears exactly
+    # once, in that block and nowhere else: the citation and the archived-version link
+    # keep the concept DOI, which never ages, and the run keeps the DOI of the archive
+    # it is a run of.
+    ("index.html", "10.5281/zenodo.21776041", 2, "the deposited version DOI, in the block that shows its run: once as the link target and once as the visible text, which is one pointer a reader can also read"),
 )
 
 
@@ -2001,26 +2007,127 @@ def section_surfaces():
 #: stale once before, from 192 to 202, and nothing here noticed; a published
 #: number with no assertion behind it is exactly what this package exists to
 #: refuse.
+#: EVERY FIGURE PRINTED ON A PUBLIC SURFACE NAMES THE TREE IT CAME FROM.
+#:
+#: The rule was written after the landing page drifted in public: it printed the count
+#: of the live repository beside a link to the deposited version, which runs a different
+#: number, so a reader who followed the link and ran the archive got a total the page
+#: said was wrong. Nothing was false about either number. What was missing was which
+#: tree each one described, which is the same defect as P-1 and X-11 with an audience.
+#:
+#: There are exactly two trees a figure can come from, and they are checked differently:
+#:
+#:   "live"    the working repository, whatever it is today. Its count is measured, so
+#:             the check compares against the run in progress and moves when it moves.
+#:   "deposit" version 3 at Zenodo, which cannot change. Its count is a CONSTANT here,
+#:             pinned to the archive below, and the check compares against that constant
+#:             and NOT against the live run. If the two are ever made equal by accident
+#:             this still holds: the deposit figure is not derived from the live one.
+DEPOSITED_V3 = {
+    "doi": "10.5281/zenodo.21776041",
+    "date": "2026-08-03",
+    "commit": "d6afae20bbefba56728251f34f8e3870c43e2cbd",
+    "checks": 270,
+    "pdf_sha256": "80b1648d2ce040c4cd33a84e4e1027b03c55a648c41798ce5a71ba2966a7b3d3",
+    "zip_sha256": "0069259effc1290d4fc2c598ea8bf88dc0e1c1b76fa2523d0521f2c016c48aa5",
+    "zip_bytes": 244557,
+}
+
+#: (surface, which tree, pattern capturing the figure). A surface may publish both, and
+#: the landing does: the deposited run, which is what a reader downloading the archive
+#: gets, and the live count named as the live count, one line apart and each labelled.
 PUBLISHED_COUNT_PATTERNS = (
-    r"\d+ checks passed, \d+ failed, (\d+) total",
-    r"\((\d+) checks, standard library only\)",
+    ("README.md", "live", r"\d+ checks passed, \d+ failed, (\d+) total"),
+    ("index.html", "deposit", r"(\d+) checks passed, 0 failed, \d+ total"),
+    ("index.html", "deposit", r"\((\d+) checks in the deposited version 3, standard library only\)"),
+    ("index.html", "live", r"runs <strong>(\d+) checks</strong> on branch"),
 )
 
 
+def _landing_abstract(html):
+    """The landing's abstract, as text, with its HTML entities resolved."""
+    m = re.search(r'<div class="abstract">(.*?)</div>', html, re.S)
+    if m is None:
+        return None
+    text = re.sub(r"<[^>]+>", "", m.group(1))
+    for entity, char in (("&minus;", "-"), ("&nbsp;", " "), ("&amp;", "&"),
+                         ("&lt;", "<"), ("&gt;", ">"), ("&times;", "x")):
+        text = text.replace(entity, char)
+    return " ".join(text.split())
+
+
+def _tex_abstract(tex):
+    """The deposited abstract, as text, with its math delimiters removed."""
+    marker = chr(92) + "begin{abstract}"
+    closer = chr(92) + "end{abstract}"
+    if marker not in tex or closer not in tex:
+        return None
+    text = tex[tex.index(marker) + len(marker):tex.index(closer)]
+    return " ".join(text.replace("$", "").split())
+
+
+def section_landing():
+    """The landing page is the face of the paper, and it may not paraphrase it.
+
+    Two things about the landing cannot be checked by looking at the landing: whether
+    its abstract is the abstract of the deposited paper, and whether the PDF it serves
+    is the deposited PDF. Both were wrong or at risk in public. The abstract had been
+    edited into a shorter form, `p = 0.038 uncorrected` where the deposit prints
+    `uncorrected one-tailed p = 0.038; two-sided 0.077`, which drops the sidedness and
+    the two-sided figure from the one claim of the paper a sceptical reader checks
+    first. The PDF was right, and nothing kept it right.
+
+    The PDF check is pinned to the DEPOSITED hash and not to the file beside it, which
+    means it FAILS the moment the manuscript is recompiled and stays failing until a new
+    deposit exists to pin it to. That is the intended behaviour and not a nuisance: a
+    landing that carries a citable DOI must serve the bytes that DOI resolves to, and a
+    working PDF that quietly replaces them is exactly the drift this suite exists to
+    catch. The repair when it fails is to deposit, not to edit the constant."""
+    head("The landing page: the deposited abstract, and the deposited PDF")
+
+    import hashlib
+    import os
+    here = os.path.dirname(os.path.abspath(__file__))
+    html = read_text(os.path.join(here, "index.html"))
+    tex = read_text(os.path.join(here, "paper.tex"))
+    if html is None or tex is None:
+        check("landing", "index.html and paper.tex are present", False, True)
+        check("landing", "the landing serves the deposited PDF", None, True)
+        return
+
+    landing, deposited = _landing_abstract(html), _tex_abstract(tex)
+    check("landing", "the landing abstract is the abstract of the paper, word for word",
+          landing, deposited)
+
+    try:
+        served = hashlib.sha256(open(os.path.join(here, "paper.pdf"), "rb").read()).hexdigest()
+    except OSError:
+        served = None
+    check("landing", "the PDF the landing serves is the PDF deposited as version 3",
+          served, DEPOSITED_V3["pdf_sha256"])
+
+
 def check_published_counts(total):
-    head("Published counts: every surface agrees on how many checks there are")
+    head("Published counts: every surface names the tree its figures come from")
 
     import os
     here = os.path.dirname(os.path.abspath(__file__))
+    wanted = {"live": total, "deposit": DEPOSITED_V3["checks"]}
     for surface in ("README.md", "index.html"):
         text = read_text(os.path.join(here, surface))
-        if text is None:
-            check("count", f"{surface} is present next to this script", False, True)
-            continue
-        published = sorted({int(m) for pattern in PUBLISHED_COUNT_PATTERNS
-                            for m in re.findall(pattern, text)})
-        check("count", f"every check count published in {surface} is the real one",
-              published, [total])
+        for tree in ("live", "deposit"):
+            patterns = [p for s, t, p in PUBLISHED_COUNT_PATTERNS
+                        if s == surface and t == tree]
+            if not patterns:
+                continue
+            if text is None:
+                check("count", f"{surface} is present next to this script", False, True)
+                continue
+            published = sorted({int(m) for pattern in patterns
+                                for m in re.findall(pattern, text)})
+            check("count", f"every {tree}-tree count published in {surface} is the "
+                           f"{'measured' if tree == 'live' else 'deposited'} one",
+                  published, [wanted[tree]])
 
 
 # ---------------------------------------------------------------------------
@@ -2049,10 +2156,13 @@ def main():
     section_floats()
     section_errata()
     section_surfaces()
+    section_landing()
 
-    # The published count has to come last, because it counts itself: the two
-    # assertions it is about to add are part of the number it checks.
-    check_published_counts(len(RESULTS) + 2)
+    # The published count has to come last, because it counts itself: the three
+    # assertions it is about to add are part of the number it checks. Three and not
+    # two since the landing began publishing both trees: the live count and the
+    # deposited one are separate claims and are checked separately.
+    check_published_counts(len(RESULTS) + 3)
 
     passed = sum(1 for r in RESULTS if r)
     failed = len(RESULTS) - passed
