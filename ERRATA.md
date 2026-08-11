@@ -16,11 +16,13 @@ verified after publication by downloading the archive from the record itself, ha
 to that value, extracting it into an empty directory and running the suite there: 270
 checks, 0 failures. **Nothing below is waiting for a deposit.**
 
-**Where it stands, 2026-08-03, after the third deposit.** Twenty-six entries: four
-defects in the paper (E-1 to E-4), four in the deposited package (P-1 to P-4), three
-clarifications for the next version (C-1 to C-3), and fifteen things examined and found
-sound (X-1 to X-15). **All eight defects are now APPLIED**: every one of them is corrected in the
-object deposited as version 3, and each says where. They keep describing the defect as
+**Where it stands, 2026-08-11.** Twenty-nine entries: seven defects in the paper (E-1 to
+E-7), four in the deposited package (P-1 to P-4), three clarifications for the next version
+(C-1 to C-3), and fifteen things examined and found sound (X-1 to X-15). **The eight
+defects found before the third deposit are APPLIED**: every one of them is corrected in the
+object deposited as version 3, and each says where. **Three are OPEN**, E-5 to E-7, all in
+one footnote of Section 6, raised from outside this package on 2026-08-11 and verified here
+before being written; none of them changes a printed figure. They keep describing the defect as
 versions 1 and 2 print it, because that is what a reader holding those versions has in
 front of them. **No figure of the paper changes in any entry**, and that is measured and not
 asserted: every figure reproduces in every tree of the package: 192 of 192 in the first
@@ -235,10 +237,186 @@ them; the package does not perform them, and this round does not add a checker t
 
 # Open entries
 
-`None.` Every defect found so far is corrected in a deposited version and filed under
-**Applied** below, each naming the version that applied it. This part is not deleted when
-it empties: a record whose open section disappears when it is empty cannot be told apart
-from a record that never had one.
+Three, all in one footnote, all raised from outside this package and **all verified here
+before being written down**. They were prepared in another repository, `github.com/Probatorium/walsh-attribution`, file `ERRATA-CANDIDATES.md` at commit
+`1534f8ef3115bfa53fa19032dcb1d51bf7ddec9d`, which
+is public and archived and which never wrote to this package: it read `paper.tex` and
+`verify_paper.py` at the tag `zenodo-v3` and stopped there. Its pointers were checked
+before its prose was used: the two blobs it names, `35995cfd212cc0e632457e589b0cb1769363a94c`
+for `paper.tex` and `100a0e7e93691b9d0989a6f86788fe22894813d7` for `verify_paper.py`, are
+the blobs of this repository at that tag, and the two file digests it prints,
+`9980aa69860dd1253f87180fcfbb305c36a8924886e3c7efb97bc71961b62d55` and
+`cb0c923ece64370cec569d03fdb99cc0d325c09aeba2b94d98b373685995546f`, are their contents.
+**Every claim below was then recomputed here from this package's own code**, and where the
+recomputation says something the source document does not, this file says the extra thing
+rather than repeating the source.
+
+**No printed figure changes in any of the three.** The 77.4 and the 47.6 of that footnote
+are confirmed, and E-7 confirms them a second way. What is wrong in each case is a
+sentence: what the signal is, which orders the comparison is over, and what the comparison
+supports.
+
+---
+
+## E-5. The footnote describes one signal and the package computes its inverse
+
+**Printed text.** `paper.tex` line 241, in the footnote to the opening paragraph of
+Section 6, "Spectral portraits of the five orderings":
+
+> This convention necessarily differs from the natural single-order signal, position maps
+> to King Wen number, used when analyzing the King Wen sequence alone
+
+**What it should say.** That the signal is indexed by the hexagram and takes the position
+as its value: *hexagram maps to its King Wen number*. That is what the package computes,
+and it is the inverse of the map the sentence names.
+
+**Evidence.** `verify_paper.py` lines 856 to 862, unchanged in position from the tag
+`zenodo-v3` to the head of this branch:
+
+```
+856    # The single-order convention, stated in Section 6 for contrast.
+857    kw_numbers = [KW_NUMBER[v] for v in BINARY]
+858    energy = [0.0] * 7
+859    for w in range(N):
+860        coeff = sum(kw_numbers[v] * (-1 if popcount(w & v) & 1 else 1) for v in range(N))
+861        energy[popcount(w)] += coeff * coeff
+862    non_dc = sum(energy) - energy[0]
+```
+
+with `BINARY = list(range(N))` at line 103 and `KW_NUMBER = {v: i + 1 for i, v in
+enumerate(KING_WEN)}` at line 158. So `kw_numbers[v]` is the King Wen number of the
+hexagram whose six-bit value is `v`, and line 860 indexes the Walsh character by `v`, the
+hexagram. Domain: the hexagram as an element of the Boolean cube. Value: its position in
+the received sequence.
+
+*Both readings were computed here rather than argued about.* The signal the code builds
+puts 77.4313 percent of its non-DC energy in orders 2 and 4, which is the printed figure.
+The sentence read literally, applied to the King Wen sequence, says position `k` carries
+King Wen number `k + 1`, which is the identity and therefore affine in the six coordinates:
+**100 percent of its non-DC energy sits at interaction order 1 and orders 2 through 6 hold
+exactly zero.** It cannot produce 77.4, or any figure other than 0.0 for those orders. The
+two readings are not two ways of saying one thing.
+
+**Date found.** 2026-08-11, from outside this package; verified here the same day.
+
+**Figures affected.** None. The printed 77.4 is the figure the code's signal produces.
+
+**Status.** OPEN. Present in version 3, which is the deposit a reader downloads today.
+
+---
+
+## E-6. The share and the baseline of that footnote name different sets of orders
+
+**Printed text.** `paper.tex` line 241, the same footnote, continuing:
+
+> with that signal, the Walsh spectrum of the King Wen ordering concentrates 77.4 percent
+> of its energy in even interaction orders, against 47.6 percent expected for orders
+> $\{2,4\}$ under uniformity, a spectral confirmation of the pair rule.
+
+**What it should say.** *Interaction orders 2 and 4*, in the first clause, so that the
+share and the baseline it is compared against name the same set, which is the set the
+package computes both over. The even interaction orders of a six-variable Boolean function
+are 2, 4 **and 6**.
+
+**Evidence.** `verify_paper.py` lines 863 to 870:
+
+```
+863    even = 100 * (energy[2] + energy[4]) / non_dc
+864    counts = [0] * 7
+865    for w in range(N):
+866        counts[popcount(w)] += 1
+867    uniform = 100 * (counts[2] + counts[4]) / (sum(counts) - counts[0])
+868    check("6", "King Wen number signal: even interaction orders carry 77.4 percent",
+869          round(even, 1), 77.4)
+870    check("6", "uniform expectation for orders {2,4} is 47.6 percent", round(uniform, 1), 47.6)
+```
+
+Order 6 is excluded from the share at line 863 and from the baseline at line 867. The local
+variable is named `even`, and line 868 carries that name into the text of the check, which
+is the most likely path from the code to the word in the manuscript.
+
+*The arithmetic, counted here.* There are `C(6,k)` Walsh characters at order `k`, so the 63
+non-constant characters split 6, 15, 20, 15, 6, 1 across orders 1 to 6. Orders 2 and 4 hold
+**30 of 63 = 0.476190**, which is the printed baseline. The even orders hold **31 of 63 =
+0.492063**, which is 49.2 and is not. The printed baseline is therefore the one its own
+clause names, and the word in the clause before it names a different set.
+
+*And one thing the source of this entry does not say, measured here.* The mistake is in the
+baseline pairing and **not** in the share: on this signal, order 6 carries 0.0183 percent of
+the non-DC energy, so the share over the even orders is 77.4496 against 77.4313 over orders
+2 and 4, and **both round to the printed 77.4**. The sentence is wrong about which set it
+is describing, not about the number it prints. Recording it the other way would overstate
+the defect.
+
+**Date found.** 2026-08-11, from outside this package; verified here the same day.
+
+**Figures affected.** None. Both printed figures are confirmed: 47.6 is exactly 30/63, and
+77.4 is the share to one decimal under either reading of the set.
+
+**Status.** OPEN. Present in version 3, which is the deposit a reader downloads today.
+
+---
+
+## E-7. The attribution clause is offered for a gap the pair rule covers about a third of
+
+**Printed text.** `paper.tex` line 241, the clause that closes the same footnote:
+
+> a spectral confirmation of the pair rule
+
+**What it should say.** What the comparison supports and what it does not. The comparison
+printed is against uniformity, and a comparison against uniformity cannot separate the part
+of the gap that follows from the pair rule from the part that does not, because the pair
+rule is not in it. Separating them takes a null that holds the pair rule fixed, and under
+that null the rule accounts for about a third of the excess. A sentence that says so, for
+example: *a concentration consistent with the pair rule, which under a pair-preserving null
+accounts for about a third of the excess over uniformity, the remainder lying within the
+ordinary variation of that null.*
+
+**Evidence.** **The figures in this entry are CITED, not measured by this package.** They
+come from `github.com/Probatorium/walsh-attribution`, file `ERRATA-CANDIDATES.md` at commit
+`1534f8ef3115bfa53fa19032dcb1d51bf7ddec9d`, which reports them from `results/measurement.json` produced by
+`analysis/measure.py` at a sample size and seed fixed in advance in its own preregistration:
+
+| quantity | value | where it comes from |
+|---|---|---|
+| observed focal share | 0.774313 | cited; **and recomputed here**, identical |
+| mean under the pair-preserving null | 0.580650 | cited |
+| mean under uniformity, exact | 0.476190 | cited; **and it is 30/63 here**, identical |
+| excess over uniformity | 0.298123 | cited |
+| the part the pair rule accounts for | 0.104460 | cited |
+| the part it does not | 0.193663 | cited |
+| share of the excess attributable to the pair rule | 0.3504 | cited |
+| share not attributable to it | 0.6496 | cited |
+
+Their internal arithmetic was checked here and closes exactly: the three differences and
+the two shares all follow from the first three rows. **Two of the rows are not really
+imported at all**, because this package can produce them: the observed share it computes is
+0.774313, and its exact uniform baseline is 30/63 = 0.476190.
+
+*The one row that is genuinely theirs was cross-checked and is not reproduced in this
+entry.* The mean under the pair-preserving null is the one figure that needs their sampler,
+so it stays cited. It was nonetheless recomputed independently here with this package's own
+pair-preserving sampler, the one `section_5` uses, over 20,000 draws at seed 20260722:
+**0.580675**, which sits 0.03 standard errors from the cited 0.580650 and yields 0.3505 and
+0.6495 where they report 0.3504 and 0.6496. That agreement is reported here and is not
+written into the table, because a number this package does not assert does not belong in
+its own column.
+
+**What this entry does not say.** It does not say the attribution is wrong. Conditioning on
+the pair rule raises the expected share by 0.104460, which is a large absolute movement, so
+the attribution is an attribution to something real. It says nothing about the residual
+beyond its size: the source reports the observed value at the 95.535 percentile of the
+pair-preserving family with every declared test failing to clear its corrected level, the
+smallest adjusted p being 0.312583, so the residual is not distinguishable from ordinary
+variation inside that family and no wording taken from this entry should suggest otherwise.
+
+**Date found.** 2026-08-11, from outside this package; its arithmetic and its two
+package-side figures verified here the same day.
+
+**Figures affected.** None. The two figures the footnote prints are confirmed, one of them
+twice. What is corrected is the clause that says what they are evidence of.
+
+**Status.** OPEN. Present in version 3, which is the deposit a reader downloads today.
 
 ---
 
