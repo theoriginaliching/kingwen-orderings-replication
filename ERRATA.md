@@ -93,7 +93,11 @@ is the only public record of it.
 
 ## Status vocabulary
 
-- **OPEN**: found, evidence recorded, not yet deposited.
+- **OPEN**: found, evidence recorded, not yet deposited. **Being in the default branch
+  does not make an entry applied.** The two are different facts: an entry is applied
+  when a deposit carries the correction, and it names that deposit. Since 2026-08-11
+  every entry reaches `main` as soon as it is written, so a reader who takes presence
+  in `main` for a repair would read the record backwards.
 - **APPLIED**: corrected in a deposited version. The entry names that version.
 - **EXAMINED, NOT AN ERRATUM**: something was checked and found to be correct. These
   entries stay. A record that lists only what it found is a record that has dropped
@@ -114,6 +118,9 @@ by the same standard. The prefixes are separate series and none continues anothe
   correct while the package that carries it is not.
 - **C-**: a clarification for the next version. Nothing printed is false.
 - **X-**: examined and found not to be an erratum.
+
+Decisions about the record itself are not entries and carry no prefix of this series. They
+are recorded in their own part at the foot of this file.
 
 The six required fields below govern **E-** and **P-** entries, which are the entries
 that assert a defect. **C-** and **X-** entries carry four: what was examined, the
@@ -255,6 +262,13 @@ rather than repeating the source.
 are confirmed, and E-7 confirms them a second way. What is wrong in each case is a
 sentence: what the signal is, which orders the comparison is over, and what the comparison
 supports.
+
+**These three are in `main` and they are still OPEN.** They are here, in the default branch
+and on the deployed site, because of the decision recorded at the foot of this file, and
+that changes where they can be read and nothing else. Version 3 was deposited on 2026-08-03
+and these were found on 2026-08-11: **no deposit carries their correction**, and none will
+until the next one is made, which the policy on deposits above says is done in a single
+batch and not one entry at a time.
 
 ---
 
@@ -2222,6 +2236,66 @@ exactly the same pages. The first of its two checks exists to fail if that assum
 stops holding.
 
 ---
+
+---
+
+# Decisions about this record
+
+Entries describe the paper and the package. This part describes decisions about the record
+itself: who took them, when, and what they replace. It is at the foot because it is read
+last and changed least.
+
+**These are not entries and are numbered apart.** They carry no status, they assert no
+defect, and the shape check that governs entries does not read them: an identifier of the
+form `E-3` or `X-9` names a thing found in the paper or the package, and a decision is
+neither. Writing one as `D-1` would have put a heading in the file that looks like an
+entry and that the checker silently ignores, which is the shape of defect this log exists
+to catch.
+
+## Decision 1, 11 August 2026: the entries live in `main`
+
+**Decided by** Alexis. **Date** 11 August 2026.
+
+**The decision.** From this date the entries of this log live in `main`, the default branch,
+as soon as they are written. There is no staging of the record on a side branch.
+
+**Why.** The landing that publishes this work deploys from `main`. A log of corrections that
+sits on a lateral branch does not reach the reader who came to verify: that reader arrives
+at the default branch or at the deployed site, and finds a package whose record of its own
+defects is somewhere else. One record, in the place a reader lands.
+
+**What it supersedes, and why that rule expired.** Until then the rule was the opposite:
+the entries stayed on the branch `errata` and were not merged. That rule was taken on
+2026-07-31, and it had a real reason, written into entry E-2 of this file the same day: the
+evidence of an erratum must not rest on code that can move, and while the log was being
+written `main` was the frozen object the entries described. A merge would have moved the
+object under its own description.
+
+**That reason expired when version 3 was deposited.** The entries name their objects by DOI,
+by commit hash and by file hash, and a deposit is frozen whatever any branch does; version 3
+itself already carried the entries written before it. From that point the old rule protected
+nothing and cost the reader the record.
+
+**What was already declared, and what was not.** The merge of `errata` into `main` for the
+version 3 lane was declared in advance, in step (d) of `V3-PLAN.md`, which says in its own
+words that the prohibition is lifted and why, so that it would not be quietly ignored later.
+**What was never declared is the standing rule after that lane closed.** On 2026-08-11 three
+new entries were written to `errata` and `main` did not move; they reached the default branch
+later that day, carried there by an unrelated round that advanced `main` to publish a third
+paper on the landing. A record that arrives in front of readers as a side effect of an
+unrelated change is not a decision, and this entry is the decision it should have been.
+
+**What this decision does NOT change.** It does not change any status. E-5, E-6 and E-7 are
+OPEN: found, with evidence, not deposited. Presence in `main` is not application, and the
+status vocabulary above now says so in its own line.
+
+**One sentence of this file was made false by the merge, and is not rewritten.** Entry E-2,
+in its verification record, says of the derivation script that "the commit lives on a branch
+that is not merged and may never be". It is merged now. The sentence stays as written,
+because entries are not rewritten when the world moves under them, which is the same rule
+that governs every other entry here; what it was there to say is untouched and still true,
+namely that the eight witnesses can be checked by hand against the printed definitions with
+no code and no clone.
 
 ---
 
