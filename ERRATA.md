@@ -2297,6 +2297,35 @@ that governs every other entry here; what it was there to say is untouched and s
 namely that the eight witnesses can be checked by hand against the printed definitions with
 no code and no clone.
 
+## Decision 2, 11 August 2026: the branch `errata` is retired
+
+**Decided by** Alexis. **Date** 11 August 2026, the same day as Decision 1 and as its
+consequence.
+
+**The decision.** The branch `errata` is deleted, locally and on the remote. Work on this
+record happens on `main`.
+
+**Why.** It was a branch of retention, and Decision 1 retired what it was retaining. Keeping
+it costs a promotion step that has already been forgotten once: on this same day three
+entries sat on it for a whole round while `main`, which is the tree a reader lands on and
+the tree the site deploys, did not have them, and they arrived only because an unrelated
+round advanced `main` to publish a third paper. Two names for one commit are also the
+two-truths problem this file warns about, one layer down.
+
+**What is not being said.** That the branch was a mistake. It did the job Decision 1
+describes for as long as that job existed, and the whole version 3 lane was written on it.
+What ends is the job, not the judgement.
+
+**If isolation is needed again**, the shape is a branch created for one piece of work and
+deleted when it merges, not a standing branch that is always meant to equal `main` and that
+someone has to remember to promote.
+
+**State at the moment of the deletion**, recorded so that it can be checked afterwards:
+`main` and `errata` both at `64c8f0807e7be752393221deb684f5a7a78693a7`, working tree
+clean, and the tag `zenodo-v3` at `d6afae20bbefba56728251f34f8e3870c43e2cbd`, which this
+session does not touch. Nothing of the branch is lost by the deletion: every commit it
+carried is an ancestor of `main`.
+
 ---
 
 # The check on this file, specified and now implemented
