@@ -15,6 +15,13 @@
         { "key": "Content-Type", "value": "application/pdf" },
         { "key": "Content-Disposition", "value": "inline; filename=\"uninformative-rungs.pdf\"" }
       ]
+    },
+    {
+      "source": "/forced-counts.pdf",
+      "headers": [
+        { "key": "Content-Type", "value": "application/pdf" },
+        { "key": "Content-Disposition", "value": "inline; filename=\"forced-counts.pdf\"" }
+      ]
     }
   ]
 }

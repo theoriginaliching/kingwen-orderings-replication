@@ -16,9 +16,9 @@ verified after publication by downloading the archive from the record itself, ha
 to that value, extracting it into an empty directory and running the suite there: 270
 checks, 0 failures. **Nothing below is waiting for a deposit.**
 
-**Where it stands, 2026-08-11.** Twenty-nine entries: seven defects in the paper (E-1 to
+**Where it stands, 2026-08-11.** Thirty entries: seven defects in the paper (E-1 to
 E-7), four in the deposited package (P-1 to P-4), three clarifications for the next version
-(C-1 to C-3), and fifteen things examined and found sound (X-1 to X-15). **The eight
+(C-1 to C-3), and sixteen things examined and found sound (X-1 to X-16). **The eight
 defects found before the third deposit are APPLIED**: every one of them is corrected in the
 object deposited as version 3, and each says where. **Three are OPEN**, E-5 to E-7, all in
 one footnote of Section 6, raised from outside this package on 2026-08-11 and verified here
@@ -1300,6 +1300,95 @@ the real directory listing. A check that reports the paper it is protecting as a
 would have been read as noise and disabled.
 
 **Date examined.** 2026-08-03.
+
+**Status.** EXAMINED, NOT AN ERRATUM.
+
+---
+
+## X-16. A third paper on the site, and the boundary held for the second time
+
+**What was examined.** Whether a third work could be added to the papers site under the
+rule X-15 set for the second: the site references and serves, and hosts no source of a work
+whose home is elsewhere.
+
+**Measurement.** The work is *Forced counts: when a symmetry group determines the
+discordance of a constructed ordering*, deposited 2026-08-11, version DOI
+`10.5281/zenodo.21889328`, concept DOI `10.5281/zenodo.21889327`, mirror
+`github.com/Probatorium/forced-counts` with the deposited state at the tag `zenodo-v1`.
+Everything on its page was taken from the deposit and checked before being served:
+
+| what | measured |
+|---|---|
+| the PDF | taken from the record, 370771 bytes, sha256 `87b934d9ddf7b32aa61599dff0492654366305245c27df4465e3d74f7b11733e`, MD5 matching the one the record declares |
+| the abstract | the ten paragraphs of the record's description, verbatim, pinned in the suite |
+| the mirror | public, tag `zenodo-v1` at commit `b4aa58589f4f0ea61774f6516dae846115a7caa1` |
+| the verification block | the commands its own `INFORME.md` and `PROOFS.md` print, not commands invented here, **including the extraction line the pipeline needs first** |
+
+**What is new in the checking, and it is a shape and not a count.** The two foreign papers
+are now a table in `section_landing` rather than two copies of the same four assertions, so
+a fourth costs one row. The intruder check grew the names the third repository would arrive
+under, `PREREGISTRATION.md`, `PROOFS.md`, `INFORME.md`, `declared_values.py`, `measure.py`
+and its bundle, and it still compares against the real directory listing rather than asking
+`os.path.exists`, for the reason X-15 records. Eight mutations were run against the new
+assertions and all eight were caught: a word changed and a paragraph dropped in the
+abstract, a byte flipped and a byte added in the PDF, a wrong deposited tag on the page, a
+wrong `@id` in the index, a page declaring itself canonical for another, and a source file
+of the third work placed in the package.
+
+**One thing worth recording about what the third paper is.** It reads the three orderings of
+this package at the tag `zenodo-v3` and takes no result of this package as an input to its
+computation, which is its own declaration in its `INFORME.md` and is why the two can share a
+site without either becoming a source for the other. Its subject is whether the inversion
+counts this paper reports are forced by the symmetry group each construction respects. That
+question is not settled by anything in this package and no claim about it is made here; the
+page states what the work is and points at it.
+
+**What an adversarial review of this addition found, before it was published.** Six
+independent checks were run against the finished state and each one's findings were then
+handed to a separate reader whose job was to refute them. Most were refuted. Three were
+not, and all three were real:
+
+*The boundary rule was not enforced in depth, and this is the one that mattered.* The check
+that says no source of a foreign work sits in this package read `os.listdir` of the root
+only and compared basenames there, so a file it names passed by sitting one directory down;
+and the inventory check that would have caught a stray file exempts the entire subtree of
+any directory the README table lists, which `errata-evidence/` is. The review did not argue
+this, it did it: seven real files of the third work, its manuscript source included, placed
+inside `errata-evidence/`, and the suite still printed 295 of 295 with the boundary check
+reporting nothing. **The headline rule of this site had never been shown to catch
+anything.** It now walks the whole package and matches basenames wherever they sit, and the
+forbidden names travel inside each work's own row of the `FOREIGN` table rather than in a
+separate literal a fourth paper could be added without touching. Replaying the same attack
+against the repaired check fails it and names the files, in the listed directory and in the
+source tree's natural shape both.
+
+*The verification block did not run.* It printed the four commands of the third
+repository's own pipeline and dropped the line before them, the one that extracts the three
+orderings of the case from the deposited package. From a clean clone at the tag the page
+names, the chain as printed exits 1 on its first command. The line is restored, named as a
+prerequisite rather than as an optional step, and the copy button carries it too.
+
+*The index still described two papers.* Its `meta description` and `og:description`, which
+are what a search result and a shared link print and which nothing in the suite reads, still
+opened with `Two papers:` and enumerated two. Corrected. The third paper's own description
+also said two theorems where its abstract says three; corrected against the abstract.
+
+*And one sentence was making a claim no check could reach.* The King Wen page said the live
+repository "runs 295 checks on branch `main` today", while `main` ran 288 and the gate
+compares against whatever tree is executing it, never against a named branch. A page must
+not print a claim its own apparatus cannot check: the sentence now says the tree the page
+ships in, which is exactly what the gate verifies.
+
+**One finding was raised twice and is refused on purpose.** Neither foreign paper's page
+carries its concept DOI, only the version DOI it is cited by. That is deliberate and it is
+the opposite of the rule this package follows for its own paper. The reason is that this
+site does not control those deposits: it serves bytes pinned by sha256 to one version, and
+a concept DOI resolves to the newest, so the day a v2 appears the page would be pointing at
+a DOI whose bytes it does not serve, with nothing failing. For paper 1 the same site is the
+home, deposit and page move together, and the concept DOI is right. The two rules differ
+because the two situations differ, and both are declared in `IDENTIFIER_COUNTS`.
+
+**Date examined.** 2026-08-11.
 
 **Status.** EXAMINED, NOT AN ERRATUM.
 

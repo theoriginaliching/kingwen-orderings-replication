@@ -2,5 +2,6 @@ User-agent: *
 Allow: /
 Allow: /paper.pdf
 Allow: /uninformative-rungs.pdf
+Allow: /forced-counts.pdf
 
 Sitemap: https://paper.theoriginaliching.com/sitemap.xml

@@ -15,4 +15,9 @@
     <changefreq>yearly</changefreq>
     <priority>1.0</priority>
   </url>
+  <url>
+    <loc>https://paper.theoriginaliching.com/forced-counts</loc>
+    <changefreq>yearly</changefreq>
+    <priority>1.0</priority>
+  </url>
 </urlset>

@@ -33,14 +33,16 @@ that the archive and the site are the same object.
 | `kingwen-orderings.html` | The page of this paper. Read by the suite, which checks that it repeats the front matter exactly and prints the deposited abstract word for word |
 | `uninformative-rungs.html` | The page of the companion paper, whose source is **not** here: this site references it and serves the PDF its Zenodo deposit publishes |
 | `uninformative-rungs.pdf` | That deposited PDF, byte for byte from the record. The suite pins its sha256 |
-| `style.css` | One stylesheet for the three pages. It lived inside the landing when there was one page; with three, duplicating it was a guarantee that they would drift |
+| `forced-counts.html` | The page of the second companion paper, whose source is **not** here either: same rule, referenced and served, never hosted |
+| `forced-counts.pdf` | That deposited PDF, byte for byte from the record. The suite pins its sha256 |
+| `style.css` | One stylesheet for the four pages. It lived inside the landing when there was one page; with three, duplicating it was a guarantee that they would drift |
 | `logo-128.webp` | Site logotype, 128 by 128, used by the social card |
 | `favicon.ico` | The tab icon. The same file the other two properties of the project serve, not a re-encoding: an icon that differs between subdomains reads as a different site |
 | `icon.png` | The same mark at 512 by 512, for the browsers that prefer PNG |
 | `apple-icon.png` | The same mark at 180 by 180, for the iOS home screen |
-| `vercel.json` | Deployment configuration: content type and inline disposition for the two PDFs |
+| `vercel.json` | Deployment configuration: content type and inline disposition for the three PDFs |
 | `robots.txt` | Crawler directives; points at the sitemap |
-| `sitemap.xml` | Three URLs: the index and the two papers |
+| `sitemap.xml` | Four URLs: the index and the three papers |
 
 **Record and evidence.** What documents the package rather than running it.
 
@@ -94,7 +96,7 @@ the landing page quotes a total the suite no longer produces, and it names both 
 
 ```
 ==================================================================
-  288 checks passed, 0 failed, 288 total
+  295 checks passed, 0 failed, 295 total
 ==================================================================
   REPLICATION COMPLETE: every figure in the paper reproduces.
 ```
@@ -186,7 +188,7 @@ sed 's/"Qian", "Gen", "Kan"/"Qian", "Kan", "Gen"/' verify_paper.py > mutant.py &
 |---|---|---|
 | (a) one flipped bit | `0`, the King Wen ordering is a permutation of 0 to 63 | 12 of the first 43 checks fail, then the run aborts with `KeyError: 63` in Section 4 |
 | (b) duplicated hexagram | `0`, the King Wen ordering is a permutation of 0 to 63 | 12 of the first 43 checks fail, then the run aborts with `KeyError: 0` |
-| (c) Mawangdui family swapped | `3.1`, Mawangdui inversions vs binary | the run completes and reports `270 checks passed, 18 failed, 288 total` |
+| (c) Mawangdui family swapped | `3.1`, Mawangdui inversions vs binary | the run completes and reports `277 checks passed, 18 failed, 295 total` |
 
 Exit status is `1` in all three cases. Note the shape of (a) and (b): a corrupted King Wen
 table is no longer a permutation of the 64 values, Section 0 says so before any statistic is

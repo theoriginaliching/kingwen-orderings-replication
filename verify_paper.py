@@ -1957,6 +1957,9 @@ IDENTIFIER_COUNTS = (
     ("index.html", "10.5281/zenodo.21750029", 1, "the version DOI of the second paper, which is the one it is cited by"),
     ("uninformative-rungs.html", "10.5281/zenodo.21750029", 5, "its own version DOI: the archived link twice, the JSON-LD identifier and sameAs, and the BibTeX"),
     ("uninformative-rungs.html", "10.5281/zenodo.21609653", 0, "not the concept DOI of the other paper: the link to the worked case is a path and not a DOI"),
+    ("forced-counts.html", "10.5281/zenodo.21889328", 5, "its own version DOI: the archived link twice, the JSON-LD identifier and sameAs, and the BibTeX"),
+    ("forced-counts.html", "10.5281/zenodo.21609653", 0, "not the concept DOI of the case it reads: that link is a path, and the tag it names is a git tag"),
+    ("index.html", "10.5281/zenodo.21889328", 1, "the version DOI of the third paper, in its card"),
     ("kingwen-orderings.html", "10.5281/zenodo.21609654", 0, "no version DOI at all"),
     # The landing carried NO version DOI at all until the verification block began
     # naming the tree its run comes from. Naming a tree and not saying which deposit it
@@ -2046,7 +2049,7 @@ PUBLISHED_COUNT_PATTERNS = (
     ("README.md", "live", r"\d+ checks passed, \d+ failed, (\d+) total"),
     ("kingwen-orderings.html", "deposit", r"(\d+) checks passed, 0 failed, \d+ total"),
     ("kingwen-orderings.html", "deposit", r"\((\d+) checks in the deposited version 3, standard library only\)"),
-    ("kingwen-orderings.html", "live", r"runs <strong>(\d+) checks</strong> on branch"),
+    ("kingwen-orderings.html", "live", r"runs <strong>(\d+) checks</strong> in the tree this page ships in"),
 )
 
 
@@ -2062,6 +2065,10 @@ DEPOSITED_RUNGS = {
     "tag": "zenodo-10.5281-zenodo.21750029",
     "pdf_sha256": "77043504f28adf89ef3d8b18cbe70f652f5077481daf2a394ab524a7d5986439",
     "pdf_bytes": 444350,
+    #: The names its source would arrive under. They travel with the work rather than
+    #: in a separate list, so a fourth paper cannot be added while forgetting them.
+    "source_names": ("PASSAGES.md", "assemble.py", "verify_paper2.py", "mutate_verify.py",
+                     "PAPER.tex", "PAPER.md", "PAPER.pdf", "null-ladder-history.bundle"),
 }
 
 #: Its abstract, as the Zenodo record prints it, paragraph by paragraph. It is here
@@ -2078,9 +2085,51 @@ DEPOSITED_RUNGS_ABSTRACT = (
 )
 
 
+#: The third paper, on the same footing as the second: its home is
+#: github.com/Probatorium/forced-counts plus its Zenodo deposit, and this landing
+#: references it and serves the PDF that deposit publishes. It reads the King Wen
+#: package at the tag zenodo-v3 and takes no result of it as an input, which is
+#: its own declaration and is recorded here because it is why the two can sit on
+#: one site without either becoming a source for the other.
+DEPOSITED_FORCED = {
+    "doi": "10.5281/zenodo.21889328",
+    "date": "2026-08-11",
+    "mirror": "https://github.com/Probatorium/forced-counts",
+    "tag": "zenodo-v1",
+    "pdf_sha256": "87b934d9ddf7b32aa61599dff0492654366305245c27df4465e3d74f7b11733e",
+    "pdf_bytes": 370771,
+    "source_names": ("PAPER.tex", "PAPER.md", "PAPER.pdf", "forced-counts.bundle",
+                     "PREREGISTRATION.md", "PROOFS.md", "INFORME.md", "NOVELTY.md",
+                     "PRIOR-ART.md", "VERIFICATIONS.md", "declared_values.py",
+                     "measure.py", "group.py", "proofs.py", "assemble_paper.py",
+                     "build_paper.py", "extract_sequences.py"),
+}
+
+#: Its abstract, as the Zenodo record prints it, paragraph by paragraph.
+DEPOSITED_FORCED_ABSTRACT = (
+    "We count the discordant pairs of an ordering against the binary order of the vertices of the n-cube, in the standard sense of rank correlation, and ask when that count is determined by the subgroup of the hyperoctahedral group B_n that the construction of the ordering respects.",
+    "The apparatus is an accounting over the orbits of that subgroup acting on pairs of positions. Each orbit is either forced, contributing exactly half its cardinality whatever else happens, or free, contributing one of two values. A group can therefore only ever force the midpoint of the range, never any other value; equivalently, it can only force Kendall's tau against the binary order to be exactly zero.",
+    "Two theorems remove the apparatus once it has been built. An orbit is forced precisely when it contains as many discordant pairs as concordant ones; and when the subgroup contains all translations, an ordering is forced precisely when every difference class splits exactly in two. A third result cuts the other way: if the subgroup contains the translations by a subspace of dimension at least two, every orbit has even cardinality, so the parity of the count is fixed by the structure, and when that parity differs from the parity of the midpoint the midpoint becomes impossible rather than merely unattained. The dimension hypothesis is necessary, by an exhibited witness.",
+    "The apparatus and its three theorems are the contribution; what follows is where they came from and what they first settled.",
+    "Applied to three constructed orderings of the 6-cube that have come down to us, with 2016 pairs and a midpoint of 1008, the three outcomes all occur. Two of the constructions force the count to 1008, and for one of them the demonstration is complete with no enumerative residue; a mechanism previously claimed for the other is refuted here, since the closure it rests on forces only 484 of the 2016 pairs and survives rearrangements that destroy the result, the midpoint coming out in 3836 of the 40320 of them. The third construction makes 1008 impossible by the parity obstruction: its structure leaves the interval [957, 1059] and exactly 52 compatible totals within it, 1008 is not among them, and the observed count is 1013.",
+    "That difference of 5 is decomposed completely over the 19 free orbits and has no culprit: every free orbit deviates, and the deviations nearly cancel. Against a list of candidate structures declared before measuring, one narrows the interval, namely the construction's own pairing involution, which is not affine and so was absent from a group that is exactly its centraliser; none explains the difference. We therefore declare the residue informative relative to that list, and stop.",
+    "A landscape of 14 rows over block systems in dimensions three to six populates the three outcomes away from the historical cases and records two refutations of shapes we tried to raise into theorems, one of them of an error of our own.",
+    "Every measurement was preceded, in an earlier commit of a public repository, by a written statement of what was going to be measured and, where predictions were made, of what would refute them, and that ordering is checkable.",
+    "Replication repository: https://github.com/Probatorium/forced-counts",
+    "The deposited bundle contains the full commit history; two third-party data files are filtered from it, as declared in the manifest dist/THIRD-PARTY.md.",
+)
+
+
 def _landing_abstract(html):
-    """The landing's abstract, as text, with its HTML entities resolved."""
-    m = re.search(r'<div class="abstract">(.*?)</div>', html, re.S)
+    """The landing's abstract, as text, with its HTML entities resolved.
+
+    A page must carry exactly one abstract block. Reading the first and ignoring the
+    rest would let a second block sit below the checked one, saying anything, with the
+    comparison still passing: the review found that hole by writing the second block."""
+    blocks = re.findall(r'<div class="abstract">(.*?)</div>', html, re.S)
+    if len(blocks) != 1:
+        return "%d abstract blocks, expected exactly one" % len(blocks)
+    m = re.match(r"(.*)", blocks[0], re.S)
     if m is None:
         return None
     text = re.sub(r"<[^>]+>", "", m.group(1))
@@ -2103,7 +2152,7 @@ def _tex_abstract(tex):
 def section_landing():
     """The landing pages are the face of the papers, and they may not paraphrase them.
 
-    Two papers now, one page each, and an index above them. The form is an index with
+    Three papers now, one page each, and an index above them. The form is an index with
     subpages and not a selector on one URL, because a selector would put two works under
     one canonical URL and canonical, JSON-LD and Open Graph can each describe exactly one.
 
@@ -2120,7 +2169,7 @@ def section_landing():
     deposit exists to pin it to. That is the intended behaviour: a page carrying a citable
     DOI must serve the bytes that DOI resolves to. The repair is to deposit, not to edit
     the constant."""
-    head("The landing pages: two papers, each deposited abstract and each deposited PDF")
+    head("The landing pages: each deposited abstract, and each deposited PDF")
 
     import hashlib
     import os
@@ -2143,35 +2192,56 @@ def section_landing():
     check("landing", "the PDF the King Wen page serves is the one deposited as version 3",
           served("paper.pdf"), DEPOSITED_V3["pdf_sha256"])
 
-    # --- paper 2, whose home this is NOT: compared against its Zenodo record
-    page2 = read_text(os.path.join(here, "uninformative-rungs.html"))
-    if page2 is None:
-        check("landing", "the second paper's page is present", False, True)
-    else:
-        check("landing", "the rungs page prints the abstract of its deposit, word for word",
-              _landing_abstract(page2), " ".join(DEPOSITED_RUNGS_ABSTRACT))
-    check("landing", "the PDF the rungs page serves is the one deposited at Zenodo",
-          served("uninformative-rungs.pdf"), DEPOSITED_RUNGS["pdf_sha256"])
-    try:
-        size = os.path.getsize(os.path.join(here, "uninformative-rungs.pdf"))
-    except OSError:
-        size = None
-    check("landing", "and it is the deposited length", size, DEPOSITED_RUNGS["pdf_bytes"])
-
-    # --- the second paper's home is named on its own page, and its source is not here
-    if page2 is not None:
-        named = all(s in page2 for s in (DEPOSITED_RUNGS["mirror"], DEPOSITED_RUNGS["tag"],
-                                         DEPOSITED_RUNGS["doi"]))
-        check("landing", "the rungs page names its mirror, its deposited tag and its DOI",
+    # --- the papers whose home this is NOT: compared against their Zenodo records
+    #
+    # Two of them now, and the shape is a table rather than a second copy of the same
+    # four checks. Each row is a deposit this site serves without hosting: the page that
+    # prints its abstract, the PDF it serves, and the constants pinned to that deposit.
+    FOREIGN = (
+        ("rungs", "uninformative-rungs", DEPOSITED_RUNGS, DEPOSITED_RUNGS_ABSTRACT),
+        ("forced counts", "forced-counts", DEPOSITED_FORCED, DEPOSITED_FORCED_ABSTRACT),
+    )
+    for name, slug, deposit, abstract in FOREIGN:
+        page = read_text(os.path.join(here, slug + ".html"))
+        if page is None:
+            check("landing", f"the {name} page is present", False, True)
+        else:
+            check("landing", f"the {name} page prints the abstract of its deposit, "
+                             "word for word",
+                  _landing_abstract(page), " ".join(abstract))
+        check("landing", f"the PDF the {name} page serves is the one deposited at Zenodo",
+              served(slug + ".pdf"), deposit["pdf_sha256"])
+        try:
+            size = os.path.getsize(os.path.join(here, slug + ".pdf"))
+        except OSError:
+            size = None
+        check("landing", f"and the {name} PDF is the deposited length",
+              size, deposit["pdf_bytes"])
+        named = page is not None and all(
+            s in page for s in (deposit["mirror"], deposit["tag"], deposit["doi"]))
+        check("landing", f"the {name} page names its mirror, its deposited tag and its DOI",
               named, True)
-    # Compared against the real listing and not with os.path.exists, which on a
-    # case-insensitive filesystem answers yes to PAPER.tex when what is there is
-    # paper.tex, and would report the first paper as an intruder from the second.
-    listing = set(os.listdir(here))
-    intruders = sorted({"PASSAGES.md", "assemble.py", "verify_paper2.py",
-                        "mutate_verify.py", "PAPER.tex", "PAPER.md", "PAPER.pdf",
-                        "null-ladder-history.bundle"} & listing)
-    check("landing", "no source of the second paper has crept into this package",
+
+    # No source of a work hosted elsewhere may sit in this package, ANYWHERE in it.
+    #
+    # This check was written flat and was defeated by one directory. It read
+    # os.listdir(here), the root only, so a file named in the list below passed by
+    # sitting in a subdirectory; and the inventory check that would otherwise have
+    # caught the stray file exempts the whole subtree of any directory the README
+    # table lists, which errata-evidence/ is. The two holes together let the third
+    # work's complete source sit in the package with the suite green, which an
+    # adversarial review demonstrated rather than argued: seven of its real files,
+    # PAPER.tex included, inside errata-evidence/, and 295 of 295 still passed.
+    #
+    # It now walks the whole package and compares basenames wherever they sit, and
+    # each foreign work carries its own forbidden names in its FOREIGN row, so adding
+    # a fourth paper cannot forget them in a separate literal. Compared against a real
+    # walk and not with os.path.exists, which on a case-insensitive filesystem answers
+    # yes to PAPER.tex when what is there is this paper's own paper.tex.
+    forbidden = {n for _, _, deposit, _ in FOREIGN for n in deposit["source_names"]}
+    intruders = sorted({p for p in package_files(here)
+                        if p.rsplit("/", 1)[-1] in forbidden})
+    check("landing", "no source of a work hosted elsewhere sits anywhere in this package",
           intruders, [])
 
     # --- the index describes the collection and points at both works by their own @id
@@ -2186,13 +2256,15 @@ def section_landing():
                 linked = sorted(p.get("@id", "") for p in data.get("hasPart", []))
             except ValueError:
                 linked = ["unparseable"]
-    check("landing", "the index describes the collection and links both works by @id",
-          linked, ["https://paper.theoriginaliching.com/kingwen-orderings",
+    check("landing", "the index describes the collection and links every work by @id",
+          linked, ["https://paper.theoriginaliching.com/forced-counts",
+                   "https://paper.theoriginaliching.com/kingwen-orderings",
                    "https://paper.theoriginaliching.com/uninformative-rungs"])
 
     # --- one canonical per page, each its own: this is the whole reason for subpages
     canon = []
-    for name in ("index.html", "kingwen-orderings.html", "uninformative-rungs.html"):
+    for name in ("index.html", "kingwen-orderings.html", "uninformative-rungs.html",
+                 "forced-counts.html"):
         text = read_text(os.path.join(here, name))
         found = re.findall(r'<link rel="canonical" href="([^"]+)">', text or "")
         canon.append((name, found))
@@ -2200,7 +2272,8 @@ def section_landing():
           canon,
           [("index.html", ["https://paper.theoriginaliching.com/"]),
            ("kingwen-orderings.html", ["https://paper.theoriginaliching.com/kingwen-orderings"]),
-           ("uninformative-rungs.html", ["https://paper.theoriginaliching.com/uninformative-rungs"])])
+           ("uninformative-rungs.html", ["https://paper.theoriginaliching.com/uninformative-rungs"]),
+           ("forced-counts.html", ["https://paper.theoriginaliching.com/forced-counts"])])
 
 
 def check_published_counts(total):

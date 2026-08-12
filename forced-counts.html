@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forced counts: when a symmetry group determines the discordance of a constructed ordering</title>
+<meta name="description" content="An orbit accounting under the affine subgroup a construction respects, and three theorems that say when the inversion count against the binary order is forced and when it is free. Instantiated on three received orderings of the 6-cube.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Forced counts: when a symmetry group determines the discordance of a constructed ordering">
+<meta property="og:description" content="An orbit accounting under the affine subgroup a construction respects, and three theorems that say when the inversion count against the binary order is forced and when it is free. Instantiated on three received orderings of the 6-cube.">
+<meta property="og:url" content="https://paper.theoriginaliching.com/forced-counts">
+<meta property="og:image" content="https://paper.theoriginaliching.com/logo-128.webp">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/icon.png" type="image/png" sizes="512x512">
+<link rel="apple-touch-icon" href="/apple-icon.png" sizes="180x180">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Inter:wght@400;500&family=Noto+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="canonical" href="https://paper.theoriginaliching.com/forced-counts">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  "@id": "https://paper.theoriginaliching.com/forced-counts",
+  "headline": "Forced counts: when a symmetry group determines the discordance of a constructed ordering",
+  "author": {
+    "@type": "Person",
+    "name": "Alexis García Hurtado",
+    "identifier": "https://orcid.org/0009-0003-4636-8206"
+  },
+  "datePublished": "2026-08-11",
+  "identifier": "https://doi.org/10.5281/zenodo.21889328",
+  "sameAs": [
+    "https://doi.org/10.5281/zenodo.21889328",
+    "https://github.com/Probatorium/forced-counts"
+  ],
+  "url": "https://paper.theoriginaliching.com/forced-counts",
+  "inLanguage": "en",
+  "license": "https://creativecommons.org/licenses/by/4.0/"
+}
+</script>
+</head>
+<body>
+
+<div class="bar">
+  <div class="bar-in">
+    <a class="brand" href="https://theoriginaliching.com">
+      <img src="logo-128.webp" alt="" width="128" height="128">
+      <span class="name">The Original I Ching</span>
+    </a>
+    <nav><a href="/">Papers</a> <a href="https://experiments.theoriginaliching.com/en">Laboratory</a></nav>
+  </div>
+</div>
+
+<main>
+
+  <div class="kicker">Preprint &middot; method</div>
+
+  <h1>
+    Forced counts
+    <span class="sub">When a symmetry group determines the discordance of a constructed ordering</span>
+  </h1>
+
+  <div class="author">
+    Alexis Garc&iacute;a Hurtado &middot; Independent Researcher, Gatineau, Qu&eacute;bec, Canada
+    &middot; <a href="https://orcid.org/0009-0003-4636-8206">ORCID 0009-0003-4636-8206</a>
+  </div>
+
+  <div class="abstract">
+    <p>We count the discordant pairs of an ordering against the binary order of the vertices of the n-cube, in the standard sense of rank correlation, and ask when that count is determined by the subgroup of the hyperoctahedral group B_n that the construction of the ordering respects.</p>
+    <p>The apparatus is an accounting over the orbits of that subgroup acting on pairs of positions. Each orbit is either forced, contributing exactly half its cardinality whatever else happens, or free, contributing one of two values. A group can therefore only ever force the midpoint of the range, never any other value; equivalently, it can only force Kendall's tau against the binary order to be exactly zero.</p>
+    <p>Two theorems remove the apparatus once it has been built. An orbit is forced precisely when it contains as many discordant pairs as concordant ones; and when the subgroup contains all translations, an ordering is forced precisely when every difference class splits exactly in two. A third result cuts the other way: if the subgroup contains the translations by a subspace of dimension at least two, every orbit has even cardinality, so the parity of the count is fixed by the structure, and when that parity differs from the parity of the midpoint the midpoint becomes impossible rather than merely unattained. The dimension hypothesis is necessary, by an exhibited witness.</p>
+    <p>The apparatus and its three theorems are the contribution; what follows is where they came from and what they first settled.</p>
+    <p>Applied to three constructed orderings of the 6-cube that have come down to us, with 2016 pairs and a midpoint of 1008, the three outcomes all occur. Two of the constructions force the count to 1008, and for one of them the demonstration is complete with no enumerative residue; a mechanism previously claimed for the other is refuted here, since the closure it rests on forces only 484 of the 2016 pairs and survives rearrangements that destroy the result, the midpoint coming out in 3836 of the 40320 of them. The third construction makes 1008 impossible by the parity obstruction: its structure leaves the interval [957, 1059] and exactly 52 compatible totals within it, 1008 is not among them, and the observed count is 1013.</p>
+    <p>That difference of 5 is decomposed completely over the 19 free orbits and has no culprit: every free orbit deviates, and the deviations nearly cancel. Against a list of candidate structures declared before measuring, one narrows the interval, namely the construction's own pairing involution, which is not affine and so was absent from a group that is exactly its centraliser; none explains the difference. We therefore declare the residue informative relative to that list, and stop.</p>
+    <p>A landscape of 14 rows over block systems in dimensions three to six populates the three outcomes away from the historical cases and records two refutations of shapes we tried to raise into theorems, one of them of an error of our own.</p>
+    <p>Every measurement was preceded, in an earlier commit of a public repository, by a written statement of what was going to be measured and, where predictions were made, of what would refute them, and that ordering is checkable.</p>
+    <p>Replication repository: https://github.com/Probatorium/forced-counts</p>
+    <p>The deposited bundle contains the full commit history; two third-party data files are filtered from it, as declared in the manifest dist/THIRD-PARTY.md.</p>
+  </div>
+
+  <h2>Where this comes from</h2>
+  <p class="findings">
+    A second method paper with the King Wen work as its case: it asks which of the counts
+    reported in <a href="/kingwen-orderings">that paper</a> a construction's own symmetry
+    group already fixes. The three orderings it reads are taken from that package at the
+    tag <code>zenodo-v3</code>, and no result of that package enters its computation.
+  </p>
+
+  <div class="actions">
+    <a class="btn primary" href="forced-counts.pdf">Download PDF</a>
+    <a class="btn" href="https://github.com/Probatorium/forced-counts">Working repository</a>
+  </div>
+
+  <h2>Resources</h2>
+  <ul class="links">
+    <li>
+      <a href="https://doi.org/10.5281/zenodo.21889328">Archived version</a>
+      <span class="note">&middot; 10.5281/zenodo.21889328 &middot; deposited 2026-08-11 &middot; the version this page serves and the one to cite</span>
+    </li>
+    <li>
+      <a href="https://github.com/Probatorium/forced-counts">Working repository, instruments and preregistration</a>
+      <span class="note">&middot; the deposited state is the tag <code>zenodo-v1</code>, and the deposit carries the full commit history as a bundle</span>
+    </li>
+    <li>
+      <a href="/kingwen-orderings">The case it is instantiated on</a>
+      <span class="note">&middot; the King Wen paper, whose three orderings this one reads at the tag <code>zenodo-v3</code></span>
+    </li>
+  </ul>
+
+  <h2>Verification</h2>
+  <p class="findings">Clone the working repository at the tag above and run the pipeline its own documents give, in <code>INFORME.md</code> and <code>PROOFS.md</code>. The first line is the prerequisite the pipeline needs and not an optional step: the three orderings are extracted from the deposited package of the case, read at its tag, so <code>&lt;source&gt;</code> is a clone of that package. The rest recompute every figure the paper prints, and <code>src/declared_values.py</code> refuses any printed figure that does not come from a line of <code>results/</code> produced there.</p>
+  <div class="copywrap">
+    <button class="copy" type="button" aria-live="polite"
+            aria-label="Copy the verification commands" data-copy-text="git --git-dir=&lt;source&gt;/.git archive --format=tar zenodo-v3 | tar -x -C _source/zenodo-v3&#10;python tools/extract_sequences.py&#10;python src/measure.py&#10;python src/group.py&#10;python src/proofs.py">Copy</button>
+    <pre>git --git-dir=&lt;source&gt;/.git archive --format=tar zenodo-v3 | tar -x -C _source/zenodo-v3
+python tools/extract_sequences.py
+python src/measure.py
+python src/group.py
+python src/proofs.py</pre>
+  </div>
+
+  <h2>Citation</h2>
+  <div class="copywrap">
+    <button class="copy" type="button" aria-live="polite"
+            aria-label="Copy the BibTeX entry" data-copy-target="bibtex">Copy</button>
+    <pre id="bibtex">@misc{forced-counts,
+  title  = {Forced counts: when a symmetry group determines the discordance of a constructed ordering},
+  author = {Garc\'ia Hurtado, Alexis},
+  year   = {2026},
+  doi    = {10.5281/zenodo.21889328},
+  note   = {Preprint}
+}</pre>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-in">
+    Part of <a href="https://theoriginaliching.com">The Original I Ching</a>. Code under the
+    MIT License; paper text and figures under
+    <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+  </div>
+</footer>
+<script>
+// Botones de copia: sin dependencias, con vuelta a execCommand donde no haya
+// clipboard API (o donde el navegador la niegue por permisos).
+(function () {
+  function fallback(text) {
+    var area = document.createElement("textarea");
+    area.value = text;
+    area.setAttribute("readonly", "");
+    area.style.position = "fixed";
+    area.style.top = "-1000px";
+    area.style.opacity = "0";
+    document.body.appendChild(area);
+    area.select();
+    try { document.execCommand("copy"); } catch (e) {}
+    document.body.removeChild(area);
+  }
+  function flash(button) {
+    button.textContent = "Copied";
+    button.classList.add("done");
+    window.setTimeout(function () {
+      button.textContent = "Copy";
+      button.classList.remove("done");
+    }, 1500);
+  }
+  var buttons = document.querySelectorAll("button.copy");
+  for (var i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener("click", function () {
+      var button = this;
+      var text = button.getAttribute("data-copy-text");
+      if (text === null) {
+        var target = document.getElementById(button.getAttribute("data-copy-target"));
+        text = target ? target.textContent : "";
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(
+          function () { flash(button); },
+          function () { fallback(text); flash(button); }
+        );
+      } else {
+        fallback(text);
+        flash(button);
+      }
+    });
+  }
+})();
+</script>
+</body>
+</html>
