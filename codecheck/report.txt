@@ -1,0 +1,664 @@
+# Transcript of `python verify_paper.py`, captured by codecheck_run.py.
+# verify_paper.py itself writes nothing. This file is a record of what
+# it printed, not an output of it. See the module docstring.
+# date (UTC): 2026-08-13T19:56:39Z
+# commit: 893335197af9b2efa05db1720eb67f825c7c44ca
+# result: PASS
+#
+Replication of: Statistical Structure of the Historical Orderings
+                of the I Ching Hexagrams
+
+Self-contained verification. Every figure printed in the paper is recomputed
+here from the embedded King Wen sequence and the documented construction rules.
+
+Section 0: structural invariants of the encoding and the orderings
+------------------------------------------------------------------
+  [PASS] 0     reversal is an involution on all 64 hexagrams
+         reproduced: True   paper: True
+  [PASS] 0     complementation is an involution on all 64 hexagrams
+         reproduced: True   paper: True
+  [PASS] 0     reversal and complementation commute; their composition is an involution
+         reproduced: True   paper: True
+  [PASS] 0     the King Wen ordering is a permutation of 0 to 63 (no repeats, none missing)
+         reproduced: (64, True)   paper: (64, True)
+  [PASS] 0     the Mawangdui ordering is a permutation of 0 to 63 (no repeats, none missing)
+         reproduced: (64, True)   paper: (64, True)
+  [PASS] 0     the Jing Fang ordering is a permutation of 0 to 63 (no repeats, none missing)
+         reproduced: (64, True)   paper: (64, True)
+  [PASS] 0     the binary ordering is a permutation of 0 to 63 (no repeats, none missing)
+         reproduced: (64, True)   paper: (64, True)
+  [PASS] 0     the Gray ordering is a permutation of 0 to 63 (no repeats, none missing)
+         reproduced: (64, True)   paper: (64, True)
+  [PASS] 0     hexagrams invariant under reversal
+         reproduced: 8   paper: 8
+  [PASS] 0     King Wen pairs made of two palindromes
+         reproduced: 4   paper: 4
+  [PASS] 0     the 32 pairs partition positions 1 to 64
+         reproduced: (64, 64, True)   paper: (64, 64, True)
+  [PASS] 0     every pair is matched by reversal or by complementation
+         reproduced: True   paper: True
+
+Section 3: distance to the binary ordering, an exact-randomness tie
+-------------------------------------------------------------------
+  [PASS] 3     random expectation of inversions is n(n-1)/4
+         reproduced: 1008.0   paper: 1008.0
+  [PASS] 3     standard deviation sqrt(n(n-1)(2n+5)/72)
+         reproduced: 86.3   paper: 86.3
+  [PASS] 3     maximum inversion count
+         reproduced: 2016   paper: 2016
+  [PASS] 3     sum of the values 0 to 63 equals the number of pairs C(64,2)
+         reproduced: (2016, 2016)   paper: (2016, 2016)
+  [PASS] 3     both halve to 1008, the random expectation of the inversion count
+         reproduced: (1008, 1008)   paper: (1008, 1008)
+  [PASS] 3.1   King Wen inversions vs binary
+         reproduced: 1013   paper: 1013
+  [PASS] 3.1   Mawangdui inversions vs binary
+         reproduced: 1008   paper: 1008
+  [PASS] 3.1   Jing Fang inversions vs binary
+         reproduced: 1008   paper: 1008
+  [PASS] 3.1   King Wen Kendall tau
+         reproduced: -0.005   paper: -0.005
+  [PASS] 3.1   Mawangdui Kendall tau exactly zero
+         reproduced: 0.0   paper: 0.0
+  [PASS] 3.1   Jing Fang Kendall tau exactly zero
+         reproduced: 0.0   paper: 0.0
+  [PASS] 3.1   the binary row of Table 1: binary against itself
+         reproduced: (0, 1.0)   paper: (0, 1.0)
+  [PASS] 3.1   all three within 0.06 sd of the expectation
+         reproduced: True   paper: True
+  [PASS] 3     adjacent Hamming cost, Gray (theoretical minimum)
+         reproduced: 63   paper: 63
+  [PASS] 3     adjacent Hamming cost, Jing Fang
+         reproduced: 93   paper: 93
+  [PASS] 3     adjacent Hamming cost, binary
+         reproduced: 120   paper: 120
+  [PASS] 3     adjacent Hamming cost, Mawangdui
+         reproduced: 141   paper: 141
+  [PASS] 3     adjacent Hamming cost, King Wen (the roughest walk)
+         reproduced: 211   paper: 211
+
+Section 4: the kinship of the two oldest orderings, and its mechanism
+---------------------------------------------------------------------
+  [PASS] 4.1   King Wen to Mawangdui inversions
+         reproduced: 759   paper: 759
+  [PASS] 4.1   King Wen to Jing Fang inversions
+         reproduced: 909   paper: 909
+  [PASS] 4.1   Mawangdui to Jing Fang inversions
+         reproduced: 872   paper: 872
+  [PASS] 4.1   King Wen to Mawangdui z-score
+         reproduced: -2.89   paper: -2.89
+  [PASS] 4.1   King Wen to Jing Fang z-score
+         reproduced: -1.15   paper: -1.15
+  [PASS] 4.1   Mawangdui to Jing Fang z-score
+         reproduced: -1.58   paper: -1.58
+  [PASS] 4.1   Monte Carlo p for King Wen to Mawangdui (20,000 samples)
+         reproduced: 0.0034   paper: 0.0034
+  [PASS] 4.1   Bonferroni-corrected p over 3 comparisons stays below 0.05
+         reproduced: 0.0102   paper: 0.0102
+  [PASS] 4.1   Bonferroni over all 10 pairwise comparisons stays below 0.05
+         reproduced: 0.034   paper: 0.034
+  [PASS] 4.1   Monte Carlo confirms the closed-form expectation and sd
+         reproduced: (1007, 86)   paper: (1008, 86)
+  [PASS] 4.2   King Wen pairs adjacent in Mawangdui
+         reproduced: 0   paper: 0
+  [PASS] 4.2   King Wen pairs sharing a Mawangdui octet
+         reproduced: 0   paper: 0
+  [PASS] 4.2   mean positional separation of pair partners
+         reproduced: 24.4   paper: 24.4
+  [PASS] 4.2   random expectation (n+1)/3
+         reproduced: 21.7   paper: 21.7
+  [PASS] 4.3   hexagram pairs within a common octet
+         reproduced: 224   paper: 224
+  [PASS] 4.3   discordant pairs within octets
+         reproduced: 95   paper: 95
+  [PASS] 4.3   expectation within octets
+         reproduced: 112   paper: 112
+  [PASS] 4.3   hexagram pairs spanning two octets
+         reproduced: 1792   paper: 1792
+  [PASS] 4.3   discordant pairs between octets
+         reproduced: 664   paper: 664
+  [PASS] 4.3   expectation between octets
+         reproduced: 896   paper: 896
+  [PASS] 4.3   total deficit of inversions (roughly 249)
+         reproduced: 249   paper: 249
+  [PASS] 4.3   mean King Wen position of the Qian octet
+         reproduced: 18.0   paper: 18.0
+  [PASS] 4.3   mean King Wen position of the Gen octet
+         reproduced: 26.6   paper: 26.6
+  [PASS] 4.3   mean King Wen position of the Kan octet
+         reproduced: 31.9   paper: 31.9
+  [PASS] 4.3   mean King Wen position of the Zhen octet
+         reproduced: 43.0   paper: 43.0
+  [PASS] 4.3   mean King Wen position of the Kun octet
+         reproduced: 20.0   paper: 20.0
+  [PASS] 4.3   mean King Wen position of the Dui octet
+         reproduced: 39.8   paper: 39.8
+  [PASS] 4.3   mean King Wen position of the Li octet
+         reproduced: 38.5   paper: 38.5
+  [PASS] 4.3   mean King Wen position of the Xun octet
+         reproduced: 42.2   paper: 42.2
+  [PASS] 4.3   the male line is monotone in the family order
+         reproduced: True   paper: True
+  [PASS] 4.3   probability of a specific monotone arrangement of four means
+         reproduced: 0.042   paper: 0.042
+  [PASS] 4.3   Spearman correlation of octet index with mean King Wen position
+         reproduced: 0.619   paper: 0.619
+  [PASS] 4.3   exact permutation p over the 8! octet orders
+         reproduced: 0.0575   paper: 0.0575
+  [PASS] 4.3   null shuffling within octets: mean inversions
+         reproduced: 776   paper: 776
+  [PASS] 4.3   null shuffling within octets: sd
+         reproduced: 11   paper: 11
+  [PASS] 4.3   the observed 759 sits at z = -1.51 of that null
+         reproduced: -1.48   paper: -1.51
+  [PASS] 4.3   null shuffling the octet order: mean inversions
+         reproduced: 992   paper: 991
+  [PASS] 4.3   null shuffling the octet order: sd
+         reproduced: 130   paper: 131
+
+Section 5: the pair structure, conditional re-analysis and the limits
+---------------------------------------------------------------------
+  [PASS] 5     rotation pairs in the King Wen sequence
+         reproduced: 28   paper: 28
+  [PASS] 5     palindromic pairs (joined by complement)
+         reproduced: 4   paper: 4
+  [PASS] 5     palindromic pairs sit at Hamming distance 6
+         reproduced: True   paper: True
+  [PASS] 5.1   mean transition distance of the King Wen sequence
+         reproduced: 3.349   paper: 3.349
+  [PASS] 5.1   lag-1 autocorrelation of transition distances
+         reproduced: -0.247   paper: -0.247
+  [PASS] 5.1   yang-balanced groups of four
+         reproduced: 7   paper: 7
+  [PASS] 5.1   free-shuffle percentile, mean transition distance
+         reproduced: 97.5   paper: 97.9
+  [PASS] 5.1   free-shuffle percentile, yang-balanced groups
+         reproduced: 99.2   paper: 99.2
+  [PASS] 5.1   free-shuffle percentile, lag-1 autocorrelation
+         reproduced: 3.8   paper: 4.0
+  [PASS] 5.1   pair-preserving percentile, mean transition distance (29.0 to 29.4)
+         reproduced: 29.4   paper: 29.4
+  [PASS] 5.1   pair-preserving percentile, lag-1 autocorrelation (marginal)
+         reproduced: 6.2   paper: 6.4
+  [PASS] 5.1   pair-preserving percentile, yang-balanced groups
+         reproduced: 89.8   paper: 89.6
+  [PASS] 5.1   within/between-pair asymmetry is invariant under the pair null (sd 0)
+         reproduced: 0.0   paper: 0.0
+  [PASS] 5.1   expected balanced groups under the free null
+         reproduced: 2.6   paper: 2.6
+  [PASS] 5.1   expected balanced groups under the pair-preserving null
+         reproduced: 4.4   paper: 4.4
+  [PASS] 5.2   total Hamming cost of the King Wen matching
+         reproduced: 120   paper: 120
+  [PASS] 5.2   mean within-pair Hamming distance (not 3.56)
+         reproduced: 3.75   paper: 3.75
+  [PASS] 5.2   mean between-pair distance, agreeing with Chan
+         reproduced: 2.94   paper: 2.94
+  [PASS] 5.2   pair partners are internally more distant
+         reproduced: True   paper: True
+  [PASS] 5.3   cost of the complement-only matching
+         reproduced: 192   paper: 192
+  [PASS] 5.3   the King Wen matching costs 120 against that 192
+         reproduced: 120   paper: 120
+  [PASS] 5.4   'more yang first' is undecidable on every rotation pair
+         reproduced: 28   paper: 28
+  [PASS] 5.4   greater binary value first
+         reproduced: (14, 28)   paper: (14, 28)
+  [PASS] 5.4   p-value for greater binary value first
+         reproduced: 0.575   paper: 0.575
+  [PASS] 5.4   bottom line yang first
+         reproduced: (16, 28)   paper: (16, 28)
+  [PASS] 5.4   p-value for bottom line yang first
+         reproduced: 0.286   paper: 0.286
+  [PASS] 5.4   top line yang first
+         reproduced: (12, 28)   paper: (12, 28)
+  [PASS] 5.4   p-value for top line yang first
+         reproduced: 0.286   paper: 0.286
+  [PASS] 5.4   pair index i addresses positions 2i and 2i+1 of the sequence
+         reproduced: True   paper: True
+  [PASS] 5.4   orientation smooths the incoming transition
+         reproduced: (7, 15)   paper: (7, 15)
+  [PASS] 5.4   ties on the incoming transition
+         reproduced: 13   paper: 13
+  [PASS] 5.4   p-value for incoming smoothing
+         reproduced: 0.5   paper: 0.5
+  [PASS] 5.4   orientation smooths the outgoing transition
+         reproduced: (7, 15)   paper: (7, 15)
+  [PASS] 5.4   ties on the outgoing transition
+         reproduced: 12   paper: 12
+  [PASS] 5.4   p-value for outgoing smoothing
+         reproduced: 0.5   paper: 0.5
+  [PASS] 5.4   greater nuclear value first
+         reproduced: (8, 24)   paper: (8, 24)
+  [PASS] 5.4   toward smaller-nuclear-first
+         reproduced: (16, 24)   paper: (16, 24)
+  [PASS] 5.4   ties on the nuclear criterion
+         reproduced: 4   paper: 4
+  [PASS] 5.4   p-value for the nuclear criterion
+         reproduced: 0.076   paper: 0.076
+  [PASS] 5.4   pairs whose members fall in different nuclear basins
+         reproduced: (16, 28)   paper: (16, 28)
+  [PASS] 5.5   correct-first on the extremes (1,6)
+         reproduced: (10, 16)   paper: (10, 16)
+  [PASS] 5.5   p-value on the extremes
+         reproduced: 0.227   paper: 0.227
+  [PASS] 5.5   correct-first on the middles (3,4)
+         reproduced: (9, 16)   paper: (9, 16)
+  [PASS] 5.5   p-value on the middles
+         reproduced: 0.402   paper: 0.402
+  [PASS] 5.5   correct-first on the centers (2,5)
+         reproduced: (12, 16)   paper: (12, 16)
+  [PASS] 5.5   p-value on the centers
+         reproduced: 0.038   paper: 0.038
+  [PASS] 5.5   two-sided p on the centers
+         reproduced: 0.077   paper: 0.077
+  [PASS] 5.5   centers and smaller-nuclear agree on every co-decidable pair
+         reproduced: (16, 16)   paper: (16, 16)
+  [PASS] 5.5   on decidable center pairs, line 5 and line 2 always differ
+         reproduced: True   paper: True
+  [PASS] 5.6   the battery comprises nine tested criteria
+         reproduced: 9   paper: 9
+  [PASS] 5.6   more-yang-first is excluded by theorem, undecidable on all 28 pairs
+         reproduced: 28   paper: 28
+  [PASS] 5.6   agreements needed over all 28 pairs to survive the battery correction
+         reproduced: 22   paper: 22
+  [PASS] 5.6   agreements needed over 16 decidable pairs to survive it
+         reproduced: 14   paper: 14
+  [PASS] 5.6   Bonferroni over the nine criteria (0.038 x 9)
+         reproduced: 0.342   paper: 0.342
+  [PASS] 5.6   the sample is fixed forever at 28 rotation pairs
+         reproduced: 28   paper: 28
+
+Section 6: spectral portraits of the five orderings
+---------------------------------------------------
+  [PASS] 6.1   Walsh energy by order, Binary
+         reproduced: [100.0, 0.0, 0.0, 0.0, 0.0, 0.0]   paper: [100, 0, 0, 0, 0, 0]
+  [PASS] 6.1   dominant DFT harmonic, Binary
+         reproduced: 1   paper: 1
+  [PASS] 6.1   dominant Haar width, Binary
+         reproduced: 64   paper: 64
+  [PASS] 6.1   Walsh energy by order, Gray
+         reproduced: [75.0, 25.0, 0.0, 0.0, 0.0, 0.0]   paper: [75, 25, 0, 0, 0, 0]
+  [PASS] 6.1   dominant DFT harmonic, Gray
+         reproduced: 1   paper: 1
+  [PASS] 6.1   dominant Haar width, Gray
+         reproduced: 64   paper: 64
+  [PASS] 6.1   Walsh energy by order, Mawangdui
+         reproduced: [20.9, 34.4, 14.1, 22.3, 7.3, 1.2]   paper: [20.9, 34.4, 14.1, 22.3, 7.3, 1.2]
+  [PASS] 6.1   dominant DFT harmonic, Mawangdui
+         reproduced: 24   paper: 24
+  [PASS] 6.1   dominant Haar width, Mawangdui
+         reproduced: 4   paper: 4
+  [PASS] 6.1   Walsh energy by order, King Wen
+         reproduced: [21.5, 16.8, 28.4, 25.7, 5.1, 2.5]   paper: [21.5, 16.8, 28.4, 25.7, 5.1, 2.5]
+  [PASS] 6.1   dominant DFT harmonic, King Wen
+         reproduced: 16   paper: 16
+  [PASS] 6.1   dominant Haar width, King Wen
+         reproduced: 4   paper: 4
+  [PASS] 6.1   Walsh energy by order, Jing Fang
+         reproduced: [0.0, 15.3, 5.3, 74.5, 3.8, 1.2]   paper: [0.0, 15.3, 5.3, 74.5, 3.8, 1.2]
+  [PASS] 6.1   dominant DFT harmonic, Jing Fang
+         reproduced: 7   paper: 7
+  [PASS] 6.1   dominant Haar width, Jing Fang
+         reproduced: 32   paper: 32
+  [PASS] 6     Jing Fang is anti-linear: no first-order component
+         reproduced: 0.0   paper: 0.0
+  [PASS] 6     Jing Fang concentrates 74.5 percent in fourth-order interactions
+         reproduced: 74.5   paper: 74.5
+  [PASS] 6     King Wen number signal: even interaction orders carry 77.4 percent
+         reproduced: 77.4   paper: 77.4
+  [PASS] 6     uniform expectation for orders {2,4} is 47.6 percent
+         reproduced: 47.6   paper: 47.6
+
+Section 7: the cycle type of the King Wen permutation
+-----------------------------------------------------
+  [PASS] 7     cycle type of the King Wen permutation relative to binary order
+         reproduced: [52, 10, 2]   paper: [52, 10, 2]
+
+Seed robustness: the conclusions do not depend on the draw
+----------------------------------------------------------
+  [PASS] seeds kinship p stays below 0.01 with seed 7
+         reproduced: 0.0031   paper: < 0.01
+  [PASS] seeds pair-null percentile of mean transition distance within 3 points of 29.4 with seed 7
+         reproduced: 28.3   paper: 29.4
+  [PASS] seeds pair-null percentile of lag-1 autocorrelation within 3 points of 6.2 with seed 7
+         reproduced: 6.2   paper: 6.2
+  [PASS] seeds pair-null percentile of yang-balanced groups of four within 3 points of 89.8 with seed 7
+         reproduced: 89.6   paper: 89.8
+  [PASS] seeds kinship p stays below 0.01 with seed 99
+         reproduced: 0.0043   paper: < 0.01
+  [PASS] seeds pair-null percentile of mean transition distance within 3 points of 29.4 with seed 99
+         reproduced: 28.9   paper: 29.4
+  [PASS] seeds pair-null percentile of lag-1 autocorrelation within 3 points of 6.2 with seed 99
+         reproduced: 6.4   paper: 6.2
+  [PASS] seeds pair-null percentile of yang-balanced groups of four within 3 points of 89.8 with seed 99
+         reproduced: 89.7   paper: 89.8
+
+Appendix A: the ladder of conditional nulls (Table A1)
+------------------------------------------------------
+  [PASS] A     rung P3: the four palindrome pairs, fixed in position and orientation
+         reproduced: [0, 13, 14, 30]   paper: [0, 13, 14, 30]
+  [PASS] A     detecting complement pairs by value (a XOR b = 63) would catch eight
+         reproduced: 8   paper: 8
+  [PASS] A     Table A1 percentile, P0 / transition
+         reproduced: 97.5   paper: 97.5
+  [PASS] A     Table A1 percentile, P0 / alternation
+         reproduced: 3.8   paper: 3.8
+  [PASS] A     Table A1 percentile, P0 / balanced
+         reproduced: 99.2   paper: 99.2
+  [PASS] A     Table A1 percentile, P0 / within
+         reproduced: 99.9   paper: 99.9
+  [PASS] A     Table A1 percentile, P1 / transition
+         reproduced: 29.4   paper: 29.4
+  [PASS] A     Table A1 percentile, P1 / alternation
+         reproduced: 6.2   paper: 6.2
+  [PASS] A     Table A1 percentile, P1 / balanced
+         reproduced: 89.8   paper: 89.8
+  [PASS] A     Table A1 percentile, P2 / transition
+         reproduced: 31.9   paper: 31.9
+  [PASS] A     Table A1 percentile, P2 / alternation
+         reproduced: 6.5   paper: 6.5
+  [PASS] A     Table A1 percentile, P2 / balanced
+         reproduced: 87.7   paper: 87.7
+  [PASS] A     Table A1 percentile, P3 / transition
+         reproduced: 33.2   paper: 33.2
+  [PASS] A     Table A1 percentile, P3 / alternation
+         reproduced: 10.8   paper: 10.8
+  [PASS] A     Table A1 percentile, P3 / balanced
+         reproduced: 90.4   paper: 90.4
+  [PASS] A     Table A1 percentile, P4 / transition
+         reproduced: 29.9   paper: 29.9
+  [PASS] A     Table A1 percentile, P4 / alternation
+         reproduced: 3.3   paper: 3.3
+  [PASS] A     Table A1 percentile, P5 / transition
+         reproduced: 17.6   paper: 17.6
+  [PASS] A     Table A1 percentile, P5 / alternation
+         reproduced: 3.5   paper: 3.5
+  [PASS] A     the constant cells of Table A1 do not vary under their null
+         reproduced: []   paper: []
+  [PASS] A     non-constant entries of Table A1
+         reproduced: 17   paper: 17
+  [PASS] A     correction of the residue over the table (0.035 x 17 = 0.6)
+         reproduced: 0.595   paper: 0.6
+  [PASS] A     blocks of four with yang sum 12 in the received sequence
+         reproduced: 7   paper: 7
+  [PASS] A     rung P4: yang-balanced groups equal 7 in every control sample
+         reproduced: [7]   paper: [7]
+  [PASS] A     rung P5: yang-balanced groups equal 7 in every control sample
+         reproduced: [7]   paper: [7]
+
+Front matter: title, subtitle and citation, against paper.tex
+-------------------------------------------------------------
+  [PASS] front the title page is built from the canonical macros
+         reproduced: True   paper: True
+  [PASS] front the author line is built from the canonical macro
+         reproduced: True   paper: True
+  [PASS] front canonical title, read from paper.tex
+         reproduced: Statistical Structure of the Historical Orderings of the I Ching Hexagrams   paper: Statistical Structure of the Historical Orderings of the I Ching Hexagrams
+  [PASS] front canonical subtitle, read from paper.tex
+         reproduced: Pair Rule, Family Gradient, and the Limits of Demonstrability   paper: Pair Rule, Family Gradient, and the Limits of Demonstrability
+  [PASS] front canonical author, read from paper.tex
+         reproduced: Alexis García Hurtado   paper: Alexis García Hurtado
+  [PASS] front README.md carries the canonical title
+         reproduced: True   paper: True
+  [PASS] front README.md carries the canonical subtitle
+         reproduced: True   paper: True
+  [PASS] front kingwen-orderings.html carries the canonical title
+         reproduced: True   paper: True
+  [PASS] front kingwen-orderings.html carries the canonical subtitle
+         reproduced: True   paper: True
+  [PASS] front BibTeX title in README.md matches paper.tex character for character
+         reproduced: Statistical Structure of the Historical Orderings of the I Ching Hexagrams: Pair Rule, Family Gradient, and the Limits of Demonstrability   paper: Statistical Structure of the Historical Orderings of the I Ching Hexagrams: Pair Rule, Family Gradient, and the Limits of Demonstrability
+  [PASS] front BibTeX title in kingwen-orderings.html matches paper.tex character for character
+         reproduced: Statistical Structure of the Historical Orderings of the I Ching Hexagrams: Pair Rule, Family Gradient, and the Limits of Demonstrability   paper: Statistical Structure of the Historical Orderings of the I Ching Hexagrams: Pair Rule, Family Gradient, and the Limits of Demonstrability
+  [PASS] front og:title on the landing carries title and subtitle
+         reproduced: Statistical Structure of the Historical Orderings of the I Ching Hexagrams: Pair Rule, Family Gradient, and the Limits of Demonstrability   paper: Statistical Structure of the Historical Orderings of the I Ching Hexagrams: Pair Rule, Family Gradient, and the Limits of Demonstrability
+  [PASS] front paper.tex carries the concept DOI, which needs no deposit to exist
+         reproduced: True   paper: True
+  [PASS] front paper.tex carries the version DOI of the deposit it belongs to
+         reproduced: True   paper: True
+  [PASS] front README.md carries the concept DOI (all versions)
+         reproduced: True   paper: True
+  [PASS] front README.md no longer announces a pending DOI
+         reproduced: True   paper: True
+  [PASS] front BibTeX doi field in README.md is the concept DOI
+         reproduced: 10.5281/zenodo.21609653   paper: 10.5281/zenodo.21609653
+  [PASS] front kingwen-orderings.html carries the concept DOI (all versions)
+         reproduced: True   paper: True
+  [PASS] front kingwen-orderings.html no longer announces a pending DOI
+         reproduced: True   paper: True
+  [PASS] front BibTeX doi field in kingwen-orderings.html is the concept DOI
+         reproduced: 10.5281/zenodo.21609653   paper: 10.5281/zenodo.21609653
+
+PDF document metadata, against the canonical strings of paper.tex
+-----------------------------------------------------------------
+  [PASS] pdf   pdftitle is built from the canonical macros
+         reproduced: True   paper: True
+  [PASS] pdf   pdfauthor is built from the canonical macro
+         reproduced: True   paper: True
+  [PASS] pdf   the PDF carries a document information dictionary
+         reproduced: True   paper: True
+  [PASS] pdf   /Title exists in the PDF
+         reproduced: True   paper: True
+  [PASS] pdf   /Author exists in the PDF
+         reproduced: True   paper: True
+  [PASS] pdf   /Title of the PDF matches paper.tex
+         reproduced: Statistical Structure of the Historical Orderings of the I Ching Hexagrams: Pair Rule, Family Gradient, and the Limits of Demonstrability   paper: Statistical Structure of the Historical Orderings of the I Ching Hexagrams: Pair Rule, Family Gradient, and the Limits of Demonstrability
+  [PASS] pdf   /Author of the PDF matches paper.tex
+         reproduced: Alexis García Hurtado   paper: Alexis García Hurtado
+
+The compiled PDF carries the text of the paper.tex beside it
+------------------------------------------------------------
+  [PASS] pdf   paper.pdf prints the 6 strings that identify this version of the text
+         reproduced: []   paper: []
+  [PASS] pdf   paper.pdf no longer prints the superseded version DOI
+         reproduced: False   paper: False
+
+Layout of the compiled PDF: no table printed among the references
+-----------------------------------------------------------------
+  [PASS] pdf   the bibliography opens before the appendix, and both are found
+         reproduced: True   paper: True
+  [PASS] pdf   no table caption falls on a page of the bibliography
+         reproduced: []   paper: []
+
+Paper source: every frozen figure is where the paper puts it
+------------------------------------------------------------
+  [PASS] tex   paper.tex carries 1013 at exactly the declared positions
+         reproduced: ((51, 1), (64, 1), (89, 1), (91, 1), (106, 1))   paper: ((51, 1), (64, 1), (89, 1), (91, 1), (106, 1))
+  [PASS] tex   paper.tex carries 1008 at exactly the declared positions
+         reproduced: ((51, 3), (64, 3), (82, 1), (89, 3), (105, 1), (107, 1), (133, 1), (294, 3))   paper: ((51, 3), (64, 3), (82, 1), (89, 3), (105, 1), (107, 1), (133, 1), (294, 3))
+  [PASS] tex   paper.tex carries 759 at exactly the declared positions
+         reproduced: ((51, 1), (66, 1), (119, 1), (129, 1), (133, 1))   paper: ((51, 1), (66, 1), (119, 1), (129, 1), (133, 1))
+  [PASS] tex   paper.tex carries -2.89 at exactly the declared positions
+         reproduced: ((51, 1), (66, 1), (119, 1))   paper: ((51, 1), (66, 1), (119, 1))
+  [PASS] tex   paper.tex carries 0.0034 at exactly the declared positions
+         reproduced: ((51, 1), (119, 2))   paper: ((51, 1), (119, 2))
+  [PASS] tex   paper.tex carries 3.75 at exactly the declared positions
+         reproduced: ((68, 2), (162, 1), (173, 2))   paper: ((68, 2), (162, 1), (173, 2))
+  [PASS] tex   paper.tex carries 120 at exactly the declared positions
+         reproduced: ((68, 1), (93, 1), (103, 1), (173, 3), (177, 1))   paper: ((68, 1), (93, 1), (103, 1), (173, 3), (177, 1))
+  [PASS] tex   paper.tex carries 12/16 at exactly the declared positions
+         reproduced: ((51, 1), (70, 1), (201, 1), (211, 1), (230, 1))   paper: ((51, 1), (70, 1), (201, 1), (211, 1), (230, 1))
+  [PASS] tex   paper.tex carries 0.038 at exactly the declared positions
+         reproduced: ((51, 1), (70, 1), (193, 1), (201, 1), (211, 2), (230, 1))   paper: ((51, 1), (70, 1), (193, 1), (201, 1), (211, 2), (230, 1))
+  [PASS] tex   paper.tex carries 74.5 at exactly the declared positions
+         reproduced: ((72, 1), (257, 1), (278, 1), (284, 1), (288, 1))   paper: ((72, 1), (257, 1), (278, 1), (284, 1), (288, 1))
+  [PASS] tex   paper.tex carries 95/224 at exactly the declared positions
+         reproduced: ((129, 1),)   paper: ((129, 1),)
+  [PASS] tex   paper.tex carries 664/1792 at exactly the declared positions
+         reproduced: ((129, 1),)   paper: ((129, 1),)
+  [PASS] tex   paper.tex carries 776 at exactly the declared positions
+         reproduced: ((133, 2), (306, 1))   paper: ((133, 2), (306, 1))
+  [PASS] tex   paper.tex carries 18.0 at exactly the declared positions
+         reproduced: ((131, 1),)   paper: ((131, 1),)
+  [PASS] tex   paper.tex carries 26.6 at exactly the declared positions
+         reproduced: ((131, 1),)   paper: ((131, 1),)
+  [PASS] tex   paper.tex carries 31.9 at exactly the declared positions
+         reproduced: ((131, 1), (396, 1))   paper: ((131, 1), (396, 1))
+  [PASS] tex   paper.tex carries 43.0 at exactly the declared positions
+         reproduced: ((131, 1),)   paper: ((131, 1),)
+  [PASS] tex   paper.tex carries 0.619 at exactly the declared positions
+         reproduced: ((131, 1),)   paper: ((131, 1),)
+  [PASS] tex   paper.tex carries 0.0575 at exactly the declared positions
+         reproduced: ((131, 1),)   paper: ((131, 1),)
+  [PASS] tex   paper.tex carries 192 at exactly the declared positions
+         reproduced: ((177, 1),)   paper: ((177, 1),)
+  [PASS] tex   paper.tex carries 2016 at exactly the declared positions
+         reproduced: ((89, 1), (294, 2))   paper: ((89, 1), (294, 2))
+  [PASS] tex   paper.tex carries 86.3 at exactly the declared positions
+         reproduced: ((82, 1), (89, 1))   paper: ((82, 1), (89, 1))
+  [PASS] tex   paper.tex carries 17.6 at exactly the declared positions
+         reproduced: ((399, 1),)   paper: ((399, 1),)
+  [PASS] tex   paper.tex carries 3.5 at exactly the declared positions
+         reproduced: ((68, 1), (173, 2), (399, 1), (404, 2))   paper: ((68, 1), (173, 2), (399, 1), (404, 2))
+  [PASS] tex   paper.tex carries 33.2 at exactly the declared positions
+         reproduced: ((397, 1),)   paper: ((397, 1),)
+  [PASS] tex   paper.tex carries 29.9 at exactly the declared positions
+         reproduced: ((398, 1),)   paper: ((398, 1),)
+  [PASS] tex   paper.tex carries 87.7 at exactly the declared positions
+         reproduced: ((396, 1),)   paper: ((396, 1),)
+  [PASS] tex   paper.tex carries 90.4 at exactly the declared positions
+         reproduced: ((397, 1),)   paper: ((397, 1),)
+  [PASS] tex   paper.tex carries constant = 7 at exactly the declared positions
+         reproduced: ((398, 1), (399, 1))   paper: ((398, 1), (399, 1))
+  [PASS] tex   paper.tex contains no em dash
+         reproduced: 0   paper: 0
+  [PASS] tex   Table 2 prints one row per signature the suite re-evaluates
+         reproduced: 4   paper: 4
+
+The bibliography: every entry named, every citation resolved
+------------------------------------------------------------
+  [PASS] bib   the bibliography has 16 entries and no key is repeated
+         reproduced: []   paper: []
+  [PASS] bib   every entry of the bibliography is named in the body
+         reproduced: []   paper: []
+  [PASS] bib   each of the 15 author-date citations in the body has an entry
+         reproduced: []   paper: []
+
+Floats and references: every label used, every reference resolved
+-----------------------------------------------------------------
+  [PASS] float every label of the manuscript is referenced, with none declared
+         reproduced: []   paper: []
+  [PASS] float every reference resolves to a label
+         reproduced: []   paper: []
+
+The errata log, against the shape it declares for itself
+--------------------------------------------------------
+  [PASS] errata defect entries carry the six required fields
+         reproduced: []   paper: []
+  [PASS] errata record entries carry their four fields
+         reproduced: []   paper: []
+  [PASS] errata every entry is filed once, under its category's part
+         reproduced: []   paper: []
+  [PASS] errata every status is one its category admits
+         reproduced: []   paper: []
+  [PASS] errata the 30 entry identifiers use a declared prefix
+         reproduced: []   paper: []
+  [PASS] errata no entry leaves a pending marker standing
+         reproduced: []   paper: []
+  [PASS] errata every printed-text field quotes or is marked pending
+         reproduced: []   paper: []
+  [PASS] errata every sha256 is written unabbreviated
+         reproduced: []   paper: []
+  [PASS] errata the README file table lists all 25 files, and no others
+         reproduced: []   paper: []
+
+Living surfaces: the front matter is right where it lives
+---------------------------------------------------------
+  [PASS] surface the bold title line of README.md carries the canonical title
+         reproduced: Statistical Structure of the Historical Orderings of the I Ching Hexagrams   paper: Statistical Structure of the Historical Orderings of the I Ching Hexagrams
+  [PASS] surface the italic subtitle line of README.md carries the canonical subtitle
+         reproduced: Pair Rule, Family Gradient, and the Limits of Demonstrability   paper: Pair Rule, Family Gradient, and the Limits of Demonstrability
+  [PASS] surface the BibTeX author field of README.md carries the canonical bibtex_author
+         reproduced: García Hurtado, Alexis   paper: García Hurtado, Alexis
+  [PASS] surface the <title> element of kingwen-orderings.html carries the canonical title
+         reproduced: Statistical Structure of the Historical Orderings of the I Ching Hexagrams   paper: Statistical Structure of the Historical Orderings of the I Ching Hexagrams
+  [PASS] surface the og:title meta tag of kingwen-orderings.html carries the canonical title_subtitle
+         reproduced: Statistical Structure of the Historical Orderings of the I Ching Hexagrams: Pair Rule, Family Gradient, and the Limits of Demonstrability   paper: Statistical Structure of the Historical Orderings of the I Ching Hexagrams: Pair Rule, Family Gradient, and the Limits of Demonstrability
+  [PASS] surface the display heading of kingwen-orderings.html carries the canonical title
+         reproduced: Statistical Structure of the Historical Orderings of the I Ching Hexagrams   paper: Statistical Structure of the Historical Orderings of the I Ching Hexagrams
+  [PASS] surface the display subtitle of kingwen-orderings.html carries the canonical subtitle
+         reproduced: Pair Rule, Family Gradient, and the Limits of Demonstrability   paper: Pair Rule, Family Gradient, and the Limits of Demonstrability
+  [PASS] surface the byline of kingwen-orderings.html carries the canonical author
+         reproduced: Alexis García Hurtado   paper: Alexis García Hurtado
+  [PASS] surface the BibTeX author field of kingwen-orderings.html carries the canonical bibtex_author
+         reproduced: García Hurtado, Alexis   paper: García Hurtado, Alexis
+  [PASS] surface paper.tex carries the concept DOI, once, exactly 1 time(s)
+         reproduced: 1   paper: 1
+  [PASS] surface paper.tex carries no superseded version DOI, exactly 0 time(s)
+         reproduced: 0   paper: 0
+  [PASS] surface paper.tex carries the version DOI reserved for this deposit, once, exactly 1 time(s)
+         reproduced: 1   paper: 1
+  [PASS] surface README.md carries the concept DOI, exactly 4 time(s)
+         reproduced: 4   paper: 4
+  [PASS] surface README.md carries no superseded version DOI anywhere, exactly 0 time(s)
+         reproduced: 0   paper: 0
+  [PASS] surface README.md carries the deposited version DOI, in the claim map and in the deposit block, exactly 2 time(s)
+         reproduced: 2   paper: 2
+  [PASS] surface kingwen-orderings.html carries the concept DOI: the archived link, the BibTeX, the claim in the prose and the JSON-LD identifier, exactly 4 time(s)
+         reproduced: 4   paper: 4
+  [PASS] surface index.html carries the concept DOI of the first paper, in its card: an index points at works and not at runs, exactly 1 time(s)
+         reproduced: 1   paper: 1
+  [PASS] surface index.html carries no superseded version DOI, exactly 0 time(s)
+         reproduced: 0   paper: 0
+  [PASS] surface index.html carries no version DOI of the first paper: that belongs on its page, beside the run it names, exactly 0 time(s)
+         reproduced: 0   paper: 0
+  [PASS] surface index.html carries the version DOI of the second paper, which is the one it is cited by, exactly 1 time(s)
+         reproduced: 1   paper: 1
+  [PASS] surface uninformative-rungs.html carries its own version DOI: the archived link twice, the JSON-LD identifier and sameAs, and the BibTeX, exactly 5 time(s)
+         reproduced: 5   paper: 5
+  [PASS] surface uninformative-rungs.html carries not the concept DOI of the other paper: the link to the worked case is a path and not a DOI, exactly 0 time(s)
+         reproduced: 0   paper: 0
+  [PASS] surface forced-counts.html carries its own version DOI: the archived link twice, the JSON-LD identifier and sameAs, and the BibTeX, exactly 5 time(s)
+         reproduced: 5   paper: 5
+  [PASS] surface forced-counts.html carries not the concept DOI of the case it reads: that link is a path, and the tag it names is a git tag, exactly 0 time(s)
+         reproduced: 0   paper: 0
+  [PASS] surface index.html carries the version DOI of the third paper, in its card, exactly 1 time(s)
+         reproduced: 1   paper: 1
+  [PASS] surface kingwen-orderings.html carries no version DOI at all, exactly 0 time(s)
+         reproduced: 0   paper: 0
+  [PASS] surface kingwen-orderings.html carries the deposited version DOI: the link target and the visible text of the block that shows its run, which is one pointer a reader can also read, and the JSON-LD sameAs, exactly 3 time(s)
+         reproduced: 3   paper: 3
+
+The landing pages: each deposited abstract, and each deposited PDF
+------------------------------------------------------------------
+  [PASS] landing the King Wen page prints the abstract of its paper, word for word
+         reproduced: The King Wen sequence orders the 64 hexagrams of the I Ching in an arrangement that has resisted explanation for three millennia. We present a statistical comparison of the three historical orderings (King Wen, Mawangdui, Jing Fang) against the binary ordering and against one another. Our central findings are the following. (1) All three historical orderings sit at the random-expected Kendall distance from the binary order (1013, 1008 and 1008 inversions, where the expectation is n(n-1)/4 = 1008): none is rank-correlated with binary counting, and two of the three achieve Kendall tau exactly zero. (2) Yet King Wen and Mawangdui are significantly correlated with each other (759 inversions, z = -2.89, Monte Carlo p = 0.0034, Bonferroni-surviving), and we identify the mechanism: a shared gradient of upper-trigram families, explicit in Mawangdui's octets and implicit in King Wen. (3) Re-analyzing recent Monte Carlo results (Chan, 2026) under a pair-preserving null shows three of the four reported signatures to be corollaries of the pair rule; we also report a small numerical correction, triangulated against a Lean-verified theorem (Radisic, 2026). (4) For the open question of within-pair orientation, the strongest admissible criterion is the classical doctrine of correct centers (12/16, uncorrected one-tailed p = 0.038; two-sided 0.077), and we show that no orientation rule of this strength can reach significance over 28 fixed pairs: a measurable limit of demonstrability. Every numerical claim in this paper is asserted by an automated test suite in a public repository.   paper: The King Wen sequence orders the 64 hexagrams of the I Ching in an arrangement that has resisted explanation for three millennia. We present a statistical comparison of the three historical orderings (King Wen, Mawangdui, Jing Fang) against the binary ordering and against one another. Our central findings are the following. (1) All three historical orderings sit at the random-expected Kendall distance from the binary order (1013, 1008 and 1008 inversions, where the expectation is n(n-1)/4 = 1008): none is rank-correlated with binary counting, and two of the three achieve Kendall tau exactly zero. (2) Yet King Wen and Mawangdui are significantly correlated with each other (759 inversions, z = -2.89, Monte Carlo p = 0.0034, Bonferroni-surviving), and we identify the mechanism: a shared gradient of upper-trigram families, explicit in Mawangdui's octets and implicit in King Wen. (3) Re-analyzing recent Monte Carlo results (Chan, 2026) under a pair-preserving null shows three of the four reported signatures to be corollaries of the pair rule; we also report a small numerical correction, triangulated against a Lean-verified theorem (Radisic, 2026). (4) For the open question of within-pair orientation, the strongest admissible criterion is the classical doctrine of correct centers (12/16, uncorrected one-tailed p = 0.038; two-sided 0.077), and we show that no orientation rule of this strength can reach significance over 28 fixed pairs: a measurable limit of demonstrability. Every numerical claim in this paper is asserted by an automated test suite in a public repository.
+  [PASS] landing the PDF the King Wen page serves is the one deposited as version 3
+         reproduced: 80b1648d2ce040c4cd33a84e4e1027b03c55a648c41798ce5a71ba2966a7b3d3   paper: 80b1648d2ce040c4cd33a84e4e1027b03c55a648c41798ce5a71ba2966a7b3d3
+  [PASS] landing the rungs page prints the abstract of its deposit, word for word
+         reproduced: When an object cannot be resampled and no generating process is available, a null hypothesis has to be built by declaring what may be permuted and what must be held fixed. The declaration is not unique, so the natural response is to report a family of nulls rather than one. A family with no principle behind it can be enumerated and cannot be terminated. We give an order-theoretic stopping criterion. Rungs of such a family are partially ordered by containment of their reference sets, and for a fixed statistic the rungs on which that statistic is uninformative, meaning constant on the reference set, form a down set in that order. Descending past such a rung therefore produces arithmetic and not evidence, and the family can be truncated there along that path. The result assumes no group, no model, no alternative and no level, and it is proved in one line from set containment. We use uninformative throughout in this sense; it is not the Bayesian term of art, which describes a prior. A rung is a reference set with a position in that order, and a null is the hypothesis a rung carries; both words are in the title and both are demarcated in section 1. We do not offer localisation as a contribution. Reading where a signal sits from the rung at which it stops surviving is stated and exercised in Theiler et al. (1992), and section 2 says where. What is new is the criterion for stopping and the separation that fixes its scope, not the reading. We also give the reason a family is reported entire rather than reduced to one rung: the three grounds the literature offers for selecting a single conditioning each require something a unique object with no generating process does not supply, and section 2.8 sets them out. We separate four reasons a rung can fail to reject and show that the two which are conditions on the reference set descend under containment while the two which are conditions on where the observed value falls do not. The scope of the criterion is therefore located by that separation rather than confessed. Where the rungs are orbits of subgroups the order is computable, which is a corollary and not the result; the exact-sampling property such rungs carry is a published result of others and is cited as theirs. The framework is instantiated on a worked case: the King Wen sequence, the received ordering of the sixty four hexagrams of the I Ching, and a published family of six rungs over it. The six were presented as a sequence of increasing structure; four of their fifteen pairwise relations are incomparable, so they are a partial order and not a chain, established by exhibited witnesses. A preregistered experiment, committed before computation, refutes the chain reading at four ordered pairs. Two of the four are evidence about the object and rest on a statistic nobody built for this purpose; the other two are demonstrations that the control behaves, and one of those two was not predicted. Which rungs are orbits of subgroups is itself decided, by a second theorem with its own proof, and the case exercises one side of the boundary that theorem draws and cites the other. One of its two statistics could not have rejected at any rung whatever the data, for a reason computable before a draw, and we report that rather than omit it. Nothing here is a claim about the King Wen sequence: the statistics were chosen for their behaviour under the nulls, no reported percentile is extreme, and none is offered as a finding about the object.   paper: When an object cannot be resampled and no generating process is available, a null hypothesis has to be built by declaring what may be permuted and what must be held fixed. The declaration is not unique, so the natural response is to report a family of nulls rather than one. A family with no principle behind it can be enumerated and cannot be terminated. We give an order-theoretic stopping criterion. Rungs of such a family are partially ordered by containment of their reference sets, and for a fixed statistic the rungs on which that statistic is uninformative, meaning constant on the reference set, form a down set in that order. Descending past such a rung therefore produces arithmetic and not evidence, and the family can be truncated there along that path. The result assumes no group, no model, no alternative and no level, and it is proved in one line from set containment. We use uninformative throughout in this sense; it is not the Bayesian term of art, which describes a prior. A rung is a reference set with a position in that order, and a null is the hypothesis a rung carries; both words are in the title and both are demarcated in section 1. We do not offer localisation as a contribution. Reading where a signal sits from the rung at which it stops surviving is stated and exercised in Theiler et al. (1992), and section 2 says where. What is new is the criterion for stopping and the separation that fixes its scope, not the reading. We also give the reason a family is reported entire rather than reduced to one rung: the three grounds the literature offers for selecting a single conditioning each require something a unique object with no generating process does not supply, and section 2.8 sets them out. We separate four reasons a rung can fail to reject and show that the two which are conditions on the reference set descend under containment while the two which are conditions on where the observed value falls do not. The scope of the criterion is therefore located by that separation rather than confessed. Where the rungs are orbits of subgroups the order is computable, which is a corollary and not the result; the exact-sampling property such rungs carry is a published result of others and is cited as theirs. The framework is instantiated on a worked case: the King Wen sequence, the received ordering of the sixty four hexagrams of the I Ching, and a published family of six rungs over it. The six were presented as a sequence of increasing structure; four of their fifteen pairwise relations are incomparable, so they are a partial order and not a chain, established by exhibited witnesses. A preregistered experiment, committed before computation, refutes the chain reading at four ordered pairs. Two of the four are evidence about the object and rest on a statistic nobody built for this purpose; the other two are demonstrations that the control behaves, and one of those two was not predicted. Which rungs are orbits of subgroups is itself decided, by a second theorem with its own proof, and the case exercises one side of the boundary that theorem draws and cites the other. One of its two statistics could not have rejected at any rung whatever the data, for a reason computable before a draw, and we report that rather than omit it. Nothing here is a claim about the King Wen sequence: the statistics were chosen for their behaviour under the nulls, no reported percentile is extreme, and none is offered as a finding about the object.
+  [PASS] landing the PDF the rungs page serves is the one deposited at Zenodo
+         reproduced: 77043504f28adf89ef3d8b18cbe70f652f5077481daf2a394ab524a7d5986439   paper: 77043504f28adf89ef3d8b18cbe70f652f5077481daf2a394ab524a7d5986439
+  [PASS] landing and the rungs PDF is the deposited length
+         reproduced: 444350   paper: 444350
+  [PASS] landing the rungs page names its mirror, its deposited tag and its DOI
+         reproduced: True   paper: True
+  [PASS] landing the forced counts page prints the abstract of its deposit, word for word
+         reproduced: We count the discordant pairs of an ordering against the binary order of the vertices of the n-cube, in the standard sense of rank correlation, and ask when that count is determined by the subgroup of the hyperoctahedral group B_n that the construction of the ordering respects. The apparatus is an accounting over the orbits of that subgroup acting on pairs of positions. Each orbit is either forced, contributing exactly half its cardinality whatever else happens, or free, contributing one of two values. A group can therefore only ever force the midpoint of the range, never any other value; equivalently, it can only force Kendall's tau against the binary order to be exactly zero. Two theorems remove the apparatus once it has been built. An orbit is forced precisely when it contains as many discordant pairs as concordant ones; and when the subgroup contains all translations, an ordering is forced precisely when every difference class splits exactly in two. A third result cuts the other way: if the subgroup contains the translations by a subspace of dimension at least two, every orbit has even cardinality, so the parity of the count is fixed by the structure, and when that parity differs from the parity of the midpoint the midpoint becomes impossible rather than merely unattained. The dimension hypothesis is necessary, by an exhibited witness. The apparatus and its three theorems are the contribution; what follows is where they came from and what they first settled. Applied to three constructed orderings of the 6-cube that have come down to us, with 2016 pairs and a midpoint of 1008, the three outcomes all occur. Two of the constructions force the count to 1008, and for one of them the demonstration is complete with no enumerative residue; a mechanism previously claimed for the other is refuted here, since the closure it rests on forces only 484 of the 2016 pairs and survives rearrangements that destroy the result, the midpoint coming out in 3836 of the 40320 of them. The third construction makes 1008 impossible by the parity obstruction: its structure leaves the interval [957, 1059] and exactly 52 compatible totals within it, 1008 is not among them, and the observed count is 1013. That difference of 5 is decomposed completely over the 19 free orbits and has no culprit: every free orbit deviates, and the deviations nearly cancel. Against a list of candidate structures declared before measuring, one narrows the interval, namely the construction's own pairing involution, which is not affine and so was absent from a group that is exactly its centraliser; none explains the difference. We therefore declare the residue informative relative to that list, and stop. A landscape of 14 rows over block systems in dimensions three to six populates the three outcomes away from the historical cases and records two refutations of shapes we tried to raise into theorems, one of them of an error of our own. Every measurement was preceded, in an earlier commit of a public repository, by a written statement of what was going to be measured and, where predictions were made, of what would refute them, and that ordering is checkable. Replication repository: https://github.com/Probatorium/forced-counts The deposited bundle contains the full commit history; two third-party data files are filtered from it, as declared in the manifest dist/THIRD-PARTY.md.   paper: We count the discordant pairs of an ordering against the binary order of the vertices of the n-cube, in the standard sense of rank correlation, and ask when that count is determined by the subgroup of the hyperoctahedral group B_n that the construction of the ordering respects. The apparatus is an accounting over the orbits of that subgroup acting on pairs of positions. Each orbit is either forced, contributing exactly half its cardinality whatever else happens, or free, contributing one of two values. A group can therefore only ever force the midpoint of the range, never any other value; equivalently, it can only force Kendall's tau against the binary order to be exactly zero. Two theorems remove the apparatus once it has been built. An orbit is forced precisely when it contains as many discordant pairs as concordant ones; and when the subgroup contains all translations, an ordering is forced precisely when every difference class splits exactly in two. A third result cuts the other way: if the subgroup contains the translations by a subspace of dimension at least two, every orbit has even cardinality, so the parity of the count is fixed by the structure, and when that parity differs from the parity of the midpoint the midpoint becomes impossible rather than merely unattained. The dimension hypothesis is necessary, by an exhibited witness. The apparatus and its three theorems are the contribution; what follows is where they came from and what they first settled. Applied to three constructed orderings of the 6-cube that have come down to us, with 2016 pairs and a midpoint of 1008, the three outcomes all occur. Two of the constructions force the count to 1008, and for one of them the demonstration is complete with no enumerative residue; a mechanism previously claimed for the other is refuted here, since the closure it rests on forces only 484 of the 2016 pairs and survives rearrangements that destroy the result, the midpoint coming out in 3836 of the 40320 of them. The third construction makes 1008 impossible by the parity obstruction: its structure leaves the interval [957, 1059] and exactly 52 compatible totals within it, 1008 is not among them, and the observed count is 1013. That difference of 5 is decomposed completely over the 19 free orbits and has no culprit: every free orbit deviates, and the deviations nearly cancel. Against a list of candidate structures declared before measuring, one narrows the interval, namely the construction's own pairing involution, which is not affine and so was absent from a group that is exactly its centraliser; none explains the difference. We therefore declare the residue informative relative to that list, and stop. A landscape of 14 rows over block systems in dimensions three to six populates the three outcomes away from the historical cases and records two refutations of shapes we tried to raise into theorems, one of them of an error of our own. Every measurement was preceded, in an earlier commit of a public repository, by a written statement of what was going to be measured and, where predictions were made, of what would refute them, and that ordering is checkable. Replication repository: https://github.com/Probatorium/forced-counts The deposited bundle contains the full commit history; two third-party data files are filtered from it, as declared in the manifest dist/THIRD-PARTY.md.
+  [PASS] landing the PDF the forced counts page serves is the one deposited at Zenodo
+         reproduced: 87b934d9ddf7b32aa61599dff0492654366305245c27df4465e3d74f7b11733e   paper: 87b934d9ddf7b32aa61599dff0492654366305245c27df4465e3d74f7b11733e
+  [PASS] landing and the forced counts PDF is the deposited length
+         reproduced: 370771   paper: 370771
+  [PASS] landing the forced counts page names its mirror, its deposited tag and its DOI
+         reproduced: True   paper: True
+  [PASS] landing no source of a work hosted elsewhere sits anywhere in this package
+         reproduced: []   paper: []
+  [PASS] landing the index describes the collection and links every work by @id
+         reproduced: ['https://paper.theoriginaliching.com/forced-counts', 'https://paper.theoriginaliching.com/kingwen-orderings', 'https://paper.theoriginaliching.com/uninformative-rungs']   paper: ['https://paper.theoriginaliching.com/forced-counts', 'https://paper.theoriginaliching.com/kingwen-orderings', 'https://paper.theoriginaliching.com/uninformative-rungs']
+  [PASS] landing each page carries exactly one canonical, and it is its own
+         reproduced: [('index.html', ['https://paper.theoriginaliching.com/']), ('kingwen-orderings.html', ['https://paper.theoriginaliching.com/kingwen-orderings']), ('uninformative-rungs.html', ['https://paper.theoriginaliching.com/uninformative-rungs']), ('forced-counts.html', ['https://paper.theoriginaliching.com/forced-counts'])]   paper: [('index.html', ['https://paper.theoriginaliching.com/']), ('kingwen-orderings.html', ['https://paper.theoriginaliching.com/kingwen-orderings']), ('uninformative-rungs.html', ['https://paper.theoriginaliching.com/uninformative-rungs']), ('forced-counts.html', ['https://paper.theoriginaliching.com/forced-counts'])]
+
+Published counts: every surface names the tree its figures come from
+--------------------------------------------------------------------
+  [PASS] count every live-tree count published in README.md is the measured one
+         reproduced: [295]   paper: [295]
+  [PASS] count every live-tree count published in kingwen-orderings.html is the measured one
+         reproduced: [295]   paper: [295]
+  [PASS] count every deposit-tree count published in kingwen-orderings.html is the deposited one
+         reproduced: [270]   paper: [270]
+
+==================================================================
+  295 checks passed, 0 failed, 295 total
+==================================================================
+  REPLICATION COMPLETE: every figure in the paper reproduces.
