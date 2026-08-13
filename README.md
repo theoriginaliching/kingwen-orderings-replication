@@ -14,7 +14,7 @@ moment they are found rather than from the moment they are deposited.
 
 Every file, with the job it does. The list is a complete inventory, not a selection: it
 is meant to be checkable against the archive, so that a file cannot be added or dropped
-without the list saying so. Three roles are declared, and every file carries exactly one.
+without the list saying so. Four roles are declared, and every file carries exactly one.
 
 **Replication path.** What reproduces the paper's figures, and what it reads.
 
@@ -54,6 +54,16 @@ that the archive and the site are the same object.
 | `errata-evidence/` | Working code behind an errata entry. **Not in the replication path**: nothing here is run by `verify_paper.py`, and no figure of the paper depends on it |
 | `LICENSE` | MIT, covering the code |
 | `LICENSE-text` | CC BY 4.0, covering the paper text and figures |
+
+**CODECHECK.** Prepares an independent verification of the replication path above, and
+records what it found. Neither file is read by `verify_paper.py`, and neither changes what
+it checks.
+
+| File | Role |
+|---|---|
+| `codecheck_run.py` | Runs `verify_paper.py` as a subprocess and captures a transcript. `verify_paper.py` itself writes nothing, so this is a separate wrapper rather than a flag added to the suite |
+| `codecheck.yml` | Manifest and paper metadata for [codecheck.org.uk](https://codecheck.org.uk), spec 1.0 |
+| `codecheck/` | Written by `codecheck_run.py`: the transcript `codecheck.yml` declares in its manifest |
 
 The point of declaring the roles is not tidiness. A list without a criterion cannot be
 wrong, and so cannot be checked; a list with one can be compared against the archive by
@@ -248,12 +258,12 @@ runs `verify_paper.py`, prints what it prints, and additionally writes a transcr
 itself writes nothing.
 
 `paper.tex` and `paper.pdf` on this branch are byte-for-byte identical to the ones in the
-deposited archive under `10.5281/zenodo.21776041`, tag `zenodo-v3`, confirmed by sha256.
+deposited archive named under "This version" above, tag `zenodo-v3`, confirmed by sha256.
 Comparing a check count against that fact is the one place worth naming which tree it
-belongs to: this branch runs **295 checks** (`main`, this tree); the archive under that
-DOI runs **270 checks** (`zenodo-v3`, the deposited tree). The difference is not a
-discrepancy: the verifier grew after the deposit, and every check present in the
-deposited version still passes on this branch.
+belongs to: this branch runs **295 checks** (`main`, this tree); that archive runs
+**270 checks** (`zenodo-v3`, the deposited tree). The difference is not a discrepancy: the
+verifier grew after the deposit, and every check present in the deposited version still
+passes on this branch.
 
 ## Licenses
 

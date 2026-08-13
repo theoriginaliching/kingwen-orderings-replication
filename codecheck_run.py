@@ -47,15 +47,25 @@ def commit_actual():
 
 
 def main():
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
     if not os.path.isdir(SALIDA):
         os.makedirs(SALIDA)
 
     fecha = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     commit = commit_actual()
 
+    # verify_paper.py prints accented names (García Hurtado). Its own
+    # stdout encoding follows the interpreter's default, which on Windows
+    # depends on the console codepage rather than being UTF-8 by default.
+    # PYTHONIOENCODING pins the CHILD process to UTF-8 so this wrapper can
+    # decode what it wrote without guessing or corrupting it.
+    env = os.environ.copy()
+    env["PYTHONIOENCODING"] = "utf-8"
     proc = subprocess.run(
         [sys.executable, os.path.join(AQUI, "verify_paper.py")],
-        stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=AQUI)
+        stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=AQUI, env=env)
     texto = proc.stdout.decode("utf-8", "replace")
     sys.stdout.write(texto)
 
