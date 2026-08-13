@@ -1,0 +1,40 @@
+---
+version: https://codecheck.org.uk/spec/config/1.0/
+
+manifest:
+  - file: codecheck/report.txt
+    comment: >
+      Transcript of `python verify_paper.py`. Every numerical claim in the
+      manuscript is recomputed from first principles and compared against the
+      value printed in the paper, one line per check. verify_paper.py itself
+      writes nothing; this transcript is captured by codecheck_run.py, which
+      runs verify_paper.py as a subprocess. See the docstring of
+      codecheck_run.py for why the wrapper exists instead of adding an output
+      flag to the verifier.
+
+paper:
+  title: >
+    Statistical Structure of the Historical Orderings of the I Ching
+    Hexagrams: Pair Rule, Family Gradient, and the Limits of Demonstrability
+  authors:
+    - name: García Hurtado, Alexis
+      ORCID: 0009-0003-4636-8206
+  reference: https://github.com/theoriginaliching/kingwen-orderings-replication
+  doi: 10.5281/zenodo.21776041
+
+codechecker:
+  - name:
+
+summary: >
+  One command, standard library only, no network, runs in under thirty
+  seconds. `python codecheck_run.py` recomputes every numerical claim in the
+  manuscript from the received King Wen sequence and the construction rules
+  given in Section 2; every other ordering used in the paper (Mawangdui, Jing
+  Fang, binary, Gray) is generated algorithmically rather than supplied as
+  data. The manuscript in this branch (paper.tex, paper.pdf) is byte-for-byte
+  identical to the version deposited under the DOI above, tag zenodo-v3. The
+  verifier has grown since that deposit: it runs more checks on this branch
+  than the deposited archive did, and both counts are reported by
+  codecheck_run.py against the tree that produced them.
+
+repository: https://github.com/theoriginaliching/kingwen-orderings-replication

@@ -234,6 +234,27 @@ its own verification suite.
   tagged `zenodo-v3`. Downloaded back from the record, hashed to that value, extracted
   into an empty directory and run there: 270 checks, 0 failures.
 
+## For codecheckers
+
+```bash
+git clone https://github.com/theoriginaliching/kingwen-orderings-replication.git
+cd kingwen-orderings-replication
+python3 codecheck_run.py
+```
+
+No network access and nothing to install: Python 3 standard library only. The wrapper
+runs `verify_paper.py`, prints what it prints, and additionally writes a transcript to
+`codecheck/report.txt` for the manifest in `codecheck.yml`, since `verify_paper.py`
+itself writes nothing.
+
+`paper.tex` and `paper.pdf` on this branch are byte-for-byte identical to the ones in the
+deposited archive under `10.5281/zenodo.21776041`, tag `zenodo-v3`, confirmed by sha256.
+Comparing a check count against that fact is the one place worth naming which tree it
+belongs to: this branch runs **295 checks** (`main`, this tree); the archive under that
+DOI runs **270 checks** (`zenodo-v3`, the deposited tree). The difference is not a
+discrepancy: the verifier grew after the deposit, and every check present in the
+deposited version still passes on this branch.
+
 ## Licenses
 
 - **Code** (`verify_paper.py`, `index.html`, configuration): MIT, see `LICENSE`.
